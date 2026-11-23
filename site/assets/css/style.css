@@ -84,7 +84,7 @@ h2{font-size:clamp(34px,5.2vw,72px)}
 /* 4C */
 .c4{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:center}
 .c4-stage{position:relative;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#1b1713 0%,var(--bg) 70%);display:grid;place-items:center;overflow:hidden;cursor:none;touch-action:none}
-.gem{position:relative;width:70%;aspect-ratio:1;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.gem{position:relative;width:70%;aspect-ratio:1;transition:transform .6s cubic-bezier(.2,.8,.2,1);will-change:auto}
 .gem-img{position:absolute;inset:0;background-size:contain;background-repeat:no-repeat;transition:filter .5s}
 .gem-tint{position:absolute;inset:18%;border-radius:50%;background:#e8b84a;mix-blend-mode:color;opacity:0;transition:opacity .5s}
 .gem-inc{position:absolute;inset:22%;width:56%;height:56%}
@@ -314,5 +314,5 @@ input:focus,select:focus,button:focus-visible{outline:2px solid var(--gold);outl
 .hero .l-a{background-position:72% 46%}
 .hero-copy.t-b::before,.window .t-a::before{content:"";position:absolute;inset:-18% -8%;z-index:-1;background:radial-gradient(closest-side,rgba(10,9,8,.78),rgba(10,9,8,0));pointer-events:none}
 .hero-copy .lead,.hero-copy h1,.hero-copy h2{text-shadow:0 2px 24px rgba(0,0,0,.55)}
-.gem-img,.r360-img{mix-blend-mode:screen}
-.gem{isolation:isolate}
+.gem-img{-webkit-mask-image:radial-gradient(circle at 50% 48%,#000 50%,transparent 70%);mask-image:radial-gradient(circle at 50% 48%,#000 50%,transparent 70%)}
+.r360-img{-webkit-mask-image:radial-gradient(circle,#000 55%,transparent 71%);mask-image:radial-gradient(circle,#000 55%,transparent 71%)}

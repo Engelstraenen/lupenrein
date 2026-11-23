@@ -112,9 +112,10 @@ function moveLoupe(x, y) {
   if (lclone) { const g = gem.getBoundingClientRect(); const w = g.width * Z; lclone.style.width = w + 'px'; lclone.style.height = w + 'px'; lclone.style.transform = 'none'; lclone.style.left = (L / 2 - (x - g.left) * Z) + 'px'; lclone.style.top = (L / 2 - (y - g.top) * Z) + 'px'; }
 }
 let lt;
+stageEl.addEventListener('pointerenter', syncLoupe);
 stageEl.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { stageEl.classList.add('lupe'); moveLoupe(e.clientX, e.clientY); } });
 stageEl.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') stageEl.classList.remove('lupe'); });
-stageEl.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') { stageEl.classList.add('lupe'); moveLoupe(e.clientX, e.clientY); clearTimeout(lt); lt = setTimeout(() => stageEl.classList.remove('lupe'), 2600); } });
+stageEl.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') { syncLoupe(); stageEl.classList.add('lupe'); moveLoupe(e.clientX, e.clientY); clearTimeout(lt); lt = setTimeout(() => stageEl.classList.remove('lupe'), 2600); } });
 c4();
 
 /* Kollektion: Reservieren */
