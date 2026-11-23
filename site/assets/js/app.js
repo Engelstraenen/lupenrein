@@ -46,7 +46,7 @@ function frame() {
     const p = clamp(-r.top / (r.height - vh));
     if (st.s.id === 'hero') {
       const z = ease(ramp(p, 0, .62)), f = ramp(p, .42, .66);
-      if (st.a) { st.a.style.transformOrigin = '70% 50%'; st.a.style.transform = 'scale(' + (1 + z * 3.2) + ')'; st.a.style.opacity = 1 - f; }
+      if (st.a) { st.a.style.transformOrigin = '72% 46%'; st.a.style.transform = 'scale(' + (1 + z * 3.2) + ')'; st.a.style.opacity = 1 - f; }
       if (st.b) { st.b.style.setProperty('--ob', f); st.b.style.transform = 'scale(' + (1.5 - .5 * ease(ramp(p, .42, 1))) + ') rotate(' + (p * 12) + 'deg)'; }
       setT(st.ta, 1 - ramp(p, .02, .22), -60 * ramp(p, 0, .22));
       setT(st.tb, ramp(p, .62, .78) * (1 - ramp(p, .95, 1)), 40 * (1 - ramp(p, .62, .78)));

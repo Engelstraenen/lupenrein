@@ -311,3 +311,6 @@ input:focus,select:focus,button:focus-visible{outline:2px solid var(--gold);outl
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.kw{opacity:1;transform:none}}
 .split>*,.c4>*,.passt-grid>*,.trau-grid>*,.term-grid>*,.visit>*,.foot-grid>*,.fein-grid>*{min-width:0}
+.hero .l-a{background-position:72% 46%}
+.hero-copy.t-b::before,.window .t-a::before{content:"";position:absolute;inset:-18% -8%;z-index:-1;background:radial-gradient(closest-side,rgba(10,9,8,.78),rgba(10,9,8,0));pointer-events:none}
+.hero-copy .lead,.hero-copy h1,.hero-copy h2{text-shadow:0 2px 24px rgba(0,0,0,.55)}
