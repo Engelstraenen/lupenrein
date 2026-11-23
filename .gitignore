@@ -1,0 +1,8 @@
+.env*
+node_modules/
+assets-roh/
+.DS_Store
+*.png
+!site/**/*.png
+konzepte/
+*_vor-*.md
