@@ -168,7 +168,7 @@ function arStop() { cancelAnimationFrame(raf); if (stream) stream.getTracks().fo
 function drawRing(c, x, y, w, a) {
   c.save(); c.translate(x, y); c.rotate(a);
   c.filter = tone === 'white' ? 'saturate(0) brightness(1.18)' : tone === 'rose' ? 'hue-rotate(-18deg) saturate(1.35)' : 'none';
-  if (ringOk) { const h = w * ringImg.height / ringImg.width; c.drawImage(ringImg, 0, 0, ringImg.width, ringImg.height * .56, -w / 2, -h * .62, w, h * .56); }
+  if (ringOk) { const sh = ringImg.height * .62, dh = w * sh / ringImg.width * .55; c.drawImage(ringImg, 0, 0, ringImg.width, sh, -w / 2, -dh * .62, w, dh); }
   else {
     const col = tone === 'white' ? '#e8e8ea' : tone === 'rose' ? '#e7b29a' : '#e2bd6c';
     c.fillStyle = col; c.fillRect(-w / 2, -w * .09, w, w * .18);
@@ -187,7 +187,7 @@ function loop() {
   const P = i => ({ x: h[i].x * cv.width, y: h[i].y * cv.height });
   const a = P(13), b = P(14), k9 = P(9), k17 = P(17);
   const x = a.x + (b.x - a.x) * .38, y = a.y + (b.y - a.y) * .38;
-  const w = Math.hypot(k9.x - k17.x, k9.y - k17.y) * .62;
+  const w = Math.hypot(k9.x - k17.x, k9.y - k17.y) * .72;
   drawRing(c, x, y, w, Math.atan2(b.y - a.y, b.x - a.x) + Math.PI / 2);
 }
 arS.addEventListener('click', arStart); arX.addEventListener('click', arStop);
