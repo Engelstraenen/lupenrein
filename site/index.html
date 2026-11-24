@@ -4,363 +4,235 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LUPENREIN · Juwelier</title>
-<meta name="description" content="Juwelier LUPENREIN: Ringe, Trauringe, Diamanten, Ketten, Colliers, Armbänder, Ohrschmuck und Uhren. Online sehen, im Laden anprobieren.">
-<meta name="theme-color" content="#0a0908">
+<meta name="description" content="Juwelier LUPENREIN: ein Gang durch unsere Galerie. Diamanten, Verlobungsringe, Trauringe, Schmuck und Uhren. Online sehen, im Laden anprobieren.">
+<meta name="theme-color" content="#f6f3ee">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+<!-- Bühne: alle Fächer als Fotos übereinander, Scrollen fliegt durch die Vitrinen -->
+<div class="stage" id="stage" aria-hidden="true">
+  <div class="shot" data-s="0"><picture><source media="(max-aspect-ratio: 4/5)" data-srcset="LRB24"><img data-src="LRB01" alt=""></picture></div>
+  <div class="shot" data-s="1"><img data-src="LRB02" alt=""></div>
+  <div class="shot" data-s="2"><img data-src="LRB03" alt="" style="--fx:28%"></div>
+  <div class="shot" data-s="3"><img data-src="LRB04" alt="" id="ringShot" style="--fx:72%"></div>
+  <div class="shot" data-s="4"><img data-src="LRB05" alt="" id="trauShot"></div>
+  <div class="shot case" data-s="5"><img data-src="LRB02" alt="" class="bgblur"><div class="vit"><img data-src="LRB11" alt="" id="dShot"></div></div>
+  <div class="shot" data-s="6"><img data-src="LRB06" alt="" style="--fx:78%"></div>
+  <div class="shot" data-s="7"><img data-src="LRB07" alt="" style="--fx:32%"></div>
+  <div class="shot" data-s="8"><img data-src="LRB08" alt="" style="--fx:35%"></div>
+  <div class="shot" data-s="9"><img data-src="LRB09" alt="" style="--fx:50%"></div>
+  <div class="pane" id="pane"></div>
+</div>
+
 <div class="demo-bar" role="note">Demo-Webseite · erfundener Betrieb · Formulare senden nichts</div>
 
-<header class="nav" id="nav">
-  <a class="logo" href="#top" aria-label="Zum Anfang"><span class="brand" data-brand>LUPENREIN</span><small>Juwelier</small></a>
-  <nav class="menu" id="menu" aria-label="Hauptmenü">
-    <a href="#kollektion">Kollektion</a>
-    <a href="#diamant">Diamanten</a>
-    <a href="#passt">Verlobungsringe</a>
-    <a href="#trauringe">Trauringe</a>
-    <a href="#anprobe">Anprobe</a>
-    <a href="#ankauf">Ankauf</a>
-    <a href="#uhren">Uhren</a>
-    <a href="#bewertungen">Bewertungen</a>
-    <a href="#karriere">Karriere</a>
-    <a href="#termin" class="btn btn-gold menu-cta">Termin buchen</a>
+<header class="top" id="top">
+  <a class="logo" href="#eingang" aria-label="Zum Eingang" data-brand>LUPENREIN</a>
+  <nav class="menu" id="menu" aria-label="Galerie">
+    <a href="#diamanten" data-s="2">Diamanten</a>
+    <a href="#verlobung" data-s="3">Verlobungsringe</a>
+    <a href="#trauringe" data-s="4">Trauringe</a>
+    <a href="#schmuck" data-s="5">Schmuck</a>
+    <a href="#uhren" data-s="6">Uhren</a>
+    <a href="#ankauf" data-s="7">Ankauf</a>
+    <a href="#beratung" data-s="8">Beratung</a>
+    <a href="#karriere" data-s="9">Karriere</a>
+    <a href="#stimmen" data-s="9">Bewertungen</a>
   </nav>
-  <a href="#termin" class="btn btn-gold nav-cta">Termin</a>
-  <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+  <a href="#beratung" class="btn btn-or top-cta">Termin</a>
+  <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
+<p class="where" id="where" aria-hidden="true"><b id="whereN">I</b><span id="whereT">Eingang</span></p>
 
-<main id="top">
-
-<!-- 1 HERO: Lupe -> in den Diamanten -->
-<section class="stage hero" id="hero" data-len="3">
-  <div class="sticky">
-    <div class="layer l-a" data-img="LRA01" data-vid="LRV1" data-r="0,.62"></div>
-    <div class="layer l-b" data-img="LRA02" data-vid="LRV2" data-r=".42,1"></div>
-    <div class="shade"></div>
-    <div class="hero-copy t-a">
-      <p class="kicker">Juwelier · Ringe · Diamanten · Uhren</p>
-      <h1><span class="line">Jedes Detail.</span><span class="line gold">Lupenrein.</span></h1>
-      <p class="lead">Schmuck, den Sie online entdecken und bei uns in Ruhe anprobieren.</p>
-      <div class="row"><a href="#termin" class="btn btn-gold">Beratung buchen</a><a href="#kollektion" class="btn btn-ghost">Kollektion ansehen</a></div>
+<main>
+<section class="scene hero" id="eingang" data-s="0">
+  <div class="hold">
+    <div class="hero-copy">
+      <h1 class="h-hero">Treten Sie ein.</h1>
+      <p class="hero-sub">Juwelier <span data-brand>LUPENREIN</span> · Diamanten, Ringe, Schmuck und Uhren</p>
     </div>
-    <div class="hero-copy t-b center">
-      <h2 class="huge">Näher hinsehen.</h2>
-      <p class="lead">Wir zeigen Ihnen jeden Stein unter der Lupe, bevor Sie sich entscheiden.</p>
-    </div>
-    <div class="scroll-hint" aria-hidden="true"><span></span>Scrollen</div>
+    <div class="scroll-hint"><span>Scroll</span><i></i></div>
   </div>
 </section>
 
-<!-- 2 DIAMANT 4C -->
-<section class="sec diamant" id="diamant">
-  <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">Diamanten verstehen</p>
-      <h2>Vier Werte. <span class="gold">Ein Stein.</span></h2>
-      <p class="lead">Bewegen Sie die Regler und sehen Sie, was Schliff, Farbe, Reinheit und Karat bedeuten. Fahren Sie mit der Lupe über den Stein.</p>
-    </header>
-    <div class="c4">
-      <div class="c4-stage reveal" id="c4stage">
-        <div class="gem" id="gem">
-          <div class="gem-img" data-img="LRA03"></div>
-          <div class="gem-tint" id="gemTint"></div>
-          <svg class="gem-inc" id="gemInc" viewBox="0 0 100 100" aria-hidden="true"></svg>
-          <div class="gem-spark" id="gemSpark"></div>
-        </div>
-        <div class="loupe" id="loupe" aria-hidden="true"></div>
-        <p class="c4-mm" id="c4mm">Ø 6,5 mm</p>
-      </div>
-      <div class="c4-ctrl reveal">
-        <div class="ctl" data-k="cut">
-          <div class="ctl-top"><label for="sCut">Schliff</label><output id="oCut">Exzellent</output></div>
-          <input type="range" id="sCut" min="0" max="3" step="1" value="3">
-          <p class="ctl-info" id="iCut"></p>
-        </div>
-        <div class="ctl" data-k="color">
-          <div class="ctl-top"><label for="sColor">Farbe</label><output id="oColor">D</output></div>
-          <input type="range" id="sColor" min="0" max="9" step="1" value="0">
-          <p class="ctl-info" id="iColor"></p>
-        </div>
-        <div class="ctl" data-k="clarity">
-          <div class="ctl-top"><label for="sClar">Reinheit</label><output id="oClar">IF</output></div>
-          <input type="range" id="sClar" min="0" max="8" step="1" value="0">
-          <div class="scale" id="clarScale" aria-hidden="true"></div>
-          <p class="ctl-info" id="iClar"></p>
-        </div>
-        <div class="ctl" data-k="carat">
-          <div class="ctl-top"><label for="sCarat">Karat</label><output id="oCarat">1,00 ct</output></div>
-          <input type="range" id="sCarat" min="0" max="7" step="1" value="3">
-          <p class="ctl-info" id="iCarat"></p>
-        </div>
-        <a href="#termin" class="btn btn-gold" data-topic="Diamant-Beratung">Diesen Stein zeigen lassen</a>
-      </div>
-    </div>
+<section class="scene flight" id="gang" data-s="1">
+  <div class="hold">
+    <p class="flight-txt"><span>Jede Vitrine</span><span><em>ein eigener Raum.</em></span></p>
   </div>
 </section>
 
-<!-- 3 SCHAUFENSTER -> VITRINE -->
-<section class="stage window" id="schaufenster" data-len="3">
-  <div class="sticky">
-    <div class="layer l-a" data-img="LRA04" data-vid="LRV3" data-r=".02,.6"></div>
-    <div class="layer l-b" data-img="LRA05" data-vid="LRV4" data-r=".4,1"></div>
-    <div class="rain" aria-hidden="true"></div>
-    <div class="shade"></div>
-    <div class="hero-copy t-a center">
-      <p class="kicker">Abends in der Altstadt</p>
-      <h2 class="huge">Online sehen.<br><span class="gold">Im Laden anprobieren.</span></h2>
-    </div>
-    <div class="hero-copy t-b">
-      <h2 class="huge">Die Vitrine<br>kommt zu Ihnen.</h2>
-      <p class="lead">Stück auswählen, reservieren, ohne Wartezeit anprobieren. Es liegt bereit, wenn Sie kommen.</p>
-      <a href="#kollektion" class="btn btn-gold">Zur Kollektion</a>
-    </div>
-  </div>
-</section>
-
-<!-- 4 KOLLEKTION -->
-<section class="sec kollektion" id="kollektion">
-  <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">Das ganze Sortiment</p>
-      <h2>Kollektion</h2>
-      <p class="lead">Alles, was ein Juwelier führt: von der feinen Kette bis zur Uhr. Jedes Stück können Sie reservieren und bei uns anprobieren.</p>
-    </header>
-    <div class="cards">
-      <article class="card reveal"><div class="card-img" data-img="LRA06" data-ratio="3/4"></div><div class="card-body"><h3>Ringe</h3><p>Solitär, Memoire, Bandringe in Gelb-, Weiß- und Roségold.</p><button class="btn btn-line" data-reserve="Ringe">Reservieren &amp; anprobieren</button></div></article>
-      <article class="card reveal"><div class="card-img" data-img="LRA07" data-ratio="3/4"></div><div class="card-body"><h3>Ketten</h3><p>Panzer, Anker, Figaro: fein gearbeitet, in jeder Länge.</p><button class="btn btn-line" data-reserve="Ketten">Reservieren &amp; anprobieren</button></div></article>
-      <article class="card reveal"><div class="card-img" data-img="LRA08" data-ratio="3/4"></div><div class="card-body"><h3>Colliers</h3><p>Brillant-Colliers für die großen Abende.</p><button class="btn btn-line" data-reserve="Colliers">Reservieren &amp; anprobieren</button></div></article>
-      <article class="card reveal"><div class="card-img" data-img="LRA09" data-ratio="3/4"></div><div class="card-body"><h3>Armbänder</h3><p>Tennisarmbänder, Armreifen, Gliederarmbänder.</p><button class="btn btn-line" data-reserve="Armbänder">Reservieren &amp; anprobieren</button></div></article>
-      <article class="card reveal"><div class="card-img" data-img="LRA10" data-ratio="3/4"></div><div class="card-body"><h3>Ohrschmuck</h3><p>Brillant-Stecker, Creolen, Hänger.</p><button class="btn btn-line" data-reserve="Ohrschmuck">Reservieren &amp; anprobieren</button></div></article>
-      <article class="card reveal"><div class="card-img" data-img="LRA11" data-ratio="3/4"></div><div class="card-body"><h3>Uhren</h3><p>Mechanische Uhren und Klassiker, mit Uhrenservice im Haus.</p><button class="btn btn-line" data-reserve="Uhren">Reservieren &amp; anprobieren</button></div></article>
-    </div>
-  </div>
-</section>
-
-<!-- 5 RING 360 -->
-<section class="sec r360" id="ring360">
-  <div class="wrap split">
-    <div class="r360-view reveal" id="r360" aria-label="Ring ansehen, ziehen zum Drehen">
-      <div class="r360-img" data-img="LRA12"></div>
-      <div class="r360-ring" aria-hidden="true"><span></span></div>
-      <p class="hint">Ziehen zum Drehen</p>
-    </div>
-    <div class="reveal">
-      <p class="kicker">Solitär · 1,00 ct · Weißgold</p>
-      <h2>Von allen Seiten.<br><span class="gold">Bevor Sie kommen.</span></h2>
-      <p class="lead">Drehen Sie den Ring, wählen Sie Gold und Größe. Wir legen ihn zur Anprobe bereit.</p>
-      <div class="chips" role="radiogroup" aria-label="Goldfarbe">
-        <button class="chip on" role="radio" aria-checked="true" data-tone="white">Weißgold</button>
-        <button class="chip" role="radio" aria-checked="false" data-tone="yellow">Gelbgold</button>
-        <button class="chip" role="radio" aria-checked="false" data-tone="rose">Roségold</button>
-      </div>
-      <div class="size"><label for="rSize">Ringgröße</label><select id="rSize"><option>48</option><option>50</option><option>52</option><option selected>54</option><option>56</option><option>58</option><option>60</option><option>weiß ich nicht</option></select></div>
-      <button class="btn btn-gold" data-reserve="Solitär-Ring">Reservieren &amp; anprobieren</button>
-    </div>
-  </div>
-</section>
-
-<!-- 6 AR-ANPROBE -->
-<section class="sec anprobe" id="anprobe">
-  <div class="wrap split rev">
-    <div class="reveal">
-      <p class="kicker">Neu · direkt im Browser</p>
-      <h2>Am Handy <span class="gold">anprobieren.</span></h2>
-      <p class="lead">Kamera an, Hand ins Bild: Der Ring wandert auf Ihren Ringfinger und bewegt sich mit. Keine App, kein Konto. Das Bild bleibt auf Ihrem Gerät.</p>
-      <div class="chips" role="radiogroup" aria-label="Ring für die Anprobe">
-        <button class="chip on" role="radio" aria-checked="true" data-ar="yellow">Solitär Gelbgold</button>
-        <button class="chip" role="radio" aria-checked="false" data-ar="white">Solitär Weißgold</button>
-        <button class="chip" role="radio" aria-checked="false" data-ar="rose">Solitär Roségold</button>
-      </div>
-      <div class="row"><button class="btn btn-gold" id="arStart">Kamera starten</button><button class="btn btn-ghost" id="arStop" hidden>Beenden</button></div>
-      <p class="small" id="arMsg">Funktioniert auf Handy und Laptop mit Kamera.</p>
-    </div>
-    <div class="phone reveal">
-      <div class="phone-screen" id="arScreen">
-        <video id="arVideo" playsinline muted></video>
-        <canvas id="arCanvas"></canvas>
-        <div class="ar-demo" id="arDemo">
-          <div class="ar-hand" data-img="LRA14"></div>
-          <div class="ar-pulse" aria-hidden="true"></div>
-          <p>Hand ins Bild halten</p>
+<!-- DIAMANTEN -->
+<section class="scene" id="diamanten" data-s="2" data-n="II" data-t="Diamanten">
+  <div class="hold pos-right">
+    <div class="card">
+      <p class="kicker">Diamanten</p>
+      <h2>Unter der Lupe <em>entschieden.</em></h2>
+      <div class="c4">
+        <div class="c4-stage" id="c4stage">
+          <div class="gem" id="gem"><div class="gem-img" data-img="LRB22"></div><div class="gem-tint" id="gemTint"></div><svg class="gem-inc" id="gemInc" viewBox="0 0 100 100" aria-hidden="true"></svg><div class="gem-spark" id="gemSpark"></div></div>
+          <div class="loupe" id="loupe" aria-hidden="true"></div>
+          <p class="c4-mm" id="c4mm">Ø 6,5 mm</p>
+        </div>
+        <div class="c4-ctrl">
+          <div class="ctl"><div class="ctl-top"><label for="sCut">Schliff</label><output id="oCut"></output></div><input type="range" id="sCut" min="0" max="3" step="1" value="3"></div>
+          <div class="ctl"><div class="ctl-top"><label for="sColor">Farbe</label><output id="oColor"></output></div><input type="range" id="sColor" min="0" max="9" step="1" value="0"></div>
+          <div class="ctl"><div class="ctl-top"><label for="sClar">Reinheit</label><output id="oClar"></output></div><input type="range" id="sClar" min="0" max="8" step="1" value="0"></div>
+          <div class="ctl"><div class="ctl-top"><label for="sCarat">Karat</label><output id="oCarat"></output></div><input type="range" id="sCarat" min="0" max="7" step="1" value="3"></div>
         </div>
       </div>
+      <p class="info" id="c4info" aria-live="polite"></p>
+      <a href="#beratung" class="btn btn-or" data-topic="Ringberatung">Diesen Stein zeigen lassen</a>
     </div>
   </div>
 </section>
 
-<!-- 7 WELCHER RING PASST -->
-<section class="sec passt" id="passt">
-  <div class="wrap">
-    <header class="sec-head reveal">
+<!-- VERLOBUNGSRINGE -->
+<section class="scene" id="verlobung" data-s="3" data-n="III" data-t="Verlobungsringe">
+  <div class="hold pos-bl">
+    <div class="card">
       <p class="kicker">Verlobungsringe</p>
-      <h2>Welcher Ring <span class="gold">passt zu Ihnen?</span></h2>
-    </header>
-    <div class="passt-grid">
-      <div class="passt-view reveal" id="passtView">
-        <div class="pv" data-img="LRA14" data-v="solitaer"></div>
-        <div class="pv" data-img="LRA15" data-v="halo"></div>
-        <div class="pv" data-img="LRA16" data-v="oval"></div>
-        <div class="pv" data-img="LRA17" data-v="emerald"></div>
-        <p class="pv-cap" id="pvCap">Solitär · Brillant · Weißgold</p>
+      <h2>Welcher Ring <em>passt zu Ihnen?</em></h2>
+      <p class="step-n">Ringart</p>
+      <div class="chips icons" id="ringart" role="radiogroup" aria-label="Ringart">
+        <button class="chip on" role="radio" aria-checked="true" data-v="LRB04" data-c="Solitär · Brillant · Weißgold" data-d="Zeitlos: ein Brillant, sechs Krappen, viel Licht."><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M12 9l-2-3h4z"/></svg>Solitär</button>
+        <button class="chip" role="radio" aria-checked="false" data-v="LRB16" data-c="Halo · Brillant mit Kranz" data-d="Ein Kranz kleiner Brillanten lässt den Mittelstein größer wirken."><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><circle cx="12" cy="7" r="2.6"/></svg>Halo</button>
+        <button class="chip" role="radio" aria-checked="false" data-v="LRB17" data-c="Oval · Roségold" data-d="Die ovale Form streckt den Finger optisch und wirkt weich."><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><ellipse cx="12" cy="7" rx="2" ry="3"/></svg>Oval</button>
+        <button class="chip" role="radio" aria-checked="false" data-v="LRB18" data-c="Smaragdschliff · Gelbgold" data-d="Klare Treppenfacetten, ruhiger Glanz, viel Charakter."><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><rect x="9.5" y="4" width="5" height="6" rx=".6"/></svg>Smaragd</button>
       </div>
-      <div class="passt-steps reveal">
-        <div class="step"><p class="step-n">1 · Stil</p><div class="chips" data-q="stil"><button class="chip on" data-val="klassisch">Klassisch</button><button class="chip" data-val="glamour">Glamourös</button><button class="chip" data-val="modern">Modern</button><button class="chip" data-val="vintage">Vintage</button></div></div>
-        <div class="step"><p class="step-n">2 · Fassung</p><div class="chips" data-q="fassung"><button class="chip on" data-val="krappe">Krappe</button><button class="chip" data-val="halo">Halo</button><button class="chip" data-val="zarge">Zarge</button></div></div>
-        <div class="step"><p class="step-n">3 · Steinform</p><div class="chips" data-q="form"><button class="chip on" data-val="brillant">Brillant</button><button class="chip" data-val="oval">Oval</button><button class="chip" data-val="smaragd">Smaragd</button></div></div>
-        <p class="lead small" id="passtTxt">Zeitlos: ein Brillant, sechs Krappen, viel Licht. Der Klassiker, der zu allem passt.</p>
-        <a href="#termin" class="btn btn-gold" data-topic="Verlobungsring">Ringberatung buchen</a>
-      </div>
+      <p class="pv-cap" id="pvCap"></p>
+      <p class="info" id="pvTxt"></p>
+      <div class="row"><button class="btn btn-or" id="arOpen">Am Handy anprobieren</button><button class="btn btn-line" data-reserve="Verlobungsring">Reservieren</button></div>
     </div>
   </div>
 </section>
 
-<!-- 8 TRAURING-KONFIGURATOR -->
-<section class="sec trau" id="trauringe">
-  <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">Trauringe</p>
-      <h2>Ihr Paar. <span class="gold">Ihr Design.</span></h2>
-    </header>
-    <div class="trau-grid">
-      <div class="trau-view reveal">
-        <div class="tv on" data-img="LRA18" data-gold="gelb"></div>
-        <div class="tv" data-img="LRA24" data-gold="weiss"></div>
-        <div class="tv" data-img="LRA25" data-gold="rose"></div>
-        <div class="engr" aria-live="polite"><span class="engr-txt" id="engrOut">Für immer</span></div>
-      </div>
-      <form class="trau-ctrl reveal" id="trauForm" onsubmit="return false">
-        <fieldset><legend>Goldfarbe</legend><div class="chips"><button type="button" class="chip on" data-gold="gelb">Gelbgold</button><button type="button" class="chip" data-gold="weiss">Weißgold</button><button type="button" class="chip" data-gold="rose">Roségold</button></div></fieldset>
-        <fieldset><legend>Breite <output id="wOut">5,0 mm</output></legend><input type="range" id="tWidth" min="3" max="8" step=".5" value="5"><svg class="profile" id="profile" viewBox="0 0 200 60" aria-hidden="true"></svg></fieldset>
-        <fieldset><legend>Oberfläche</legend><div class="chips"><button type="button" class="chip on" data-surf="poliert">Poliert</button><button type="button" class="chip" data-surf="matt">Matt</button><button type="button" class="chip" data-surf="eismatt">Eismatt</button></div></fieldset>
-        <fieldset><legend>Damenring</legend><div class="chips"><button type="button" class="chip" data-stone="0">Ohne Stein</button><button type="button" class="chip on" data-stone="1">Ein Brillant</button><button type="button" class="chip" data-stone="m">Memoire</button></div></fieldset>
-        <fieldset><legend>Gravur innen</legend><input type="text" id="tEngr" maxlength="24" value="Für immer" aria-label="Gravurtext"></fieldset>
-        <p class="sum" id="trauSum"></p>
-        <button type="button" class="btn btn-gold" data-reserve="Trauringe">Zur Anprobe reservieren</button>
+<!-- TRAURINGE -->
+<section class="scene" id="trauringe" data-s="4" data-n="IV" data-t="Trauringe">
+  <div class="hold pos-bc">
+    <div class="engr" aria-live="polite"><span id="engrOut">Für immer</span></div>
+    <div class="card wide">
+      <div class="trau-head"><p class="kicker">Trauringe</p><h2>Ihr Paar. <em>Ihr Design.</em></h2></div>
+      <form class="trau" id="trauForm" onsubmit="return false">
+        <fieldset><legend>Metall</legend><div class="swatches" role="radiogroup" aria-label="Metall">
+          <button type="button" class="sw on" role="radio" aria-checked="true" data-gold="gelb" style="--c1:#f6e1a8;--c2:#c99a3e" aria-label="Gelbgold"><i></i><span>Gelbgold</span></button>
+          <button type="button" class="sw" role="radio" aria-checked="false" data-gold="weiss" style="--c1:#f4f4f6;--c2:#a7a9b0" aria-label="Weißgold"><i></i><span>Weißgold</span></button>
+          <button type="button" class="sw" role="radio" aria-checked="false" data-gold="rose" style="--c1:#f6cdb9;--c2:#bf7f66" aria-label="Roségold"><i></i><span>Roségold</span></button>
+        </div></fieldset>
+        <fieldset><legend>Breite <output id="wOut">5,0 mm</output></legend><input type="range" id="tWidth" min="3" max="7" step=".5" value="5" aria-label="Ringbreite"></fieldset>
+        <fieldset><legend>Gravur innen</legend><input type="text" id="tEngr" maxlength="22" value="Für immer" aria-label="Gravurtext"></fieldset>
+        <button type="button" class="btn btn-or" data-reserve="Trauringe">Zur Anprobe reservieren</button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- 9 ALTGOLD-ANKAUF -->
-<section class="stage ankauf" id="ankauf" data-len="3">
-  <div class="sticky">
-    <div class="layer l-a kb" data-img="LRA19" data-vid="LRV6" data-r="0,.95"></div>
-    <div class="shade side"></div>
-    <div class="ank-copy">
-      <p class="kicker">Altgold-Ankauf</p>
-      <h2 class="huge">Ankauf vor<br><span class="gold">Ihren Augen.</span></h2>
-      <ol class="ank-steps">
-        <li data-at=".18"><b>01</b><div><h3>Wiegen</h3><p>Die Waage zeigt zu Ihnen. Sie sehen jedes Gramm.</p></div></li>
-        <li data-at=".42"><b>02</b><div><h3>Prüfen</h3><p>Feingehalt elektronisch gemessen, direkt am Tresen.</p></div></li>
-        <li data-at=".66"><b>03</b><div><h3>Angebot</h3><p>Schriftlich, nachvollziehbar, ohne Druck. Sie entscheiden.</p></div></li>
-      </ol>
-    </div>
-  </div>
-</section>
-<section class="sec fein">
-  <div class="wrap">
-    <header class="sec-head reveal"><p class="kicker">Was steckt in Ihrem Schmuck?</p><h2>Stempel lesen</h2><p class="lead">Die Zahl im Schmuckstück verrät den Goldanteil. Tippen Sie auf einen Stempel.</p></header>
-    <div class="fein-grid reveal">
-      <div class="stamps" role="radiogroup" aria-label="Goldstempel">
-        <button class="stamp" data-f="333">333</button><button class="stamp on" data-f="585">585</button><button class="stamp" data-f="750">750</button><button class="stamp" data-f="999">999</button>
+<!-- SCHMUCK -->
+<section class="scene" id="schmuck" data-s="5" data-n="V" data-t="Schmuck">
+  <div class="hold pos-left">
+    <div class="card">
+      <p class="kicker">Das ganze Sortiment</p>
+      <h2>Öffnen Sie <em>eine Vitrine.</em></h2>
+      <div class="drawers" id="drawers" role="radiogroup" aria-label="Schmuckart">
+        <button class="drawer on" role="radio" aria-checked="true" data-img="LRB11" data-t="Ringe" data-d="Solitär, Memoire, Bandringe in Gelb-, Weiß- und Roségold.">Ringe</button>
+        <button class="drawer" role="radio" aria-checked="false" data-img="LRB12" data-t="Ketten" data-d="Panzer, Anker, Figaro: fein gearbeitet, in jeder Länge.">Ketten</button>
+        <button class="drawer" role="radio" aria-checked="false" data-img="LRB13" data-t="Colliers" data-d="Brillant-Colliers für die großen Abende.">Colliers</button>
+        <button class="drawer" role="radio" aria-checked="false" data-img="LRB14" data-t="Armbänder" data-d="Tennisarmbänder, Armreifen, Gliederarmbänder.">Armbänder</button>
+        <button class="drawer" role="radio" aria-checked="false" data-img="LRB15" data-t="Ohrschmuck" data-d="Brillant-Stecker, Creolen, Hänger.">Ohrschmuck</button>
       </div>
-      <div class="fein-bar"><div class="fein-fill" id="feinFill"></div><p id="feinTxt"></p></div>
+      <p class="info" id="dTxt"></p>
+      <button class="btn btn-or" id="dRes" data-reserve="Ringe">Reservieren &amp; anprobieren</button>
     </div>
-    <div class="center reveal"><a href="#termin" class="btn btn-gold" data-topic="Altgold-Ankauf">Ankauf-Termin buchen</a></div>
   </div>
 </section>
 
-<!-- 10 UHREN + SERVICE -->
-<section class="sec uhren" id="uhren">
-  <div class="uhr-hero reveal"><div class="layer" data-img="LRA20" data-vid="LRV7" data-loop="1"></div><div class="shade side"></div>
-    <div class="wrap uhr-copy"><p class="kicker">Uhren</p><h2 class="huge">Zeit, <span class="gold">gut gepflegt.</span></h2><p class="lead">Mechanische Uhren, Klassiker und Service: Batteriewechsel, Revision, Armband. Den Stand sehen Sie hier.</p></div>
-  </div>
-  <div class="wrap split">
-    <div class="reveal">
-      <h3 class="h3">Uhrenservice-Status</h3>
+<!-- UHREN -->
+<section class="scene" id="uhren" data-s="6" data-n="VI" data-t="Uhren">
+  <div class="hold pos-left">
+    <div class="card">
+      <p class="kicker">Uhren &amp; Service</p>
+      <h2>Ihre Uhr. <em>Ihr Stand.</em></h2>
+      <p class="info">Batteriewechsel, Revision, Armband: Den Stand Ihres Auftrags sehen Sie hier.</p>
       <form class="track" id="track" onsubmit="return false">
         <label for="tNr">Auftragsnummer</label>
-        <div class="row"><input id="tNr" inputmode="text" autocomplete="off" placeholder="z. B. LR-2411"><button class="btn btn-gold" id="tGo">Status zeigen</button></div>
+        <div class="row nw"><input id="tNr" autocomplete="off" placeholder="z. B. LR-2411"><button class="btn btn-or" id="tGo">Zeigen</button></div>
       </form>
-      <ol class="timeline" id="timeline" data-s="0">
-        <li><span></span><div><b>Angenommen</b><p>Ihre Uhr ist bei uns und dokumentiert.</p></div></li>
-        <li><span></span><div><b>Beim Uhrmacher</b><p>Revision läuft, wir melden uns bei Rückfragen.</p></div></li>
-        <li><span></span><div><b>Abholbereit</b><p>Ihre Uhr wartet am Tresen auf Sie.</p></div></li>
+      <ol class="timeline" id="timeline">
+        <li><span></span><div><b>Annahme</b><p>Ihre Uhr ist bei uns und dokumentiert.</p></div></li>
+        <li><span></span><div><b>Prüfung</b><p>Beim Uhrmacher, wir melden uns bei Rückfragen.</p></div></li>
+        <li><span></span><div><b>Übergabe</b><p>Abholbereit am Tresen.</p></div></li>
       </ol>
-      <p class="small" id="tMsg">Demo: Geben Sie eine beliebige Nummer ein.</p>
+      <p class="small" id="tMsg">Demo: beliebige Nummer eingeben.</p>
     </div>
-    <div class="uhr-img reveal" data-img="LRA21" data-ratio="16/9"></div>
   </div>
 </section>
 
-<!-- 11 BERATUNG / TERMIN -->
-<section class="sec termin" id="termin">
-  <div class="term-bg" data-img="LRA22"></div><div class="shade full"></div>
-  <div class="wrap term-grid">
-    <div class="reveal">
-      <p class="kicker">Termin</p>
-      <h2>Private Beratung <span class="gold">nach Ladenschluss.</span></h2>
-      <p class="lead">Ruhe, Zeit und Ihre Auswahl auf dem Samttablett. Für Verlobungsringe, Trauringe, Uhren oder einfach ein Geschenk.</p>
+<!-- ANKAUF -->
+<section class="scene" id="ankauf" data-s="7" data-n="VII" data-t="Altgold-Ankauf">
+  <div class="hold pos-right">
+    <div class="card">
+      <p class="kicker">Altgold-Ankauf</p>
+      <h2>Vor Ihren Augen <em>gewogen.</em></h2>
+      <ol class="ank"><li><b>01</b><div><h3>Wiegen</h3><p>Die Waage zeigt zu Ihnen.</p></div></li><li><b>02</b><div><h3>Prüfen</h3><p>Feingehalt am Tresen gemessen.</p></div></li><li><b>03</b><div><h3>Angebot</h3><p>Schriftlich, ohne Druck.</p></div></li></ol>
+      <p class="step-n">Stempel lesen</p>
+      <div class="stamps" role="radiogroup" aria-label="Goldstempel"><button class="stamp" data-f="333">333</button><button class="stamp on" data-f="585">585</button><button class="stamp" data-f="750">750</button><button class="stamp" data-f="999">999</button></div>
+      <div class="fein"><div class="fein-fill" id="feinFill"></div></div><p class="small" id="feinTxt"></p>
+      <a href="#beratung" class="btn btn-or" data-topic="Altgold-Ankauf">Ankauf-Termin buchen</a>
     </div>
-    <form class="book reveal" id="book" onsubmit="return false">
-      <div class="chips" data-q="anlass" aria-label="Anlass">
-        <button type="button" class="chip on">Ringberatung</button><button type="button" class="chip">Trauringe</button><button type="button" class="chip">Uhren</button><button type="button" class="chip">Geschenk</button><button type="button" class="chip">Altgold-Ankauf</button><button type="button" class="chip">Diamant-Beratung</button>
-      </div>
-      <div class="days" id="days" aria-label="Tag"></div>
-      <div class="slots" id="slots" aria-label="Uhrzeit"></div>
-      <div class="f2"><input placeholder="Name" aria-label="Name" autocomplete="name"><input placeholder="Telefon" aria-label="Telefon" inputmode="tel" autocomplete="tel"></div>
-      <button class="btn btn-gold wide" id="bookGo">Termin anfragen</button>
-      <p class="small ok" id="bookMsg" hidden>Danke! (Demo: Es wurde nichts gesendet.)</p>
-    </form>
   </div>
 </section>
 
-<!-- 12 KARRIERE -->
-<section class="sec karriere" id="karriere">
-  <div class="kar-hero"><div class="layer kb" data-img="LRA23" data-vid="LRV8" data-loop="1"></div><div class="shade side"></div>
-    <div class="wrap kar-copy"><p class="kicker">Karriere</p><h2 class="huge">Werde<br><span class="gold">Juwelierin.</span></h2><p class="lead">Oder Juwelier. Beraten, begeistern, bleiben: Wir bilden aus und suchen Verstärkung im Verkauf.</p></div>
-  </div>
-  <div class="kin" id="kin" aria-label="Vorteile">
-    <p class="kw">Ausbildung</p><p class="kw">Schmuck &amp; Uhren</p><p class="kw">Feste Teamzeiten</p><p class="kw">Weiterbildung</p><p class="kw gold">Echte Wertschätzung</p>
-  </div>
-  <div class="wrap">
-    <form class="apply reveal" id="apply" onsubmit="return false">
-      <div class="apply-top"><h3 class="h3">Bewerben in 60 Sekunden</h3><div class="timer" id="timer"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17"/><circle class="t-run" cx="20" cy="20" r="17"/></svg><span id="tSec">60</span></div></div>
-      <div class="apply-step on" data-st="1"><p class="step-n">1 · Was suchst du?</p><div class="chips"><button type="button" class="chip">Ausbildung</button><button type="button" class="chip">Verkauf Vollzeit</button><button type="button" class="chip">Verkauf Teilzeit</button><button type="button" class="chip">Minijob</button></div></div>
-      <div class="apply-step" data-st="2"><p class="step-n">2 · Ab wann?</p><div class="chips"><button type="button" class="chip">Sofort</button><button type="button" class="chip">In 1–3 Monaten</button><button type="button" class="chip">Nächstes Ausbildungsjahr</button></div></div>
-      <div class="apply-step" data-st="3"><p class="step-n">3 · Wie erreichen wir dich?</p><div class="f2"><input placeholder="Vorname" aria-label="Vorname"><input placeholder="Handy" aria-label="Handynummer" inputmode="tel"></div><button class="btn btn-gold wide" id="applyGo">Abschicken</button></div>
-      <p class="small ok" id="applyMsg" hidden>Geschafft! Wir melden uns innerhalb von 48 Stunden. (Demo: Es wurde nichts gesendet.)</p>
-    </form>
+<!-- BERATUNG -->
+<section class="scene" id="beratung" data-s="8" data-n="VIII" data-t="Private Beratung">
+  <div class="hold pos-right">
+    <div class="card">
+      <p class="kicker">Privater Termin</p>
+      <h2>Beratung <em>nach Ladenschluss.</em></h2>
+      <form class="book" id="book" onsubmit="return false">
+        <div class="chips small-chips" data-q="anlass" aria-label="Anlass"><button type="button" class="chip on">Ringberatung</button><button type="button" class="chip">Trauringe</button><button type="button" class="chip">Uhren</button><button type="button" class="chip">Geschenk</button><button type="button" class="chip">Altgold-Ankauf</button></div>
+        <div class="cal" id="cal" aria-label="Tag wählen"></div>
+        <div class="slots" id="slots" aria-label="Uhrzeit"></div>
+        <div class="f2"><input placeholder="Name" aria-label="Name" autocomplete="name"><input placeholder="Telefon" aria-label="Telefon" inputmode="tel" autocomplete="tel"></div>
+        <button class="btn btn-or wide" id="bookGo">Termin anfragen</button>
+        <p class="small ok" id="bookMsg" hidden>Danke! (Demo: Es wurde nichts gesendet.)</p>
+      </form>
+    </div>
   </div>
 </section>
 
-<!-- 13 BEWERTUNGEN -->
-<section class="sec reviews" id="bewertungen">
-  <div class="wrap">
-    <header class="sec-head reveal"><p class="kicker">Bewertungen</p><h2>Was Kundinnen <span class="gold">sagen könnten.</span></h2><p class="lead small">Hier stehen später die echten Google-Bewertungen mit Note und Anzahl. Bis dahin: Beispiele.</p></header>
-    <div class="rev-stage reveal" id="revStage">
-      <figure class="rvc on"><blockquote>„Wir haben unsere Trauringe nach Ladenschluss ausgesucht, ohne Hektik. Die Gravur war rechtzeitig fertig.“</blockquote><figcaption>Beispiel · noch keine echte Bewertung</figcaption></figure>
-      <figure class="rvc"><blockquote>„Beim Altgold hat man mir alles am Tresen gezeigt, Waage und Messung. Das schafft Vertrauen.“</blockquote><figcaption>Beispiel · noch keine echte Bewertung</figcaption></figure>
-      <figure class="rvc"><blockquote>„Ring online reserviert, am nächsten Tag anprobiert. Er lag schon bereit.“</blockquote><figcaption>Beispiel · noch keine echte Bewertung</figcaption></figure>
+<!-- KARRIERE + BEWERTUNGEN (Storyboard 8) -->
+<section class="scene" id="karriere" data-s="9" data-n="IX" data-t="Karriere">
+  <div class="hold pos-split">
+    <div class="card" id="karCard">
+      <p class="kicker">Karriere</p>
+      <h2>Werde <em>Juwelierin.</em></h2>
+      <p class="info">Oder Juwelier. Beraten, begeistern, bleiben: Wir bilden aus und suchen Verstärkung im Verkauf.</p>
+      <div class="kin" id="kin"><p>Ausbildung</p><p>Schmuck &amp; Uhren</p><p>Feste Teamzeiten</p><p class="or">Echte Wertschätzung</p></div>
+      <form class="apply" id="apply" onsubmit="return false">
+        <div class="a-head"><span class="step-n">Bewerben in 60 Sekunden</span><span class="timer" aria-live="polite"><b id="tSec">60</b> s</span></div>
+        <div class="apply-step on" data-st="1"><div class="chips small-chips"><button type="button" class="chip">Ausbildung</button><button type="button" class="chip">Verkauf Vollzeit</button><button type="button" class="chip">Teilzeit</button></div></div>
+        <div class="apply-step" data-st="2"><div class="chips small-chips"><button type="button" class="chip">Sofort</button><button type="button" class="chip">In 1–3 Monaten</button><button type="button" class="chip">Nächstes Ausbildungsjahr</button></div></div>
+        <div class="apply-step" data-st="3"><div class="f2"><input placeholder="Vorname" aria-label="Vorname"><input placeholder="Handy" aria-label="Handynummer" inputmode="tel"></div><button class="btn btn-or wide" id="applyGo">Abschicken</button></div>
+        <p class="small ok" id="applyMsg" hidden></p>
+      </form>
     </div>
-    <div class="visit reveal">
-      <div class="map" aria-label="Lageplan (Demo)">
-        <svg viewBox="0 0 400 240" aria-hidden="true"><path d="M0 170 C80 150 120 190 200 160 S330 120 400 140" class="m-river"/><path d="M40 0 L90 240 M160 0 L150 240 M250 0 L290 240 M0 60 L400 90 M0 120 L400 110 M0 200 L400 220" class="m-st"/><path d="M150 112 L250 104" class="m-main"/></svg>
-        <span class="pin" aria-hidden="true"></span>
-      </div>
-      <div><h3 class="h3">Besuchen Sie uns</h3><p class="lead small">Marktgasse 7 · Altstadt (Demo-Adresse)</p><dl class="hours"><dt>Mo–Fr</dt><dd>10–19 Uhr</dd><dt>Sa</dt><dd>10–16 Uhr</dd><dt>Abends</dt><dd>Private Beratung nach Termin</dd></dl><a href="#termin" class="btn btn-gold">Termin buchen</a></div>
+    <div class="revs" id="stimmen" aria-label="Bewertungen">
+      <p class="kicker">Kundenstimmen</p>
+      <figure class="rv"><div class="stars" aria-hidden="true">★★★★★</div><blockquote>„Trauringe nach Ladenschluss ausgesucht, ohne Hektik.“</blockquote><figcaption>Beispiel · noch keine echte Bewertung</figcaption></figure>
+      <figure class="rv"><div class="stars" aria-hidden="true">★★★★★</div><blockquote>„Beim Altgold alles am Tresen gezeigt. Das schafft Vertrauen.“</blockquote><figcaption>Beispiel · noch keine echte Bewertung</figcaption></figure>
+      <figure class="rv"><div class="stars" aria-hidden="true">★★★★★</div><blockquote>„Ring online reserviert, am nächsten Tag anprobiert.“</blockquote><figcaption>Beispiel · noch keine echte Bewertung</figcaption></figure>
+      <p class="small rv-note">Beim echten Betrieb stehen hier Google-Note, Anzahl und Stand-Datum.</p>
     </div>
   </div>
 </section>
 </main>
 
 <footer class="foot">
-  <div class="wrap foot-grid">
-    <div><p class="brand big" data-brand>LUPENREIN</p><p class="small">Juwelier · Ringe · Trauringe · Diamanten · Ketten · Colliers · Armbänder · Ohrschmuck · Uhren</p></div>
-    <nav aria-label="Fußzeile"><a href="#kollektion">Kollektion</a><a href="#trauringe">Trauringe</a><a href="#ankauf">Ankauf</a><a href="#uhren">Uhrenservice</a><a href="#karriere">Karriere</a><a href="#termin">Termin</a></nav>
+  <div class="foot-in">
+    <div><p class="logo big" data-brand>LUPENREIN</p><p class="small">Juwelier · Diamanten · Verlobungsringe · Trauringe · Ketten · Colliers · Armbänder · Ohrschmuck · Uhren</p></div>
+    <div><p class="step-n">Besuch</p><p class="small">Marktgasse 7 · Altstadt (Demo-Adresse)<br>Mo–Fr 10–19 Uhr · Sa 10–16 Uhr<br>Abends: private Beratung nach Termin</p><a href="#beratung" class="btn btn-or">Termin buchen</a></div>
     <p class="small">Demo-Webseite eines erfundenen Juweliers. Keine echten Angebote, Formulare senden nichts. Impressum und Datenschutz folgen beim echten Betrieb.</p>
   </div>
 </footer>
@@ -370,12 +242,24 @@
     <button class="x" aria-label="Schließen" value="x">×</button>
     <p class="kicker">Reservieren &amp; anprobieren</p>
     <h3 id="resTitle">Ringe</h3>
-    <p class="lead small">Wir legen Ihre Auswahl bereit. Sie kommen vorbei und probieren in Ruhe an, ohne Kaufpflicht.</p>
+    <p class="info">Wir legen Ihre Auswahl bereit. Sie kommen vorbei und probieren in Ruhe an, ohne Kaufpflicht.</p>
     <div class="days" id="resDays"></div>
     <div class="f2"><input placeholder="Name" aria-label="Name"><input placeholder="Telefon" aria-label="Telefon" inputmode="tel"></div>
-    <button class="btn btn-gold wide" value="ok" id="resGo">Reservieren</button>
+    <button class="btn btn-or wide" value="ok">Reservieren</button>
     <p class="small">Demo: Es wird nichts gesendet.</p>
   </form>
+</dialog>
+
+<dialog class="modal" id="arModal" aria-labelledby="arTitle">
+  <div class="modal-in">
+    <button class="x" aria-label="Schließen" id="arClose">×</button>
+    <p class="kicker">Anprobe · direkt im Browser</p>
+    <h3 id="arTitle">Am Handy anprobieren</h3>
+    <div class="chips small-chips" role="radiogroup" aria-label="Ring"><button class="chip on" data-ar="white">Weißgold</button><button class="chip" data-ar="yellow">Gelbgold</button><button class="chip" data-ar="rose">Roségold</button></div>
+    <div class="phone"><div class="phone-screen" id="arScreen"><video id="arVideo" playsinline muted></video><canvas id="arCanvas"></canvas><div class="ar-demo"><div class="ar-hand" data-img="LRB23"></div><p>Hand ins Bild halten</p></div></div></div>
+    <div class="row"><button class="btn btn-or" id="arStart">Kamera starten</button><button class="btn btn-line" id="arStop" hidden>Beenden</button></div>
+    <p class="small" id="arMsg">Keine App, kein Konto. Das Bild bleibt auf Ihrem Gerät.</p>
+  </div>
 </dialog>
 
 <script src="assets/js/img.js"></script>
