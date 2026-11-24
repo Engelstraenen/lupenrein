@@ -36,6 +36,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - (erledigt) Wahl: Mix.
 
 ## 9. Entschieden
+- 24.11.2026 Eugen: Knöpfe waren zu blass (Champagner wirkte weiß) → alle Knöpfe/aktive Chips in sattem Gold (#a8761f–#d9a441, Schrift fast schwarz), auch „Reservieren & anprobieren“ gefüllt statt Umriss.
 - 23.11.2026 Eugen: MIX aus JW1 + JW2 (+ „Welcher Ring passt zu Ihnen?“ aus JW3). Aus JW1: Diamant-Erklärer mit Reglern (Reinheit IF/VVS/VS/SI …), Ring-/Trauring-Konfigurator, Altgold-Ankauf, Werde Juwelierin, Ringberatung buchen, Uhrenservice-Status (Design wie JW1). Aus JW2: Schaufenster/Vitrine, Anprobe am Handy per AR (Ring wandert auf die Hand), Konfigurator. Ganzes Sortiment zeigen: Ringe, Ketten, Colliers, Armbänder, Ohrschmuck, Uhren. Kapitelplan `docs/kapitel.md`. Hero = Lupe (Name LUPENREIN), Schaufenster = zweites Film-Kapitel (Annahme Claude).
 - 23.11.2026: Juwelier ≠ Goldschmied (Eugen). Alte Storyboards LR1–LR3 (Werkstatt/Goldschmiedin) verworfen, neu JW1–JW3. Sitzung eigenständig (nicht mehr unter Fahrschule).
 - 23.11.2026: Name LUPENREIN (Annahme). 3 Storyboards auf sjinn (Nano Banana 2.1, 2K, Unlimited), Prompts im sjinn-Verlauf, Alt-Text beginnt mit LR1/LR2/LR3.
