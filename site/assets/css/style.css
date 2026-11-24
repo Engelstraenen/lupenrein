@@ -59,7 +59,9 @@ a{color:inherit;text-decoration:none}
 main{position:relative;z-index:10}
 .scene{position:relative;height:230vh}
 .scene.hero{height:260vh}
-.shot[data-s="0"]{transform-origin:50% 47%}
+.hbox{position:absolute}
+.shot .hbox img{inset:auto;left:0;top:0;width:100%;height:100%;object-fit:fill}
+.shot .hbox img.near{opacity:0}
 .hold{position:sticky;top:0;height:100vh;height:100svh;display:flex;padding:96px clamp(16px,4vw,64px) 80px;pointer-events:none}
 .hold>*{pointer-events:auto}
 .pos-right{justify-content:flex-end;align-items:center}

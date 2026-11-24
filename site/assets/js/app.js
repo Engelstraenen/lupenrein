@@ -21,6 +21,21 @@ $$('[data-img]:not(.drawer)').forEach(el => { const id = el.dataset.img; if (!IM
 const setImg = (im, id) => { if (!im || !IMG[id]) return; const n = new Image(); n.onload = () => { im.style.opacity = 0; setTimeout(() => { im.src = n.src; im.style.opacity = 1; }, 180); }; n.src = src(id, mobile()); };
 $$('.shot img').forEach(im => im.style.transition = 'opacity .45s');
 
+/* Eingang: Weitbild + deckungsgleiches 4K-Nahbild der End-Vitrine (tools/einpassen.py).
+   Während der Fahrt übernimmt das Nahbild, damit das Collier scharf bleibt. */
+const NEAR = null; // { x, y, w, h } in Anteilen des Weitbilds, aus tools/einpassen.py
+const CASE = { x: .5, y: .47 }; // Mitte der End-Vitrine im Weitbild = Zielpunkt der Fahrt
+const hbox = $('#hbox'), near = NEAR && IMG.LRB25 ? $('#heroNear') : null, AR0 = 3584 / 2016, HZ = 2.9;
+if (!near) $('#heroNear').classList.add('miss');
+function heroLayout() {
+  const W = innerWidth, H = innerHeight; let bw = W, bh = W / AR0; if (bh < H) { bh = H; bw = H * AR0; }
+  const bx = (W - bw) / 2, by = (H - bh) / 2;
+  Object.assign(hbox.style, { left: bx + 'px', top: by + 'px', width: bw + 'px', height: bh + 'px' });
+  if (near) Object.assign(near.style, { left: NEAR.x * 100 + '%', top: NEAR.y * 100 + '%', width: NEAR.w * 100 + '%', height: NEAR.h * 100 + '%' });
+  hbox.parentElement.style.transformOrigin = (bx + CASE.x * bw) + 'px ' + (by + CASE.y * bh) + 'px';
+}
+heroLayout(); addEventListener('resize', heroLayout);
+
 /* Bühne: Fachwechsel per Scroll */
 const shots = $$('.shot'), scenes = $$('.scene'), pane = $('#pane');
 let geo = [];
@@ -38,7 +53,7 @@ function frame() {
   const cur = geo[i], loc = clamp((y - cur.top) / Math.max(1, cur.h - vh)); // Fortschritt innerhalb der Szene
   shots.forEach((sh, k) => {
     let op = 0, sc = 1, bl = 0;
-    if (k === i) { op = 1 - clamp((e - .35) / .65); const z = k === 0 ? 1 + ease(loc) * 1.9 : 1 + loc * .07; sc = z * (1 + e * .55); bl = e * 6; }
+    if (k === i) { op = 1 - clamp((e - .35) / .65); const z = k === 0 ? 1 + ease(loc) * (HZ - 1) : 1 + loc * .07; sc = z * (1 + e * .55); bl = e * 6; if (k === 0 && near) near.style.opacity = clamp((z - 1.15) / .45).toFixed(3); }
     else if (k === i + 1) { op = clamp(e / .7); sc = .78 + .22 * e; }
     if (RM) { sc = 1; bl = 0; }
     sh.style.opacity = op.toFixed(3);

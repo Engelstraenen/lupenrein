@@ -9,7 +9,8 @@ Start: python3 tools/assets.py
 """
 import json, os, glob, hashlib
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
+SHARP = 's1'  # Nachschärfen (Masterfile V2.65): UnsharpMask(1.6, 70, 2) nach dem Verkleinern
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "assets-roh", "4k")
@@ -23,6 +24,7 @@ def webp(im, name, w, q=82):
     im = im.convert("RGB")
     if im.width > w:
         im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+    im = im.filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2))
     im.save(os.path.join(OUT, name), "WEBP", quality=q, method=6)
     return im.size
 
@@ -47,7 +49,7 @@ for f in sorted(glob.glob(os.path.join(RAW, "*"))):
     if ext.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
         continue
     st = os.stat(f)
-    sig = f"{st.st_size}-{int(st.st_mtime)}"
+    sig = f"{st.st_size}-{int(st.st_mtime)}-{SHARP}"
     c = cache.get(base)
     if c and c.get("sig") == sig and all(os.path.exists(os.path.join(OUT, n)) for n in c.get("files", [])):
         man.update(c["man"])
