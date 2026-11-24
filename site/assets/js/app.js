@@ -23,8 +23,8 @@ $$('.shot img').forEach(im => im.style.transition = 'opacity .45s');
 
 /* Eingang: Weitbild + deckungsgleiches 4K-Nahbild der End-Vitrine (tools/einpassen.py).
    Während der Fahrt übernimmt das Nahbild, damit das Collier scharf bleibt. */
-const NEAR = null; // { x, y, w, h } in Anteilen des Weitbilds, aus tools/einpassen.py
-const CASE = { x: .5, y: .47 }; // Mitte der End-Vitrine im Weitbild = Zielpunkt der Fahrt
+const NEAR = { x: .3555, y: .3254, w: .275, h: .275 }; // LRB25 im Weitbild LRB01 (tools/einpassen2.py, Korr. 0,73)
+const CASE = { x: .493, y: .463 }; // Mitte der End-Vitrine im Weitbild = Zielpunkt der Fahrt
 const hbox = $('#hbox'), near = NEAR && IMG.LRB25 ? $('#heroNear') : null, AR0 = 3584 / 2016, HZ = 2.9;
 if (!near) $('#heroNear').classList.add('miss');
 function heroLayout() {
