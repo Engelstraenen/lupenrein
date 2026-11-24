@@ -15,7 +15,7 @@ const firma = new URLSearchParams(location.search).get('firma');
 if (firma) { const n = firma.slice(0, 40); $$('[data-brand]').forEach(e => e.textContent = n.toUpperCase()); document.title = n + ' · Juwelier'; }
 
 /* Bilder laden (nur was es gibt) */
-$$('img[data-src]').forEach(im => { const id = im.dataset.src; if (!IMG[id]) { im.classList.add('miss'); return; } im.decoding = 'async'; im.src = src(id, mobile()); });
+$$('img[data-src]').forEach(im => { const id = im.dataset.src; if (!IMG[id]) { im.classList.add('miss'); return; } im.decoding = 'async'; im.src = src(id, mobile() && !im.closest('[data-s="0"]')); }); // Eingang wird stark gezoomt → volle Auflösung
 $$('source[data-srcset]').forEach(s => { if (IMG[s.dataset.srcset]) s.srcset = src(s.dataset.srcset, false); else s.remove(); });
 $$('[data-img]:not(.drawer)').forEach(el => { const id = el.dataset.img; if (!IMG[id]) { el.classList.add('miss'); return; } el.style.backgroundImage = 'url("' + src(id, mobile()) + '")'; });
 const setImg = (im, id) => { if (!im || !IMG[id]) return; const n = new Image(); n.onload = () => { im.style.opacity = 0; setTimeout(() => { im.src = n.src; im.style.opacity = 1; }, 180); }; n.src = src(id, mobile()); };
@@ -38,13 +38,17 @@ function frame() {
   const cur = geo[i], loc = clamp((y - cur.top) / Math.max(1, cur.h - vh)); // Fortschritt innerhalb der Szene
   shots.forEach((sh, k) => {
     let op = 0, sc = 1, bl = 0;
-    if (k === i) { op = 1 - clamp((e - .35) / .65); sc = (1 + loc * .07) * (1 + e * .55); bl = e * 6; }
+    if (k === i) { op = 1 - clamp((e - .35) / .65); const z = k === 0 ? 1 + ease(loc) * 1.9 : 1 + loc * .07; sc = z * (1 + e * .55); bl = e * 6; }
     else if (k === i + 1) { op = clamp(e / .7); sc = .78 + .22 * e; }
     if (RM) { sc = 1; bl = 0; }
     sh.style.opacity = op.toFixed(3);
     sh.style.visibility = op > .001 ? 'visible' : 'hidden';
     if (op > .001) { sh.style.transform = 'scale(' + sc.toFixed(4) + ')'; sh.style.filter = bl > .05 ? 'blur(' + bl.toFixed(2) + 'px)' : 'none'; }
   });
+  // Eingang: Titel weg, Fahrt-Text kurz zeigen, dann in die Vitrine
+  if (i === 0) { const hc = $('.hero-copy'), ft = $('#flightTxt'), hi = $('#hint'); const l = loc; if (l > .005) { hc.style.animation = 'none'; hc.style.transform = 'none'; }
+    hc.style.opacity = (1 - clamp(l / .22)).toFixed(3); hi.style.opacity = (1 - clamp(l / .12)).toFixed(3);
+    ft.style.opacity = (clamp((l - .25) / .15) * (1 - clamp((l - .7) / .15))).toFixed(3); }
   // Glaskante der Vitrinentür
   if (!RM) { const pt = e; pane.style.opacity = (Math.sin(Math.PI * clamp(pt)) * .9).toFixed(3); pane.style.transform = 'translate(-50%,-50%) scale(' + (.35 + pt * pt * 3.2).toFixed(3) + ')'; }
   // Karte zeigen, wenn die Szene steht

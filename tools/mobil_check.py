@@ -24,7 +24,7 @@ os.makedirs(OUT, exist_ok=True)
 VPS = [(390, 844), (360, 740), (430, 932), (844, 390)]
 if nur:
     VPS = [tuple(int(x) for x in v.split("x")) for v in nur]
-CH = ["eingang", "gang", "diamanten", "verlobung", "trauringe", "schmuck", "uhren", "ankauf", "beratung", "karriere"]
+CH = ["eingang", "diamanten", "verlobung", "trauringe", "schmuck", "uhren", "ankauf", "beratung", "karriere"]
 STEPS = [0, .2, .4, .6, .8]
 
 PROBE = r"""

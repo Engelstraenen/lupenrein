@@ -15,7 +15,6 @@
 <!-- Bühne: alle Fächer als Fotos übereinander, Scrollen fliegt durch die Vitrinen -->
 <div class="stage" id="stage" aria-hidden="true">
   <div class="shot" data-s="0"><picture><source media="(max-aspect-ratio: 4/5)" data-srcset="LRB24"><img data-src="LRB01" alt=""></picture></div>
-  <div class="shot" data-s="1"><img data-src="LRB02" alt=""></div>
   <div class="shot" data-s="2"><img data-src="LRB03" alt="" style="--fx:28%"></div>
   <div class="shot" data-s="3"><img data-src="LRB04" alt="" id="ringShot" style="--fx:72%"></div>
   <div class="shot" data-s="4"><img data-src="LRB05" alt="" id="trauShot"></div>
@@ -54,15 +53,11 @@
       <h1 class="h-hero">Treten Sie ein.</h1>
       <p class="hero-sub">Juwelier <span data-brand>LUPENREIN</span> · Diamanten, Ringe, Schmuck und Uhren</p>
     </div>
-    <div class="scroll-hint"><span>Scroll</span><i></i></div>
+    <div class="scroll-hint" id="hint"><span>Scroll</span><i></i></div>
+    <p class="flight-txt" id="flightTxt"><span>Den Gang entlang,</span><span><em>hinein in die Vitrine.</em></span></p>
   </div>
 </section>
 
-<section class="scene flight" id="gang" data-s="1">
-  <div class="hold">
-    <p class="flight-txt"><span>Jede Vitrine</span><span><em>ein eigener Raum.</em></span></p>
-  </div>
-</section>
 
 <!-- DIAMANTEN -->
 <section class="scene" id="diamanten" data-s="2" data-n="II" data-t="Diamanten">

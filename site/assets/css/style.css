@@ -58,8 +58,8 @@ a{color:inherit;text-decoration:none}
 /* Szenen */
 main{position:relative;z-index:10}
 .scene{position:relative;height:230vh}
-.scene.hero{height:170vh}
-.scene.flight{height:150vh}
+.scene.hero{height:260vh}
+.shot[data-s="0"]{transform-origin:50% 47%}
 .hold{position:sticky;top:0;height:100vh;height:100svh;display:flex;padding:96px clamp(16px,4vw,64px) 80px;pointer-events:none}
 .hold>*{pointer-events:auto}
 .pos-right{justify-content:flex-end;align-items:center}
@@ -84,7 +84,7 @@ main{position:relative;z-index:10}
 .card>.btn{margin-top:8px}
 
 /* Eingang */
-.hero .hold{flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:calc(70px + 9vh);text-align:center}
+.hero .hold{flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:calc(70px + 9vh);text-align:center;position:sticky}
 .h-hero{font:500 clamp(48px,7vw,104px)/1 var(--serif);color:var(--ink);letter-spacing:.01em;text-shadow:0 2px 30px rgba(255,255,255,.9)}
 .hero-sub{margin-top:14px;font-size:15px;color:var(--ink);opacity:.8;text-shadow:0 1px 14px rgba(255,255,255,.9)}
 .scroll-hint{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
@@ -93,11 +93,8 @@ main{position:relative;z-index:10}
 .hero-copy{opacity:0;transform:translateY(16px);animation:up 1.2s .3s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes up{to{opacity:1;transform:none}}
 .flight .hold{align-items:center;justify-content:center;text-align:center}
-.flight-txt{font:500 clamp(36px,5vw,72px)/1.05 var(--serif);display:grid;color:var(--ink);text-shadow:0 2px 30px rgba(255,255,255,.95)}
+.flight-txt{position:absolute;left:0;right:0;bottom:calc(60px + 8vh);font:500 clamp(36px,5vw,72px)/1.05 var(--serif);display:grid;color:var(--ink);text-shadow:0 2px 30px rgba(255,255,255,.95);pointer-events:none;opacity:0}
 .flight-txt em{color:var(--or)}
-.flight-txt span{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .9s cubic-bezier(.2,.8,.2,1)}
-.flight-txt span+span{transition-delay:.2s}
-.scene.in .flight-txt span{opacity:1;transform:none}
 
 /* Chips + Regler */
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
@@ -263,7 +260,6 @@ input[type=text],input:not([type]),input[inputmode]{width:100%;min-height:46px;p
   .foot-in{grid-template-columns:1fr}
   .where{display:none}
   .hero .hold{align-items:center!important;justify-content:flex-end!important;padding-bottom:calc(60px + 6vh)}
-  .flight .hold{align-items:center!important;justify-content:center!important}
   .h-hero{font-size:52px}
   .logo{font-size:20px}
 }
@@ -275,7 +271,6 @@ input[type=text],input:not([type]),input[inputmode]{width:100%;min-height:46px;p
   .engr{display:none}
   .h-hero{font-size:48px}
   .hero .hold{padding-bottom:50px;justify-content:flex-end!important;align-items:center!important}
-  .flight .hold{justify-content:center!important;align-items:center!important}
   .revs{display:none}
   .shot.case .vit{left:30%;top:50%;width:46vh}
 }
