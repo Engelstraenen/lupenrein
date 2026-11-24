@@ -267,7 +267,7 @@ input:focus,select:focus,button:focus-visible{outline:2px solid var(--gold);outl
 .reveal.in{opacity:1;transform:none}
 
 /* Responsive */
-@media (max-width:1240px){
+@media (max-width:1300px){
   .menu{position:fixed;inset:var(--nav) 0 auto 0;height:calc(100svh - var(--nav));flex-direction:column;align-items:flex-start;gap:4px;padding:24px 20px 80px;background:rgba(10,9,8,.97);backdrop-filter:blur(14px);transform:translateY(-110%);transition:transform .45s cubic-bezier(.2,.8,.2,1);overflow-y:auto}
   .menu.open{transform:none}
   .menu a{font:600 26px G,sans-serif;min-height:52px}
