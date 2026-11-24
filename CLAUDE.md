@@ -29,7 +29,8 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - Vorschau: `python3 tools/serve.py 4436` → http://localhost:4436 (Port 4436, vorher `<title>` prüfen)
 - Bilder: `python3 tools/assets.py` (assets-roh/4k → site/assets/img)
 - Handy-Prüfung: `python3 tools/mobil_check.py http://localhost:4436/`
-- Veröffentlichen: gh-pages-Branch per `git subtree split --prefix site`
+- Veröffentlichen: `git push -f origin $(git subtree split --prefix site main):refs/heads/gh-pages` → https://engelstraenen.github.io/lupenrein/
+- Neue sjinn-Bilder holen: `python3 tools/holen.py '{"LRA16":"<url>"}'` dann `python3 tools/assets.py`
 
 ## 8. Offene Fragen
 - (erledigt) Wahl: Mix.

@@ -75,6 +75,14 @@ for f in sorted(glob.glob(os.path.join(RAW, "*"))):
     print("neu:", base, W, "x", H)
 
 json.dump(cache, open(CACHE, "w"))
+vid = {}
+import subprocess
+for f in sorted(glob.glob(os.path.join(ROOT, "site", "assets", "vid", "LRV*.mp4"))):
+    b = os.path.basename(f)[:-4]
+    if b.endswith("-m"):
+        continue
+    d = float(subprocess.run(["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", f], capture_output=True, text=True).stdout or 0)
+    vid[b] = {"d": round(d, 3), "v": str(int(os.stat(f).st_mtime))[-6:]}
 with open(os.path.join(ROOT, "site", "assets", "js", "img.js"), "w") as fh:
-    fh.write("window.IMG=" + json.dumps(man, separators=(",", ":")) + ";\n")
+    fh.write("window.IMG=" + json.dumps(man, separators=(",", ":")) + ";\nwindow.VID=" + json.dumps(vid, separators=(",", ":")) + ";\n")
 print(len(man), "Bilder im Manifest")

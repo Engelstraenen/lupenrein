@@ -24,6 +24,20 @@ $$('[data-img]').forEach(el => {
 });
 window.LR_IMG_OK = id => !!IMG[id];
 
+/* Filme: Scroll spult (data-r = Bereich der Bühne), sonst Endlosschleife im Bild */
+const VID = window.VID || {};
+const lio = new IntersectionObserver(es => es.forEach(e => { const v = e.target._v; if (!v) return; e.isIntersecting ? v.play().catch(() => {}) : v.pause(); }), { threshold: .2 });
+$$('[data-vid]').forEach(el => {
+  const id = el.dataset.vid, m = VID[id]; if (!m) return;
+  const v = document.createElement('video'); v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto';
+  if (el.dataset.loop) { v.loop = true; v.autoplay = true; }
+  v.src = 'assets/vid/' + id + (mobile() ? '-m' : '') + '.mp4?v=' + m.v;
+  v.addEventListener('loadeddata', () => { el.classList.add('vid-ok'); el._dur = v.duration || m.d; if (!el.dataset.loop && window.LR_FRAME) window.LR_FRAME(); }, { once: true });
+  el.appendChild(v); el._v = v;
+  if (el.dataset.loop) lio.observe(el); else v.pause();
+});
+const scrub = (el, p) => { if (!el || !el._v || !el.classList.contains('vid-ok')) return false; const [a, b] = el.dataset.r.split(',').map(Number); const t = ramp(p, a, b) * (el._dur - .06); if (Math.abs(el._v.currentTime - t) > .03) el._v.currentTime = t; return true; };
+
 /* Navigation */
 const nav = $('#nav'), burger = $('#burger'), menu = $('#menu');
 const onNav = () => nav.classList.toggle('solid', scrollY > 40);
@@ -46,27 +60,27 @@ function frame() {
     const p = clamp(-r.top / (r.height - vh));
     if (st.s.id === 'hero') {
       const z = ease(ramp(p, 0, .62)), f = ramp(p, .42, .66);
-      if (st.a) { st.a.style.transformOrigin = '72% 46%'; st.a.style.transform = 'scale(' + (1 + z * 3.2) + ')'; st.a.style.opacity = 1 - f; }
-      if (st.b) { st.b.style.setProperty('--ob', f); st.b.style.transform = 'scale(' + (1.5 - .5 * ease(ramp(p, .42, 1))) + ') rotate(' + (p * 12) + 'deg)'; }
+      if (st.a) { st.a.style.transformOrigin = '72% 46%'; st.a.style.transform = scrub(st.a, p) ? 'none' : 'scale(' + (1 + z * 3.2) + ')'; st.a.style.opacity = 1 - f; }
+      if (st.b) { st.b.style.setProperty('--ob', f); st.b.style.transform = scrub(st.b, p) ? 'none' : 'scale(' + (1.5 - .5 * ease(ramp(p, .42, 1))) + ') rotate(' + (p * 12) + 'deg)'; }
       setT(st.ta, 1 - ramp(p, .02, .22), -60 * ramp(p, 0, .22));
       setT(st.tb, ramp(p, .62, .78) * (1 - ramp(p, .95, 1)), 40 * (1 - ramp(p, .62, .78)));
       if (st.hint) st.hint.style.opacity = 1 - ramp(p, 0, .06);
     } else if (st.s.id === 'schaufenster') {
       const z = ease(ramp(p, .08, .6)), f = ramp(p, .4, .62);
-      if (st.a) { st.a.style.transformOrigin = '50% 52%'; st.a.style.transform = 'scale(' + (1 + z * 1.9) + ')'; st.a.style.opacity = 1 - f; }
-      if (st.b) { st.b.style.setProperty('--ob', f); st.b.style.transform = 'scale(' + (1.3 - .3 * ease(ramp(p, .4, 1))) + ')'; }
+      if (st.a) { st.a.style.transformOrigin = '50% 52%'; st.a.style.transform = scrub(st.a, p) ? 'none' : 'scale(' + (1 + z * 1.9) + ')'; st.a.style.opacity = 1 - f; }
+      if (st.b) { st.b.style.setProperty('--ob', f); st.b.style.transform = scrub(st.b, p) ? 'none' : 'scale(' + (1.3 - .3 * ease(ramp(p, .4, 1))) + ')'; }
       if (st.rain) st.rain.style.setProperty('--rain', 1 - ramp(p, .3, .55));
       setT(st.ta, 1 - ramp(p, .12, .3), -40 * ramp(p, .12, .3));
       setT(st.tb, ramp(p, .66, .8), 40 * (1 - ramp(p, .66, .8)));
     } else if (st.s.id === 'ankauf') {
-      if (st.a) st.a.style.transform = 'scale(' + (1.14 - .12 * p) + ') translateX(' + (-2 * p) + '%)';
+      if (st.a) st.a.style.transform = scrub(st.a, p) ? 'none' : 'scale(' + (1.14 - .12 * p) + ') translateX(' + (-2 * p) + '%)';
       st.steps.forEach(li => li.classList.toggle('in', p >= +li.dataset.at));
     }
   }
 }
 let ticking = false;
 addEventListener('scroll', () => { onNav(); if (!ticking) { ticking = true; requestAnimationFrame(() => { frame(); ticking = false; }); } }, { passive: true });
-addEventListener('resize', frame); onNav(); frame();
+addEventListener('resize', frame); onNav(); frame(); window.LR_FRAME = frame;
 
 /* 4C Diamant-Erklärer */
 const CUT = [['Gut', 'Gibt Licht zurück, aber nicht alles. Der Stein wirkt ruhiger.'], ['Sehr gut', 'Viel Brillanz, kleine Verluste an den Rändern.'], ['Ausgezeichnet', 'Fast alles Licht kommt zurück. Lebendiges Funkeln.'], ['Exzellent', 'Perfekte Proportionen: maximales Feuer und Brillanz.']];
