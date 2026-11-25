@@ -23,6 +23,7 @@ $$('.shot img').forEach(im => im.style.transition = 'opacity .45s');
 
 /* Eingang: Weitbild + deckungsgleiches 4K-Nahbild der End-Vitrine (tools/einpassen.py).
    Während der Fahrt übernimmt das Nahbild, damit das Collier scharf bleibt. */
+const HO = { x: 0, y: 0 };
 const NEAR = { x: .3555, y: .3254, w: .275, h: .275 }; // LRB25 im Weitbild LRB01 (tools/einpassen2.py, Korr. 0,73)
 const CASE = { x: .493, y: .463 }; // Mitte der End-Vitrine im Weitbild = Zielpunkt der Fahrt
 const hbox = $('#hbox'), near = NEAR && IMG.LRB25 ? $('#heroNear') : null, AR0 = 3584 / 2016, HZ = 2.9;
@@ -32,12 +33,106 @@ function heroLayout() {
   const bx = (W - bw) / 2, by = (H - bh) / 2;
   Object.assign(hbox.style, { left: bx + 'px', top: by + 'px', width: bw + 'px', height: bh + 'px' });
   if (near) Object.assign(near.style, { left: NEAR.x * 100 + '%', top: NEAR.y * 100 + '%', width: NEAR.w * 100 + '%', height: NEAR.h * 100 + '%' });
-  hbox.parentElement.style.transformOrigin = (bx + CASE.x * bw) + 'px ' + (by + CASE.y * bh) + 'px';
+  HO.x = bx + CASE.x * bw; HO.y = by + CASE.y * bh; // Zoom-Mitte des Eingangs (bleibt beim Zoomen fest)
+  hbox.parentElement.style.transformOrigin = HO.x + 'px ' + HO.y + 'px';
 }
 heroLayout(); addEventListener('resize', heroLayout);
 
+/* Übergänge (Regel V2.66: eine durchgehende Geschichte). Variante per Link:
+   ?uebergang=licht  → Lichtstrahl aus dem Diamanten führt von Stück zu Stück (Standard, Storyboard U2)
+   ?uebergang=fahrt  → Kamerafahrt: Kamera fliegt durch eine Glastür im Bild in den nächsten Raum (Storyboard U3) */
+const shots = $$('.shot');
+const FLOW = new URLSearchParams(location.search).get('uebergang') === 'fahrt' ? 'fahrt' : 'licht';
+document.documentElement.dataset.flow = FLOW;
+const PW = .16;            // Breite der Glastür beim Start der Fahrt (Anteil der Bildschirmbreite)
+const F = {};
+// Punkte in Bild-Anteilen (u, v) je Fach: Schmuckstück (Strahl) und Tür im Hintergrund (Fahrt)
+const ANCHOR = [[.493, .445], [.29, .48], [.405, .51], [.5, .5], 'vit', [.852, .47], [.311, .56], [.368, .78], [.486, .87]];
+const PORTAL = [[.493, .47], [.80, .33], [.35, .18], [.12, .30], [.5, .42], [.15, .45], [.80, .22], [.88, .25], [.5, .4]];
+// Bild-Anteil → Bildschirm-Punkt (berücksichtigt object-fit:cover, object-position und aktuelle Transformation)
+function imgPt(k, uv) {
+  const sh = shots[k]; if (!sh) return { x: innerWidth / 2, y: innerHeight / 2 };
+  if (uv === 'vit') { const r = $('.vit', sh).getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+  const el = k === 0 ? hbox : (k === 4 ? $('.bgblur', sh) : $('img', sh));
+  const r = el.getBoundingClientRect();
+  if (k === 0) return { x: r.left + uv[0] * r.width, y: r.top + uv[1] * r.height };
+  const iw = el.naturalWidth || 16, ih = el.naturalHeight || 9, s = Math.max(r.width / iw, r.height / ih);
+  const dw = iw * s, dh = ih * s, cs = getComputedStyle(el).objectPosition.split(' ');
+  const fx = isNaN(parseFloat(cs[0])) ? .5 : parseFloat(cs[0]) / 100, fy = isNaN(parseFloat(cs[1])) ? .5 : parseFloat(cs[1]) / 100;
+  return { x: r.left + (r.width - dw) * fx + uv[0] * dw, y: r.top + (r.height - dh) * fy + uv[1] * dh };
+}
+// Türpunkt ohne laufende Fahrt-Transformation messen (sonst wandert er mit dem Zoom)
+function portalPt(k) {
+  if (k === 0) return { x: HO.x, y: HO.y }; // Tür = Glas der End-Vitrine = Zoom-Mitte
+  const sh = shots[k], keep = sh.style.transform;
+  sh.style.transform = 'none';
+  const p = imgPt(k, PORTAL[k]); sh.style.transform = keep; return p;
+}
+const door = document.createElement('div'); door.className = 'door'; door.setAttribute('aria-hidden', 'true'); door.innerHTML = '<i></i><i></i>'; $('#stage').appendChild(door);
+// Lichtstrahl (Canvas über den Fotos, unter den Karten)
+const rc = document.createElement('canvas'); rc.className = 'ray'; rc.setAttribute('aria-hidden', 'true'); $('#stage').appendChild(rc);
+const rx = rc.getContext('2d'); let rdpr = 1;
+function rsize() { rdpr = Math.min(2, devicePixelRatio || 1); rc.width = innerWidth * rdpr; rc.height = innerHeight * rdpr; }
+rsize(); addEventListener('resize', rsize);
+const HUES = [0, 28, 55, 130, 200, 265];
+function star(x, y, r, a) {
+  if (a <= .01) return; rx.save(); rx.globalAlpha = Math.min(1, a);
+  const g = rx.createRadialGradient(x, y, 0, x, y, r * 4); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.2, 'rgba(120,150,255,.55)'); g.addColorStop(1, 'rgba(27,63,160,0)');
+  rx.fillStyle = g; rx.beginPath(); rx.arc(x, y, r * 4, 0, 7); rx.fill();
+  rx.lineCap = 'round'; rx.shadowColor = 'rgba(27,63,160,.8)'; rx.shadowBlur = 10;
+  rx.strokeStyle = '#fff'; rx.lineWidth = 1.6; rx.beginPath(); rx.moveTo(x - r * 5, y); rx.lineTo(x + r * 5, y); rx.moveTo(x, y - r * 5); rx.lineTo(x, y + r * 5); rx.stroke();
+  rx.lineWidth = 1; rx.beginPath(); rx.moveTo(x - r * 2.5, y - r * 2.5); rx.lineTo(x + r * 2.5, y + r * 2.5); rx.moveTo(x + r * 2.5, y - r * 2.5); rx.lineTo(x - r * 2.5, y + r * 2.5); rx.stroke(); rx.restore();
+}
+// Spektral-Strahl, auf hellem Grund sichtbar: farbige Bänder (Regenbogen-Fächer) + weißer Kern mit Kobalt-Leuchten
+function spectral(pts, a, spread) {
+  rx.save(); rx.lineCap = 'round'; rx.lineJoin = 'round';
+  rx.strokeStyle = 'rgba(27,63,160,' + (.12 * a) + ')'; rx.lineWidth = 14; rx.beginPath(); pts.forEach((p, q) => q ? rx.lineTo(p.x, p.y) : rx.moveTo(p.x, p.y)); rx.stroke();
+  HUES.forEach((h, j) => {
+    const o = (j - 2.5) * spread; rx.strokeStyle = 'hsla(' + h + ',90%,52%,' + (.75 * a) + ')'; rx.lineWidth = 2.6; rx.beginPath();
+    pts.forEach((p, q) => { const f = q / (pts.length - 1); const px = p.x + p.nx * o * (.25 + .75 * f), py = p.y + p.ny * o * (.25 + .75 * f); q ? rx.lineTo(px, py) : rx.moveTo(px, py); }); rx.stroke();
+  });
+  rx.shadowColor = 'rgba(27,63,160,.9)'; rx.shadowBlur = 12; rx.strokeStyle = 'rgba(255,255,255,' + a + ')'; rx.lineWidth = 2.4;
+  rx.beginPath(); pts.forEach((p, q) => q ? rx.lineTo(p.x, p.y) : rx.moveTo(p.x, p.y)); rx.stroke(); rx.restore();
+}
+function bez(A, C, B, f) { const u = 1 - f; return { x: u * u * A.x + 2 * u * f * C.x + f * f * B.x, y: u * u * A.y + 2 * u * f * C.y + f * f * B.y }; }
+function ray(i, t, e, loc) {
+  rx.setTransform(rdpr, 0, 0, rdpr, 0, 0); rx.clearRect(0, 0, innerWidth, innerHeight); if (RM) return;
+  const now = performance.now() / 1000, A = imgPt(i, ANCHOR[i]);
+  const rest = 1 - clamp(t / .2), pulse = .8 + .2 * Math.sin(now * 3);
+  // Ruhe: Funke sitzt im Schmuckstück (Eingang: zündet beim Hineinfahren im Collier)
+  if (i === 0) star(A.x, A.y, 3 + 5 * clamp((loc - .2) / .5), clamp((loc - .15) / .3) * pulse);
+  else star(A.x, A.y, 4, rest * pulse);
+  // Diamant: Prisma-Fächer nach rechts
+  if (i === 1 && rest > 0) {
+    rx.save();
+    HUES.forEach((h, j) => { rx.strokeStyle = 'hsla(' + h + ',90%,52%,' + (.55 * rest) + ')'; rx.lineWidth = 3; rx.beginPath(); rx.moveTo(A.x, A.y); rx.lineTo(innerWidth * 1.05, A.y - innerHeight * .12 + j * innerHeight * .05); rx.stroke(); });
+    rx.restore();
+  }
+  // Trauringe: Strahl zieht einen Kreis um das Paar
+  if (i === 3 && rest > 0) {
+    const R = Math.min(innerWidth, innerHeight) * .2, end = clamp(loc * 2.2) * Math.PI * 2, pts = [];
+    for (let q = 0; q <= 60; q++) { const ang = -Math.PI / 2 + end * q / 60; pts.push({ x: A.x + Math.cos(ang) * R, y: A.y + Math.sin(ang) * R * .55, nx: Math.cos(ang), ny: Math.sin(ang) }); }
+    if (end > .05) spectral(pts, .85 * rest, 1.4);
+  }
+  if (t <= .001 || !shots[i + 1]) return;
+  // Übergang: Strahl wandert vom Stück in Fach i zum Stück in Fach i+1
+  const B = imgPt(i + 1, ANCHOR[i + 1]), C = { x: (A.x + B.x) / 2, y: Math.min(A.y, B.y) - innerHeight * .25 };
+  const head = e, tail = Math.max(0, e - .5), pts = [];
+  for (let q = 0; q <= 40; q++) {
+    const f = tail + (head - tail) * q / 40, p = bez(A, C, B, f), p2 = bez(A, C, B, Math.min(1, f + .01));
+    const dx = p2.x - p.x, dy = p2.y - p.y, l = Math.hypot(dx, dy) || 1; pts.push({ x: p.x, y: p.y, nx: -dy / l, ny: dx / l });
+  }
+  const fade = 1 - clamp((t - .92) / .08);
+  spectral(pts, fade, 2.2); const Hd = bez(A, C, B, head); star(Hd.x, Hd.y, 4 + 3 * Math.sin(Math.PI * t), fade);
+  if (t > .85) star(B.x, B.y, 4 + 10 * (1 - t), clamp((t - .85) / .1));
+}
+// Umschalter zum Vergleichen der beiden Varianten
+const swEl = document.createElement('div'); swEl.className = 'flow-sw';
+swEl.innerHTML = '<span>Übergang</span><a href="?uebergang=licht"' + (FLOW === 'licht' ? ' class="on"' : '') + '>Lichtstrahl</a><a href="?uebergang=fahrt"' + (FLOW === 'fahrt' ? ' class="on"' : '') + '>Kamerafahrt</a>';
+document.body.appendChild(swEl);
+
 /* Bühne: Fachwechsel per Scroll */
-const shots = $$('.shot'), scenes = $$('.scene'), pane = $('#pane');
+const scenes = $$('.scene');
 let geo = [];
 function measure() { geo = scenes.map(s => ({ s: +s.dataset.s, top: s.offsetTop, h: s.offsetHeight })); }
 measure(); addEventListener('resize', measure); new ResizeObserver(measure).observe(document.body);
@@ -51,21 +146,43 @@ function frame() {
   const t = nx ? clamp((y + vh - nx.top) / (vh * .9)) : 0; // nächste Szene schiebt sich in den Bildschirm
   const e = ease(t);
   const cur = geo[i], loc = clamp((y - cur.top) / Math.max(1, cur.h - vh)); // Fortschritt innerhalb der Szene
+  const W = innerWidth, Hh = innerHeight;
   shots.forEach((sh, k) => {
-    let op = 0, sc = 1, bl = 0;
-    if (k === i) { op = 1 - clamp((e - .35) / .65); const z = k === 0 ? 1 + ease(loc) * (HZ - 1) : 1 + loc * .07; sc = z * (1 + e * .55); bl = e * 6; if (k === 0 && near) near.style.opacity = clamp((z - 1.15) / .45).toFixed(3); }
-    else if (k === i + 1) { op = clamp(e / .7); sc = .78 + .22 * e; }
-    if (RM) { sc = 1; bl = 0; }
+    let op = 0, sc = 1, bl = 0, tf = null;
+    if (k === i) {
+      const z = k === 0 ? 1 + ease(loc) * (HZ - 1) : 1 + loc * .07;
+      if (k === 0 && near) near.style.opacity = clamp((z - 1.15) / .45).toFixed(3);
+      if (FLOW === 'fahrt' && nx) {           // Kamera fährt auf die Glastür im Bild zu
+        const P = portalPt(i), Z = 1 + (1 / PW - 1) * e * e;
+        sh.style.transformOrigin = P.x + 'px ' + P.y + 'px';
+        sc = z * Z; op = 1 - clamp((e - .93) / .07); bl = e * 3;
+        F.P = P; F.Z = Z;
+      } else {                                  // Lichtstrahl: sanfter Zoom, der Strahl trägt den Übergang
+        if (k !== 0) sh.style.transformOrigin = '50% 50%';
+        op = 1 - clamp((e - .45) / .5); sc = z * (1 + e * .22); bl = e * 3;
+      }
+    } else if (k === i + 1) {
+      if (FLOW === 'fahrt') {                   // nächster Raum steckt in der Tür und wächst mit der Fahrt
+        const P = F.P || { x: W / 2, y: Hh / 2 }, Z = F.Z || 1;
+        const w = Math.min(W, PW * W * Z), s2 = clamp((w - PW * W) / (W - PW * W));
+        const cx = P.x + (W / 2 - P.x) * s2, cy = P.y + (Hh / 2 - P.y) * s2;
+        op = t > .001 ? 1 : 0; sc = w / W;
+        tf = 'translate(' + (cx - W / 2).toFixed(1) + 'px,' + (cy - Hh / 2).toFixed(1) + 'px) scale(' + sc.toFixed(4) + ')';
+        sh.style.transformOrigin = '50% 50%';
+        door.style.cssText = 'opacity:' + (t > .001 && s2 < .999 ? 1 - s2 * s2 : 0) + ';left:' + (cx - w / 2) + 'px;top:' + (cy - w * Hh / W / 2) + 'px;width:' + w + 'px;height:' + (w * Hh / W) + 'px;--open:' + clamp(e / .3).toFixed(3);
+      } else { op = clamp((e - .15) / .6); sc = .9 + .1 * e; }
+    }
+    if (RM) { sc = 1; bl = 0; tf = null; }
     sh.style.opacity = op.toFixed(3);
     sh.style.visibility = op > .001 ? 'visible' : 'hidden';
-    if (op > .001) { sh.style.transform = 'scale(' + sc.toFixed(4) + ')'; sh.style.filter = bl > .05 ? 'blur(' + bl.toFixed(2) + 'px)' : 'none'; }
+    if (op > .001) { sh.style.transform = tf || 'scale(' + sc.toFixed(4) + ')'; sh.style.filter = bl > .05 ? 'blur(' + bl.toFixed(2) + 'px)' : 'none'; }
   });
+  if (FLOW === 'fahrt' && !(nx && t > .001)) door.style.opacity = 0;
+  if (FLOW === 'licht') ray(i, t, e, loc);
   // Eingang: Titel weg, Fahrt-Text kurz zeigen, dann in die Vitrine
   if (i === 0) { const hc = $('.hero-copy'), ft = $('#flightTxt'), hi = $('#hint'); const l = loc; if (l > .005) { hc.style.animation = 'none'; hc.style.transform = 'none'; }
     hc.style.opacity = (1 - clamp(l / .22)).toFixed(3); hi.style.opacity = (1 - clamp(l / .12)).toFixed(3);
     ft.style.opacity = (clamp((l - .25) / .15) * (1 - clamp((l - .7) / .15))).toFixed(3); }
-  // Glaskante der Vitrinentür
-  if (!RM) { const pt = e; pane.style.opacity = (Math.sin(Math.PI * clamp(pt)) * .9).toFixed(3); pane.style.transform = 'translate(-50%,-50%) scale(' + (.35 + pt * pt * 3.2).toFixed(3) + ')'; }
   // Karte zeigen, wenn die Szene steht
   scenes.forEach((s, k) => s.classList.toggle('in', k === i && t < .25 || k === i + 1 && t > .85));
   const act = t > .5 ? i + 1 : i;
