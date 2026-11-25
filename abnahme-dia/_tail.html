@@ -1,0 +1,15 @@
+<section class="ch box"><h2>Zum Einbetten</h2>
+    <pre id="emb">&lt;iframe src="https://engelstraenen.github.io/lupenrein/" width="100%" height="800" style="border:0" loading="lazy" title="LUPENREIN Demo"&gt;&lt;/iframe&gt;</pre>
+    <div class="actions"><button class="btn ghost" id="copy" type="button">Code kopieren</button><span id="copied" class="url" hidden>Kopiert</span></div>
+  </section>
+</div>
+<div class="lb" id="lb" hidden><img id="lbImg" alt=""></div>
+<script>
+const lb=document.getElementById('lb'),li=document.getElementById('lbImg');
+document.querySelectorAll('figure img').forEach(i=>i.addEventListener('click',()=>{li.src=i.src;li.alt=i.alt;lb.hidden=false;}));
+lb.addEventListener('click',()=>{lb.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true;});
+document.getElementById('copy').addEventListener('click',()=>{const t=document.getElementById('emb').textContent;const ok=()=>{const c=document.getElementById('copied');c.hidden=false;setTimeout(()=>c.hidden=true,2000);};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('emb'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(ok,sel);}else sel();});
+</script>

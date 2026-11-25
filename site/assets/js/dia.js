@@ -15,12 +15,13 @@ const de = (n, d = 2) => n.toLocaleString('de-DE', { minimumFractionDigits: d, m
 
 /* Messpunkte in den Fotos (Anteil der Bildbreite/-höhe) */
 const P = {
-  LRT1: { x: .66, y: .52 },            // Stein im Briefchen
-  LRT2: { x: .62, y: .47 },            // Stein in der Pinzette
+  LRT1: { x: .719, y: .56 },           // Stein im Briefchen (gemessen)
+  LRT2: { x: .63, y: .467 },           // Stein in der Pinzette (gemessen)
   LRT3: { x: .66, y: .5, d: .62 },     // Stein unter der Lupe, d = Durchmesser in Bildhöhe
-  LRT4: { y: .6, xs: [.2, .29, .385, .48, .575, .67, .765, .86] }, // 8 Vergleichssteine D–K
-  LRT5: { x: .64, y: .46, d: .05 },    // Stein auf dem Finger, d = Durchmesser in Bildbreite (≈ 6,5 mm)
-  LRT7: { x: .66, y: .5 }              // Stein im Solitär
+  LRT4: { y: .594, xs: [.385, .455, .526, .595, .665, .734, .803, .873, .941] }, // 9 Vergleichssteine D–L (gemessen)
+  LRT6: { x: .691, y: .483, d: .535 },  // Stein von oben (gemessen), d = Durchmesser in Bildhöhe
+  LRT5: { x: .702, y: .497, d: .051 }, // Stein auf dem Finger (gemessen), d = Durchmesser in Bildbreite (= 1 ct, 6,5 mm)
+  LRT7: { x: .685, y: .507 }           // Stein im Solitär (gemessen)
 };
 
 /* Firmenname per ?firma= */
@@ -133,23 +134,27 @@ function placeInc() { const p = pt(rhBg, 'LRT3'), q = at(rhBg, p); rh.style.setP
 
 /* Farbe */
 const fa = $('#farbe'), faBg = $('#faBg'), faRow = $('#faRow'), faSlit = $('#faSlit');
-faRow.innerHTML = COL.slice(0, 8).map((c, i) => `<button type="button" role="radio" aria-checked="false" data-i="${i}" aria-label="Farbe ${c}, ${COLTXT(i)}">${c}</button>`).join('');
-function setCol(i, from) { if (i > 7 && from !== 'w') i = 7; S.col = i; $$('button', faRow).forEach(b => b.setAttribute('aria-checked', +b.dataset.i === i));
+faRow.innerHTML = COL.slice(0, 9).map((c, i) => `<button type="button" role="radio" aria-checked="false" data-i="${i}" aria-label="Farbe ${c}, ${COLTXT(i)}">${c}</button>`).join('');
+function setCol(i, from) { if (i > 8 && from !== 'w') i = 8; S.col = i; $$('button', faRow).forEach(b => b.setAttribute('aria-checked', +b.dataset.i === i));
   $('#faOut').innerHTML = '<b>' + COL[i] + '</b>' + (COLTXT(i)[0].toUpperCase() + COLTXT(i).slice(1)) + '. ' + (i <= 2 ? 'Kein Farbton, auch nicht im Vergleich. Die Skala beginnt bei D.' : i <= 6 ? 'Nur im direkten Vergleich ein Hauch von Wärme, gefasst kaum zu sehen.' : 'Ein zarter warmer Ton. In Gelb- oder Roségold fällt er kaum auf.');
   placeFa(); if (from !== 'w') { $('#wCol').value = i; wUpd(); } }
 faRow.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setCol(+b.dataset.i); });
-faRow.addEventListener('keydown', e => { if (!/Arrow(Left|Right)/.test(e.key)) return; e.preventDefault(); setCol(clamp(Math.min(S.col, 7) + (e.key === 'ArrowRight' ? 1 : -1), 0, 7)); $$('button', faRow)[Math.min(S.col, 7)].focus(); });
-function placeFa() { const p = faBg.dataset.fb ? { y: .7, xs: [.2, .29, .385, .48, .575, .67, .765, .86] } : P.LRT4, c = cov(faBg);
+faRow.addEventListener('keydown', e => { if (!/Arrow(Left|Right)/.test(e.key)) return; e.preventDefault(); setCol(clamp(Math.min(S.col, 8) + (e.key === 'ArrowRight' ? 1 : -1), 0, 8)); $$('button', faRow)[Math.min(S.col, 8)].focus(); });
+function placeFa() { const p = faBg.dataset.fb ? { y: .7, xs: [.2, .29, .385, .48, .575, .67, .765, .86, .93] } : P.LRT4, sel = Math.min(S.col, 8);
+  // Handy: die Kamera fährt am Tablett entlang zum gewählten Stein
+  if (mob()) { const vis = innerWidth / (faBg.offsetHeight * 16 / 9); faBg.style.objectPosition = (clamp((p.xs[sel] - vis / 2) / Math.max(.01, 1 - vis)) * 100).toFixed(2) + '% 50%'; } else { const vis = Math.min(1, (innerWidth / fa.offsetHeight) / (16 / 9)), mid = (p.xs[0] + p.xs[p.xs.length - 1]) / 2; faBg.style.objectPosition = (vis >= 1 ? 50 : clamp((mid - vis / 2) / (1 - vis)) * 100).toFixed(2) + '% 50%'; }
+  const c = cov(faBg);
   const xs = p.xs.map(x => c.ox + x * c.dw), y = c.oy + p.y * c.dh, H = fa.offsetHeight;
-  $$('button', faRow).forEach((b, i) => b.style.setProperty('--x', clamp(xs[i], 26, innerWidth - 26).toFixed(1) + 'px'));
-  faRow.style.setProperty('--ry', ((y + (xs[1] - xs[0]) * .62) / H * 100).toFixed(2) + '%');
-  fa.style.setProperty('--sx', xs[Math.min(S.col, 7)].toFixed(1) + 'px'); fa.style.setProperty('--sw', ((xs[1] - xs[0]) * 1.1).toFixed(1) + 'px'); }
+  // Buttons sitzen im .lp-in-Kasten: dessen Versatz zur Sektion abziehen
+  if (!mob()) { const op = faRow.offsetParent.getBoundingClientRect(), sr = fa.getBoundingClientRect(), dx = op.left - sr.left, dy = op.top - sr.top;
+    $$('button', faRow).forEach((b, i) => b.style.setProperty('--x', (clamp(xs[i], 26, innerWidth - 26) - dx).toFixed(1) + 'px')); faRow.style.top = (y + (xs[1] - xs[0]) * .62 - dy).toFixed(1) + 'px'; }
+  fa.style.setProperty('--sx', xs[sel].toFixed(1) + 'px'); fa.style.setProperty('--sw', ((xs[1] - xs[0]) * 1.1).toFixed(1) + 'px'); }
 
 /* Größe am Finger */
 const gr = $('#groesse'), grBg = $('#grBg'), grR = $('#grR'), grRing = $('#grRing'), grBars = $('#grBars'), grRuler = $('#grRuler');
 focus(grBg, 'LRT5');
 grRing.setAttribute('viewBox', '0 0 100 100'); grRing.innerHTML = '<circle cx="50" cy="50" r="50"/><line x1="0" y1="50" x2="-30" y2="50"/><line x1="100" y1="50" x2="130" y2="50"/>';
-grBars.innerHTML = CT.map((c, i) => `<div data-i="${i}" role="button" tabindex="0" aria-label="${de(c[0])} Karat, ${de(c[1], 1)} Millimeter"><b>${de(c[1], 1)}</b><i></i><em>${de(c[0])} ct</em></div>`).join('');
+grBars.innerHTML = CT.map((c, i) => `<div data-i="${i}" role="button" tabindex="0" aria-label="${de(c[0])} Karat, ${de(c[1], 1)} Millimeter"><b>${de(c[1], 1)}</b><i></i><em>${de(c[0])}</em></div>`).join('');
 function setCt(i, from) { S.ct = i; grR.value = i; const [ct, mm] = CT[i]; $('#grOut').textContent = de(ct) + ' ct · Ø ' + de(mm, 1) + ' mm';
   $$('div', grBars).forEach(d => d.classList.toggle('on', +d.dataset.i === i)); placeGr(); if (from !== 'w') { $('#wCt').value = i; wUpd(); } }
 grR.addEventListener('input', () => setCt(+grR.value));
@@ -177,6 +182,10 @@ function wUpd() { S.cut = +wCut.value; S.col = +wCol.value; S.cla = +wCla.value;
   $('#waGo').dataset.reserve = 'Diamant ' + $('#waSum').textContent; }
 [wCut, wCol, wCla, wCt].forEach(r => r.addEventListener('input', () => { wUpd(); setCla(S.cla, 'w'); setCol(S.col, 'w'); setCt(S.ct, 'w'); }));
 
+// Stein in „Ihr Diamant“: Foto so legen, dass der Stein 90 % des Kreises füllt
+function placeWa() { const p = waImg.dataset.fb ? { x: .5, y: .5, d: .6 } : P.LRT6, k = .9 / p.d, hh = k * 100, ww = hh * 16 / 9;
+  Object.assign(waImg.style, { width: ww.toFixed(2) + '%', height: hh.toFixed(2) + '%', left: (50 - p.x * ww).toFixed(2) + '%', top: (50 - p.y * hh).toFixed(2) + '%' }); }
+
 /* Termin am Tresen */
 const rm = $('#resModal'), days = $('#tmDays');
 (() => { const out = []; const d = new Date(); while (out.length < 6) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0) out.push(new Date(d)); }
@@ -187,25 +196,27 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-rese
 $('#tmGo').addEventListener('click', () => openRes('Termin am Tresen'));
 
 /* Ende: die Lupe zum Ziehen (2,5-fach über dem Facetten-Foto) */
-const en = $('#ende'), enBg = $('#enBg'), lo = $('#enLoupe'), loI = lo.querySelector('i'); let L = { x: .68, y: .48 }, drag = false;
-function placeLoupe() { if (!enBg.naturalWidth) return; const c = cov(enBg), W = en.offsetWidth, H = en.offsetHeight, x = L.x * W, y = L.y * H, s = lo.offsetWidth, Z = 2.5;
+const en = $('#ende'), enBg = $('#enBg'), lo = $('#enLoupe'), loI = lo.querySelector('i'); let L = { x: .7, y: .4 }, drag = false, touched = false;
+function placeLoupe() { if (!enBg.naturalWidth) return; const c = cov(enBg), W = en.offsetWidth, H = en.offsetHeight, x = L.x * W, y = L.y * H, s = lo.offsetWidth, Z = 2.2;
   lo.style.setProperty('--lx', x.toFixed(1) + 'px'); lo.style.setProperty('--ly', y.toFixed(1) + 'px');
   loI.style.backgroundImage = 'url("' + enBg.currentSrc + '")'; loI.style.backgroundSize = (c.dw * Z).toFixed(0) + 'px ' + (c.dh * Z).toFixed(0) + 'px';
   loI.style.backgroundPosition = (s / 2 - (x - c.ox) * Z).toFixed(1) + 'px ' + (s / 2 - (y - c.oy) * Z).toFixed(1) + 'px'; }
 const loSet = e => { const r = en.getBoundingClientRect(); L = { x: clamp((e.clientX - r.left) / r.width, .08, .92), y: clamp((e.clientY - r.top) / r.height, .1, .9) }; placeLoupe(); };
-lo.addEventListener('pointerdown', e => { drag = true; lo.setPointerCapture(e.pointerId); e.preventDefault(); });
+lo.addEventListener('pointerdown', e => { drag = true; touched = true; lo.setPointerCapture(e.pointerId); e.preventDefault(); });
 lo.addEventListener('pointermove', e => { if (drag) loSet(e); });
 ['pointerup', 'pointercancel'].forEach(t => lo.addEventListener(t, () => drag = false));
 if (mob()) L = { x: .7, y: .3 };
+// Solange niemand zieht, wandert die Lupe langsam über die Facetten (zeigt, dass man sie bewegen kann)
+const t0 = performance.now(); function drift(now) { if (!touched && !RM) { const r = en.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) { const t = (now - t0) / 1000; L = { x: (mob() ? .62 : .7) + Math.sin(t * .23) * .14, y: (mob() ? .3 : .42) + Math.sin(t * .31 + 1) * .12 }; placeLoupe(); } } }
 
 /* Kamerafahrten beim Hereinscrollen: Farbe und Fassung kommen aus dem Stein (Zoom heraus) */
 function pull() { $$('.dt-pull').forEach(sec => { const im = $('.dt-fix', sec), r = sec.getBoundingClientRect(), k = RM ? 1 : smooth(clamp(1 - r.top / innerHeight));
-  const key = sec.dataset.pull, p = im.dataset.fb ? { x: .5, y: .5 } : (key === 'LRT4' ? { x: P.LRT4.xs[Math.min(S.col, 7)], y: P.LRT4.y } : P[key]), q = at(im, p);
+  const key = sec.dataset.pull, p = im.dataset.fb ? { x: .5, y: .5 } : (key === 'LRT4' ? { x: P.LRT4.xs[Math.min(S.col, 8)], y: P.LRT4.y } : P[key]), q = at(im, p);
   im.style.setProperty('--ox', q.x.toFixed(1) + 'px'); im.style.setProperty('--oy', q.y.toFixed(1) + 'px'); im.style.setProperty('--z', (1 + (1 - k) * 1.4).toFixed(4));
   const ui = sec === fa ? [faRow, faSlit, $('#faOut')] : []; ui.forEach(u => u.style.opacity = clamp((k - .75) / .2).toFixed(3)); }); }
 
-function frame() { introFrame(); pull(); requestAnimationFrame(frame); }
-function layout() { placeInc(); placeFa(); placeGr(); placeLoupe(); }
+function frame(now) { introFrame(); pull(); drift(now || 0); requestAnimationFrame(frame); }
+function layout() { placeInc(); placeFa(); placeGr(); placeLoupe(); placeWa(); }
 $$('img').forEach(im => im.addEventListener('load', layout));
 addEventListener('resize', () => { [[i1, 'LRT1'], [i2, 'LRT2'], [i3, 'LRT3']].forEach(([im, k]) => focus(im, k)); focus(grBg, 'LRT5'); layout(); });
 setCla(4); setCol(1); setCt(3); wUpd(); layout(); requestAnimationFrame(frame);

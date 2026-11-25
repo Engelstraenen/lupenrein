@@ -11,7 +11,7 @@ LB.ok = () => { const u = bt(/^Unlimited/); const c = bt(/credits$/); return !!(
 LB.setP = p => { const e = document.querySelector('[aria-label="Prompt input"]'); const s = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set; s.call(e,''); e.dispatchEvent(new Event('input',{bubbles:true})); s.call(e,p); e.dispatchEvent(new Event('input',{bubbles:true})); };
 LB.tick = async () => {
   if (RID !== LB.run) return;
-  const d = LB.done(); const running = Object.keys(LB.sent).filter(id => !d.has(id) && Date.now() - LB.sent[id] < 20*60000).length;
+  const d = LB.done(); const running = Object.keys(LB.sent).filter(id => !d.has(id) && Date.now() - LB.sent[id] < 60*60000).length;
   const next = LB.jobs.find(j => !LB.sent[j.id] && !d.has(j.id));
   if (!next) { LB.log.push('alle gesendet'); if (running) setTimeout(LB.tick, 60000); return; }
   if (running >= LB.MAX) { setTimeout(LB.tick, 30000); return; }
