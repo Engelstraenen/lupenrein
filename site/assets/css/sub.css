@@ -11,7 +11,7 @@ body.leave main{opacity:0;transition:opacity .45s}
 .lp-l,.lp-lens,.lp-lens img{position:absolute;inset:0;width:100%;height:100%}
 .lp-l,.lp-lens img{object-fit:cover;object-position:var(--fx,50%) 50%;will-change:transform}
 .lp-lens{overflow:hidden;will-change:clip-path}
-.lp-rim{position:absolute;border-radius:50%;pointer-events:none;box-shadow:0 0 0 3px rgba(225,228,236,.85),0 0 0 7px rgba(120,124,134,.55),0 0 40px rgba(0,0,0,.6) inset}
+.lp-rim{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;fill:none;stroke:rgba(222,226,234,.85);stroke-width:3}
 .lp-txt{position:fixed;left:clamp(16px,4.2vw,72px);bottom:clamp(70px,14vh,150px);max-width:min(520px,86vw);z-index:5}
 .lp-t1,.lp-t2{position:fixed;top:auto}
 .lp-t2{opacity:0;visibility:hidden}
@@ -167,3 +167,17 @@ body.leave main{opacity:0;transition:opacity .45s}
 .cf-met button[hidden],.cf-shp button[hidden],#licht[hidden],[hidden]{display:none!important}
 #licht .lp-tl{left:auto;right:clamp(16px,4.2vw,72px);text-align:right;max-width:min(460px,86vw)} #licht .lp-tl .lp-lead{margin-left:auto} @media (max-width:899px){#licht .lp-tl{right:16px;left:16px;text-align:left} #licht .lp-tl .lp-lead{margin-left:0} .cmp>img,.cmp-b img{object-position:22% 50%}}
 @media (max-width:899px){#licht .lp-tl{top:auto;bottom:86px} #licht .lp-tl .lp-lead{display:none}}
+
+/* Ringgröße: Platin statt Kobalt (auf Schwarz wirkte Blau fremd, Eugen 25.11.) */
+.rs-ring{stroke:#e4e7ee;filter:drop-shadow(0 0 6px rgba(228,231,238,.35))}
+.rs-big{color:#e4e7ee}
+.lp-h2 b{color:#e4e7ee}
+.rs-real svg{stroke:#e4e7ee}
+#ringgroesse .lp-bg{transition:transform .15s linear}
+/* Licht-Vergleich: ganzer Bereich ist der Schieber */
+.cmp{touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
+.cmp img{-webkit-user-drag:none;user-select:none;pointer-events:none}
+#licht .cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;pointer-events:none}
+.cmp-h{width:56px;height:56px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+/* Originalgröße auf dem Samt-Tablett */
+#groesse.lp-photo::after{background:linear-gradient(90deg,rgba(5,6,12,.78) 0%,rgba(5,6,12,.35) 45%,rgba(5,6,12,.1) 100%)}

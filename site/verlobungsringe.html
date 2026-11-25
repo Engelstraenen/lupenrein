@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css?v=4">
-<link rel="stylesheet" href="assets/css/sub.css?v=6">
+<link rel="stylesheet" href="assets/css/sub.css?v=7">
 </head>
 <body class="sub dark">
 <div class="demo-bar" role="note">Demo-Webseite · erfundener Betrieb · Formulare senden nichts</div>
@@ -35,7 +35,7 @@
   <div class="lp-stage">
     <img class="lp-l" id="lp1" data-n="LRL1" alt="Weißgold-Verlobungsring mit Smaragdschliff unter einer Juwelierlupe">
     <div class="lp-lens" id="lpLens"><img id="lp2" data-n="LRL2" alt="Der Diamant im Smaragdschliff in Makro-Aufnahme"></div>
-    <div class="lp-rim" id="lpRim" aria-hidden="true"></div>
+    <svg class="lp-rim" id="lpRim" aria-hidden="true" preserveAspectRatio="none"></svg>
   </div>
   <div class="lp-txt lp-t1" id="lpT1">
     <p class="kick">Verlobungsringe</p>
@@ -51,7 +51,8 @@
 </section>
 
 <!-- 3 · Die perfekte Größe finden: Diamanten in Originalgröße (Richtwerte Rundbrillant) -->
-<section class="lp-sec lp-dark" id="groesse">
+<section class="lp-sec lp-dark lp-photo" id="groesse">
+  <img class="lp-bg" data-n="LRL9" alt="Schwarzes Samt-Tablett eines Juweliers mit Lupe und Diamantpinzette">
   <div class="lp-in">
     <h2 class="lp-h2">Die perfekte Größe finden.</h2>
     <p class="lp-lead">Diamanten in Originalgröße. <span id="calState">Noch nicht abgeglichen: <a href="#messen">kurz mit einer Karte einstellen</a>, dann stimmt jeder Millimeter.</span></p>
@@ -129,8 +130,8 @@
 <!-- 7 · Jeder Moment, ein neues Licht: Tageslicht und Kerzenschein im Vergleich -->
 <section class="lp-sec lp-dark" id="licht">
   <div class="cmp" id="cmp" style="--p:50%">
-    <img data-n="LRL7T" alt="Der Ring im Tageslicht">
-    <div class="cmp-b"><img data-n="LRL7K" alt="Der Ring im Kerzenschein"></div>
+    <img data-n="LRL7T" alt="Der Ring im Tageslicht" draggable="false">
+    <div class="cmp-b"><img data-n="LRL7K" alt="Der Ring im Kerzenschein" draggable="false"></div>
     <input type="range" id="cmpR" min="0" max="100" value="50" aria-label="Zwischen Tageslicht und Kerzenschein schieben">
     <span class="cmp-h" aria-hidden="true">‹ ›</span>
     <span class="cmp-a">Tageslicht</span><span class="cmp-c">Kerzenschein</span>
@@ -181,6 +182,6 @@
 </dialog>
 
 <script src="assets/js/img.js"></script>
-<script src="assets/js/sub.js?v=4"></script>
+<script src="assets/js/sub.js?v=5"></script>
 </body>
 </html>

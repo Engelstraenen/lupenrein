@@ -34,20 +34,24 @@ burger.addEventListener('click', () => { const o = menu.classList.toggle('open')
 $$('#menu a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); burger.setAttribute('aria-expanded', false); }));
 
 /* 1→2 · Lupe: Glas-Mitte und -Radius im Foto LRL1 (Bild-Anteile), das Glas wächst zum Vollbild */
-const LENS = { x: .666, y: .444, r: .365 }; // Glas der Lupe im Foto LRL1 (gemessen)
+// Glas der Lupe im Foto LRL1 (gemessen, Eugen 25.11.: genau diese Form, kein Kreis): gekippte Ellipse
+const LENS = { x: .667, y: .427, rx: .2266, ry: .351, rot: -4 };
 const intro = $('#lupe'), lens = $('#lpLens'), rim = $('#lpRim'), p1 = $('#lp1'), p2 = $('#lp2'), t1 = $('#lpT1'), t2 = $('#lpT2');
 function cover(im) { const W = innerWidth, H = innerHeight, iw = im.naturalWidth || 16, ih = im.naturalHeight || 9, s = Math.max(W / iw, H / ih), dw = iw * s, dh = ih * s;
   const fx = parseFloat(getComputedStyle(im).objectPosition) / 100; return { x: (W - dw) * (isNaN(fx) ? .5 : fx), y: (H - dh) / 2, w: dw, h: dh }; }
 function introFrame() {
   const H = innerHeight, W = innerWidth, len = Math.max(1, intro.offsetHeight - H), p = clamp((scrollY - intro.offsetTop) / len);
-  const c = cover(p1), cx = c.x + LENS.x * c.w, cy = c.y + LENS.y * c.h, r0 = LENS.r * c.h;
-  const g = ease(clamp((p - .08) / .52)), rMax = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy));
-  const r = r0 + (rMax - r0) * g;
-  lens.style.clipPath = 'circle(' + r.toFixed(1) + 'px at ' + cx.toFixed(1) + 'px ' + cy.toFixed(1) + 'px)';
-  rim.style.cssText = 'left:' + (cx - r).toFixed(1) + 'px;top:' + (cy - r).toFixed(1) + 'px;width:' + (2 * r).toFixed(1) + 'px;height:' + (2 * r).toFixed(1) + 'px;opacity:' + (1 - smooth(clamp(g / .5))).toFixed(3);
+  const c = cover(p1), cx = c.x + LENS.x * c.w, cy = c.y + LENS.y * c.h, rx0 = LENS.rx * c.w, ry0 = LENS.ry * c.h;
+  const g = ease(clamp((p - .08) / .52));
+  const far = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)), sMax = far / Math.min(rx0, ry0) * 1.08;
+  const s = 1 + (sMax - 1) * g, rx = rx0 * s, ry = ry0 * s, ang = LENS.rot * Math.PI / 180, ca = Math.cos(ang), sa = Math.sin(ang);
+  const pts = []; for (let i = 0; i < 72; i++) { const t = i / 72 * Math.PI * 2, ex = Math.cos(t) * rx, ey = Math.sin(t) * ry; pts.push((cx + ex * ca - ey * sa).toFixed(1) + 'px ' + (cy + ex * sa + ey * ca).toFixed(1) + 'px'); }
+  lens.style.clipPath = 'polygon(' + pts.join(',') + ')';
+  rim.setAttribute('viewBox', '0 0 ' + W + ' ' + H); rim.style.opacity = (1 - smooth(clamp(g / .35))).toFixed(3);
+  rim.innerHTML = '<ellipse cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" rx="' + rx.toFixed(1) + '" ry="' + ry.toFixed(1) + '" transform="rotate(' + LENS.rot + ' ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>';
   // im Glas: anfangs vergrößerter Ausschnitt um die Glasmitte, am Ende das volle Makrobild
   const z = 1.35 - .35 * g; p2.style.transformOrigin = cx + 'px ' + cy + 'px'; p2.style.transform = 'scale(' + z.toFixed(4) + ')';
-  p1.style.transform = 'scale(' + (1 + g * .12).toFixed(4) + ')'; p1.style.transformOrigin = cx + 'px ' + cy + 'px';
+  p1.style.transform = 'none';
   // Ende: Kamera zieht vom Diamanten zurück, er schrumpft zur Größe der Steine darunter
   const out = ease(clamp((p - .82) / .18));
   $('.lp-stage').style.transform = out > 0 ? 'scale(' + (1 - out * .62).toFixed(4) + ')' : 'none';
@@ -127,6 +131,11 @@ cfImg.src = src('LRD6'); conf();
 const cmp = $('#cmp'), cmpR = $('#cmpR');
 if (!mob()) { cmpR.value = 27; cmp.style.setProperty('--p', '27%'); } // Trennlinie auf dem Ring (Ring steht im Foto links)
 cmpR.addEventListener('input', () => cmp.style.setProperty('--p', cmpR.value + '%'));
+let cmpDrag = false;
+const cmpSet = e => { const r = cmp.getBoundingClientRect(), v = clamp((e.clientX - r.left) / r.width) * 100; cmpR.value = v; cmp.style.setProperty('--p', v.toFixed(1) + '%'); };
+cmp.addEventListener('pointerdown', e => { cmpDrag = true; cmp.setPointerCapture(e.pointerId); cmpSet(e); e.preventDefault(); });
+cmp.addEventListener('pointermove', e => { if (cmpDrag) cmpSet(e); });
+['pointerup', 'pointercancel'].forEach(t => cmp.addEventListener(t, () => cmpDrag = false));
 
 /* Reservieren */
 const rm = $('#resModal');
@@ -137,9 +146,11 @@ const RS = { x: .652, y: .476, w: .32 }; // Ring im Foto LRL5 (gemessen), Kreis 
 function placeRing() { const im = $('#ringgroesse .lp-bg'); if (!im || !im.naturalWidth) return; const sec = im.parentElement.getBoundingClientRect(), r = im.getBoundingClientRect();
   const iw = im.naturalWidth, ih = im.naturalHeight, bw = im.offsetWidth, bh = im.offsetHeight, s = Math.max(bw / iw, bh / ih), dw = iw * s, dh = ih * s;
   const fx = parseFloat(getComputedStyle(im).objectPosition) / 100; const ox = im.offsetLeft + (bw - dw) * (isNaN(fx) ? .5 : fx), oy = im.offsetTop + (bh - dh) / 2;
-  rsRing.style.setProperty('--rx', (ox + RS.x * dw).toFixed(1) + 'px'); rsRing.style.setProperty('--ry', (oy + RS.y * dh).toFixed(1) + 'px'); rsRing.style.setProperty('--rw', (RS.w * dw).toFixed(1) + 'px'); }
+  const k = (+rsR.value) / 17.2, rx = ox + RS.x * dw, ry = oy + RS.y * dh;
+  im.style.transformOrigin = (RS.x * 100).toFixed(2) + '% ' + (RS.y * 100).toFixed(2) + '%'; im.style.transform = 'scale(' + k.toFixed(4) + ')';
+  rsRing.style.setProperty('--rx', rx.toFixed(1) + 'px'); rsRing.style.setProperty('--ry', ry.toFixed(1) + 'px'); rsRing.style.setProperty('--rw', (RS.w * dw * k).toFixed(1) + 'px'); }
 function frame() { introFrame(); placeRing();
-  $$('.lp-photo .lp-bg').forEach(im => { const r = im.parentElement.getBoundingClientRect(), k = clamp(1 - (r.top + r.height) / (innerHeight + r.height)); im.style.transform = RM ? 'none' : 'scale(' + (1.06 - .06 * k).toFixed(4) + ')'; });
+  $$('.lp-photo .lp-bg').filter(im => !im.closest('#ringgroesse')).forEach(im => { const r = im.parentElement.getBoundingClientRect(), k = clamp(1 - (r.top + r.height) / (innerHeight + r.height)); im.style.transform = RM ? 'none' : 'scale(' + (1.06 - .06 * k).toFixed(4) + ')'; });
   requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
 addEventListener('resize', () => { sizeDia(); ringFrame(); });
