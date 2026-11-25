@@ -41,18 +41,21 @@ function cover(im) { const W = innerWidth, H = innerHeight, iw = im.naturalWidth
 function introFrame() {
   const H = innerHeight, W = innerWidth, len = Math.max(1, intro.offsetHeight - H), p = clamp((scrollY - intro.offsetTop) / len);
   const c = cover(p1), cx = c.x + LENS.x * c.w, cy = c.y + LENS.y * c.h, r0 = LENS.r * c.h;
-  const g = ease(clamp((p - .12) / .6)), rMax = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy));
+  const g = ease(clamp((p - .08) / .52)), rMax = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy));
   const r = r0 + (rMax - r0) * g;
   lens.style.clipPath = 'circle(' + r.toFixed(1) + 'px at ' + cx.toFixed(1) + 'px ' + cy.toFixed(1) + 'px)';
   rim.style.cssText = 'left:' + (cx - r).toFixed(1) + 'px;top:' + (cy - r).toFixed(1) + 'px;width:' + (2 * r).toFixed(1) + 'px;height:' + (2 * r).toFixed(1) + 'px;opacity:' + (1 - smooth(clamp(g / .5))).toFixed(3);
   // im Glas: anfangs vergrößerter Ausschnitt um die Glasmitte, am Ende das volle Makrobild
   const z = 1.35 - .35 * g; p2.style.transformOrigin = cx + 'px ' + cy + 'px'; p2.style.transform = 'scale(' + z.toFixed(4) + ')';
   p1.style.transform = 'scale(' + (1 + g * .12).toFixed(4) + ')'; p1.style.transformOrigin = cx + 'px ' + cy + 'px';
-  const a = 1 - smooth(clamp((p - .04) / .12)), b = smooth(clamp((p - .62) / .12)) * (1 - smooth(clamp((p - .9) / .08)));
+  // Ende: Kamera zieht vom Diamanten zurück, er schrumpft zur Größe der Steine darunter
+  const out = ease(clamp((p - .82) / .18));
+  $('.lp-stage').style.transform = out > 0 ? 'scale(' + (1 - out * .62).toFixed(4) + ')' : 'none';
+  $('.lp-stage').style.opacity = (1 - smooth(clamp((p - .9) / .1))).toFixed(3);
+  $('.lp-stage').style.borderRadius = (out * 50).toFixed(1) + '%';
+  const a = 1 - smooth(clamp((p - .03) / .1)), b = smooth(clamp((p - .58) / .1)) * (1 - smooth(clamp((p - .95) / .05)));
   t1.style.opacity = a.toFixed(3); t1.style.visibility = a > .01 ? 'visible' : 'hidden'; t1.style.display = a > .01 ? '' : 'none';
   t2.style.opacity = b.toFixed(3); t2.style.visibility = b > .01 ? 'visible' : 'hidden'; t2.style.display = b > .01 ? '' : 'none';
-  // Lichtschnitt in das Kreideweiß der nächsten Szene
-  $('#lpFlash').style.opacity = smooth(clamp((p - .9) / .1)).toFixed(3);
 }
 
 /* 3 · Originalgröße: Pixel je Millimeter aus dem Karten-Abgleich (Standard: CSS-Millimeter) */
