@@ -24,9 +24,9 @@ prev = os.path.join(R, "vorschau"); os.makedirs(prev, exist_ok=True)
 
 ZH = ZIEL * 9 // 16
 # Zwei Stufen: erst 1,5x mit Schärfen, dann auf Ziel – weniger Treppen und Halos als ein großer Sprung
-CHAIN = (f"hqdn3d=1.2:1.2:4:4,scale={ZIEL*3//4}:{ZH*3//4}:flags=lanczos,cas=strength=0.45,"
+CHAIN = (f"fps=30,hqdn3d=1.2:1.2:4:4,scale={ZIEL*3//4}:{ZH*3//4}:flags=lanczos,cas=strength=0.45,"
          f"scale={ZIEL}:{ZH}:flags=lanczos,cas=strength=0.5,unsharp=5:5:0.4:3:3:0.0")
-ENC = ["-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p", "-g", "4", "-keyint_min", "4",
+ENC = ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p", "-g", "4", "-keyint_min", "4",
        "-sc_threshold", "0", "-movflags", "+faststart", "-an"]
 
 
