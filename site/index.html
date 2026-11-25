@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LUPENREIN · Juwelier</title>
 <meta name="description" content="Juwelier LUPENREIN: ein Gang durch unsere Galerie. Diamanten, Verlobungsringe, Trauringe, Schmuck und Uhren. Online sehen, im Laden anprobieren.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath d=%22M16 3l9 9-9 17-9-17z%22 fill=%22%231b3fa0%22/%3E%3C/svg%3E">
 <meta name="theme-color" content="#f6f3ee">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +29,7 @@
 <div class="demo-bar" role="note">Demo-Webseite · erfundener Betrieb · Formulare senden nichts</div>
 
 <header class="top" id="top">
-  <a class="logo" href="#eingang" aria-label="Zum Eingang" data-brand>LUPENREIN</a>
+  <a class="logo" href="#nacht" aria-label="Zum Anfang" data-brand>LUPENREIN</a>
   <nav class="menu" id="menu" aria-label="Galerie">
     <a href="#diamanten" data-s="2">Diamanten</a>
     <a href="#verlobung" data-s="3">Verlobungsringe</a>
@@ -46,10 +47,49 @@
 <p class="where" id="where" aria-hidden="true"><b id="whereN">I</b><span id="whereT">Eingang</span></p>
 
 <main>
+<!-- EINSTIEG „Schwarz mit Lichtschlitzen“ (Storyboard S2): eine durchgehende Fahrt, Scrollen spult Film und Kamera -->
+<section class="nacht" id="nacht" aria-label="Einstieg: der Ring im Licht">
+  <div class="n-stage" data-l="stage">
+    <video class="n-l n-v" data-l="v1" data-v="LRVR1" muted playsinline preload="auto" aria-hidden="true"></video>
+    <img class="n-l" data-l="d1" data-n="LRD1" alt="Verlobungsring aus Weißgold mit Diamant im Smaragdschliff, ein schmaler Lichtschlitz fällt auf den Stein">
+    <img class="n-l" data-l="d2" data-n="LRD2" alt="">
+    <video class="n-l n-v" data-l="v2" data-v="LRVR2" muted playsinline preload="auto" aria-hidden="true"></video>
+    <img class="n-l" data-l="d3" data-n="LRD3" alt="">
+    <img class="n-l" data-l="d4" data-n="LRD4" alt="Hand mit dem Smaragdschliff-Ring im Lichtstreifen" style="--fx:62%">
+    <img class="n-l n-fit" data-l="d5" data-n="LRD5" alt="Drei Verlobungsringe nebeneinander im Licht: Solitär, Halo und Smaragdschliff">
+    <div class="n-l" id="nDet"><img id="nDetImg" alt="Der gewählte Ring im Detail" style="--fx:40%"></div>
+    <img class="n-l" data-l="d7" data-n="LRD7" alt="" style="--fx:55%">
+    <div class="n-l n-d8" data-l="d8w"><img data-l="d8" data-n="LRD8" alt="Private Beratungs-Lounge mit Samtsesseln, eine Beraterin zeigt drei Ringe auf einem Tablett" style="--fx:62%"></div>
+    <div class="n-flash" data-l="flash" aria-hidden="true"></div>
+  </div>
+
+  <div class="n-hold">
+    <div class="n-txt n-bl" data-t="0 .14"><h1 class="n-h">Lupenrein.</h1><p class="n-sub">Juwelier <span data-brand>LUPENREIN</span> · Diamanten, Ringe, Schmuck und Uhren</p><a href="#" class="n-btn" data-njump=".16">Entdecken</a></div>
+    <div class="n-hint" data-t="0 .03"><span>Scrollen</span><i></i></div>
+    <div class="n-txt n-ml" data-t=".235 .295"><h2 class="n-h">Ein Blick<br>hinein.</h2><p class="n-sub">Schliff, Farbe, Reinheit, Karat: wir zeigen Ihnen jeden Diamanten unter der Lupe, bevor Sie sich entscheiden.</p><a href="#diamanten" class="n-btn">Diamanten verstehen</a></div>
+    <div class="n-txt n-ml" data-t=".33 .44"><h2 class="n-h">Welcher Ring<br>sind Sie?</h2><a href="#" class="n-btn" data-njump=".5">Entdecken</a></div>
+    <div class="n-pick" data-t=".48 .58" role="group" aria-label="Ring wählen">
+      <button data-r="solitaer" aria-pressed="false"><b>Solitär</b><span>Platin · Brillant</span></button>
+      <button data-r="halo" aria-pressed="false"><b>Halo</b><span>Roségold · Oval</span></button>
+      <button data-r="klassisch" aria-pressed="true"><b>Klassisch</b><span>Weißgold · Smaragd</span></button>
+    </div>
+    <aside class="n-panel" data-t=".62 .72" aria-live="polite">
+      <p class="n-k" id="nDetK">Klassisch</p>
+      <h3 class="n-ph" id="nDetH">Klassisch <em>neu gedacht.</em></h3>
+      <p class="n-pd" id="nDetD"></p>
+      <dl id="nDetRows"></dl>
+      <div class="n-prow"><button class="n-btn n-fill" id="nDetRes" data-reserve="Verlobungsring">Zur Anprobe reservieren</button><a href="#verlobung" class="n-btn">Mehr erfahren</a></div>
+      <p class="n-small">Beispielangaben · Demo</p>
+    </aside>
+    <div class="n-txt n-bl" data-t=".74 .82"><h2 class="n-h n-h2">Vier Doppelkrappen.<br>Unter der Lupe geprüft.</h2></div>
+    <div class="n-card" data-t=".86 .965"><h2 class="n-ch">Privater Termin</h2><p>In diskreter Atmosphäre nehmen wir uns Zeit für das Wesentliche. Sie wählen vorab, wir legen die Ringe bereit.</p><button class="n-btn n-fill" data-reserve="Privater Termin">Termin vereinbaren</button></div>
+  </div>
+</section>
+
 <section class="scene hero" id="eingang" data-s="0">
   <div class="hold">
     <div class="hero-copy">
-      <h1 class="h-hero">Treten Sie ein.</h1>
+      <h2 class="h-hero">Treten Sie ein.</h2>
       <p class="hero-sub">Juwelier <span data-brand>LUPENREIN</span> · Diamanten, Ringe, Schmuck und Uhren</p>
     </div>
     <div class="scroll-hint" id="hint"><span>Scroll</span><i></i></div>
@@ -258,5 +298,6 @@
 
 <script src="assets/js/img.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/nacht.js?v=1"></script>
 </body>
 </html>
