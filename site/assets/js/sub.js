@@ -20,6 +20,8 @@ if (firma) { $$('[data-brand]').forEach(e => e.textContent = firma.slice(0, 40).
 /* Bilder */
 $$('img[data-n]').forEach(im => { const id = im.dataset.n; if (IMG[id]) { im.decoding = 'async'; im.src = src(id); } else im.classList.add('miss'); });
 
+if (!IMG.LRL7T || !IMG.LRL7K) { const l = $('#licht'); if (l) l.hidden = true; const a = $('#menu a[href="#licht"]'); if (a) a.hidden = true; }
+
 /* Zurück zur Galerie: an dieselbe Stelle (Startseite merkt sich die Scrollposition) */
 $$('[data-back]').forEach(a => a.addEventListener('click', e => {
   e.preventDefault(); const to = a.dataset.back; const q = firma ? '?firma=' + encodeURIComponent(firma) : '';
@@ -47,8 +49,8 @@ function introFrame() {
   const z = 1.35 - .35 * g; p2.style.transformOrigin = cx + 'px ' + cy + 'px'; p2.style.transform = 'scale(' + z.toFixed(4) + ')';
   p1.style.transform = 'scale(' + (1 + g * .12).toFixed(4) + ')'; p1.style.transformOrigin = cx + 'px ' + cy + 'px';
   const a = 1 - smooth(clamp((p - .04) / .12)), b = smooth(clamp((p - .62) / .12)) * (1 - smooth(clamp((p - .9) / .08)));
-  t1.style.opacity = a.toFixed(3); t1.style.visibility = a > .01 ? 'visible' : 'hidden';
-  t2.style.opacity = b.toFixed(3); t2.style.visibility = b > .01 ? 'visible' : 'hidden';
+  t1.style.opacity = a.toFixed(3); t1.style.visibility = a > .01 ? 'visible' : 'hidden'; t1.style.display = a > .01 ? '' : 'none';
+  t2.style.opacity = b.toFixed(3); t2.style.visibility = b > .01 ? 'visible' : 'hidden'; t2.style.display = b > .01 ? '' : 'none';
   // Lichtschnitt in das Kreideweiß der nächsten Szene
   $('#lpFlash').style.opacity = smooth(clamp((p - .9) / .1)).toFixed(3);
 }
@@ -99,7 +101,15 @@ const SHP = { SM: 'Smaragdschliff', RU: 'Brillant', OV: 'Oval', KI: 'Kissen' };
 let cm = 'W', cs = 'SM';
 const cfImg = $('#cfImg');
 const pic = (s, m) => s === 'SM' ? (m === 'W' ? 'LRD6' : 'LRL6' + m) : 'LRL6' + s + m;
+/* Nur Kombinationen anbieten, für die es ein Foto gibt (nie Platzhalter) */
+const hasPic = (s, m) => !!IMG[pic(s, m)];
+function avail() {
+  $$('.cf-met button').forEach(b => { const ok = hasPic(cs, b.dataset.m); b.disabled = !ok; b.hidden = !Object.keys(SHP).some(s => hasPic(s, b.dataset.m)); });
+  $$('.cf-shp button').forEach(b => { b.disabled = false; b.hidden = !Object.keys(MET).some(m => hasPic(b.dataset.s, m)); });
+}
 function conf() {
+  if (!hasPic(cs, cm)) { const m = Object.keys(MET).find(m => hasPic(cs, m)); if (m) cm = m; else cs = 'SM'; }
+  avail();
   const id = pic(cs, cm); $$('.cf-met button').forEach(b => b.setAttribute('aria-checked', b.dataset.m === cm)); $$('.cf-shp button').forEach(b => b.setAttribute('aria-checked', b.dataset.s === cs));
   $('#cfTxt').textContent = SHP[cs] + ' in ' + MET[cm] + '. Ihre Größe: ' + $('#rsNum').textContent + '.';
   $('#cfGo').dataset.reserve = 'Verlobungsring · ' + SHP[cs] + ' · ' + MET[cm];

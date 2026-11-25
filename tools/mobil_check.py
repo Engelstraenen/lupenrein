@@ -25,6 +25,8 @@ VPS = [(390, 844), (360, 740), (430, 932), (844, 390)]
 if nur:
     VPS = [tuple(int(x) for x in v.split("x")) for v in nur]
 CH = ["nacht", "eingang", "diamanten", "verlobung", "trauringe", "schmuck", "uhren", "ankauf", "beratung", "karriere"]
+if "verlobungsringe" in URL:
+    CH = ["lupe", "groesse", "messen", "ringgroesse", "gestalten", "licht", "fragen", "ende"]
 STEPS = [0, .2, .4, .6, .8]
 
 PROBE = r"""
@@ -94,7 +96,7 @@ for (w, h) in VPS:
 
         for ch in CH:
             hh = pg.evaluate("(id)=>{const s=document.getElementById(id);return s.offsetHeight}", ch)
-            steps = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9] if ch == "nacht" else (STEPS if hh > h * 1.3 else [0, .5, 1])
+            steps = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9] if ch in ("nacht", "lupe") else (STEPS if hh > h * 1.3 else [0, .5, 1])
             for f in steps:
                 pg.evaluate("([id,f])=>{const s=document.getElementById(id);window.scrollTo({top:s.offsetTop+Math.max(0,s.offsetHeight-innerHeight)*f,behavior:'instant'})}", [ch, f])
                 snap("%s-%03d" % (ch, int(f * 100)))
@@ -106,17 +108,18 @@ for (w, h) in VPS:
         pg.evaluate("document.getElementById('resModal').showModal()")
         snap("modal")
         pg.evaluate("document.getElementById('resModal').close()")
-        pg.evaluate("document.querySelector('#apply').scrollIntoView({block:'center'})")
-        for k in range(2):
-            try:
-                pg.click("#apply .apply-step.on .chip", timeout=3000); pg.wait_for_timeout(500)
-            except Exception:
-                break
-        pg.evaluate("document.querySelector('#apply').scrollIntoView({block:'center'})")
-        snap("bewerben-formular")
-        pg.evaluate("document.querySelector('#track').scrollIntoView({block:'center'})")
-        pg.fill("#tNr", "LR-2411"); pg.click("#tGo"); pg.wait_for_timeout(1500)
-        snap("uhrenstatus")
+        if "verlobungsringe" not in URL:
+            pg.evaluate("document.querySelector('#apply').scrollIntoView({block:'center'})")
+            for k in range(2):
+                try:
+                    pg.click("#apply .apply-step.on .chip", timeout=3000); pg.wait_for_timeout(500)
+                except Exception:
+                    break
+            pg.evaluate("document.querySelector('#apply').scrollIntoView({block:'center'})")
+            snap("bewerben-formular")
+            pg.evaluate("document.querySelector('#track').scrollIntoView({block:'center'})")
+            pg.fill("#tNr", "LR-2411"); pg.click("#tGo"); pg.wait_for_timeout(1500)
+            snap("uhrenstatus")
         b.close()
     if errs:
         issues["konsole: " + " | ".join(errs[:3])] = ["seite"]

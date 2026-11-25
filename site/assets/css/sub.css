@@ -142,3 +142,11 @@ body.leave main{opacity:0;transition:opacity .45s}
   #ringgroesse .lp-in{padding-top:8px}
   .rs-big{display:none}
 }
+
+.cf-met button:disabled,.cf-shp button:disabled{opacity:.25;cursor:not-allowed}
+.lp-lead a{display:inline-flex;align-items:center;min-height:44px}
+@media (max-width:899px){
+  .dia-row{flex-wrap:wrap;overflow:visible;justify-content:flex-start;gap:18px 10px}
+  .dia-row figure{flex:0 0 calc(25% - 8px);min-width:0}
+}
+.faq details:not([open]) p{display:none}
