@@ -42,13 +42,11 @@ heroLayout(); addEventListener('resize', heroLayout);
    ?uebergang=licht  → Lichtstrahl aus dem Diamanten führt von Stück zu Stück (Standard, Storyboard U2)
    ?uebergang=fahrt  → Kamerafahrt: Kamera fliegt durch eine Glastür im Bild in den nächsten Raum (Storyboard U3) */
 const shots = $$('.shot');
-// Eugen 25.11.2026: Kamerafahrt fest (Lichtstrahl „sieht billig aus“, nur noch per ?uebergang=licht erreichbar)
-const FLOW = new URLSearchParams(location.search).get('uebergang') === 'licht' ? 'licht' : 'fahrt';
-document.documentElement.dataset.flow = FLOW;
+// Eugen 25.11.2026: Übergänge = Kamerafahrt durch Glastüren. Lichtstrahl auf Eugens Wunsch komplett gelöscht.
+const FLOW = 'fahrt';
 const PW = .16;            // Breite der Glastür beim Start der Fahrt (Anteil der Bildschirmbreite)
 const F = {};
-// Punkte in Bild-Anteilen (u, v) je Fach: Schmuckstück (Strahl) und Tür im Hintergrund (Fahrt)
-const ANCHOR = [[.493, .445], [.29, .48], [.405, .51], [.5, .5], 'vit', [.852, .47], [.311, .56], [.368, .78], [.486, .87]];
+// Türpunkte in Bild-Anteilen (u, v) je Fach
 // Türen auf echte Vitrinen/Durchgänge im Hintergrund der Fotos (Kalibrier-Screens 1440×900, 25.11.)
 const PORTAL = [[.493, .47], [.15, .33], [.495, .22], [.12, .28], [.5, .42], [.168, .46], [.76, .2], [.69, .35], [.5, .4]];
 // Bild-Anteil → Bildschirm-Punkt (berücksichtigt object-fit:cover, object-position und aktuelle Transformation)
@@ -71,63 +69,6 @@ function portalPt(k) {
   const p = imgPt(k, PORTAL[k]); sh.style.transform = keep; return p;
 }
 const door = document.createElement('div'); door.className = 'door'; door.setAttribute('aria-hidden', 'true'); door.innerHTML = '<i></i><i></i>'; $('#stage').appendChild(door);
-// Lichtstrahl (Canvas über den Fotos, unter den Karten)
-const rc = document.createElement('canvas'); rc.className = 'ray'; rc.setAttribute('aria-hidden', 'true'); $('#stage').appendChild(rc);
-const rx = rc.getContext('2d'); let rdpr = 1;
-function rsize() { rdpr = Math.min(2, devicePixelRatio || 1); rc.width = innerWidth * rdpr; rc.height = innerHeight * rdpr; }
-rsize(); addEventListener('resize', rsize);
-const HUES = [0, 28, 55, 130, 200, 265];
-function star(x, y, r, a) {
-  if (a <= .01) return; rx.save(); rx.globalAlpha = Math.min(1, a);
-  const g = rx.createRadialGradient(x, y, 0, x, y, r * 4); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.2, 'rgba(120,150,255,.55)'); g.addColorStop(1, 'rgba(27,63,160,0)');
-  rx.fillStyle = g; rx.beginPath(); rx.arc(x, y, r * 4, 0, 7); rx.fill();
-  rx.lineCap = 'round'; rx.shadowColor = 'rgba(27,63,160,.8)'; rx.shadowBlur = 10;
-  rx.strokeStyle = '#fff'; rx.lineWidth = 1.6; rx.beginPath(); rx.moveTo(x - r * 5, y); rx.lineTo(x + r * 5, y); rx.moveTo(x, y - r * 5); rx.lineTo(x, y + r * 5); rx.stroke();
-  rx.lineWidth = 1; rx.beginPath(); rx.moveTo(x - r * 2.5, y - r * 2.5); rx.lineTo(x + r * 2.5, y + r * 2.5); rx.moveTo(x + r * 2.5, y - r * 2.5); rx.lineTo(x - r * 2.5, y + r * 2.5); rx.stroke(); rx.restore();
-}
-// Spektral-Strahl, auf hellem Grund sichtbar: farbige Bänder (Regenbogen-Fächer) + weißer Kern mit Kobalt-Leuchten
-function spectral(pts, a, spread) {
-  rx.save(); rx.lineCap = 'round'; rx.lineJoin = 'round';
-  rx.strokeStyle = 'rgba(27,63,160,' + (.12 * a) + ')'; rx.lineWidth = 14; rx.beginPath(); pts.forEach((p, q) => q ? rx.lineTo(p.x, p.y) : rx.moveTo(p.x, p.y)); rx.stroke();
-  HUES.forEach((h, j) => {
-    const o = (j - 2.5) * spread; rx.strokeStyle = 'hsla(' + h + ',90%,52%,' + (.75 * a) + ')'; rx.lineWidth = 2.6; rx.beginPath();
-    pts.forEach((p, q) => { const f = q / (pts.length - 1); const px = p.x + p.nx * o * (.25 + .75 * f), py = p.y + p.ny * o * (.25 + .75 * f); q ? rx.lineTo(px, py) : rx.moveTo(px, py); }); rx.stroke();
-  });
-  rx.shadowColor = 'rgba(27,63,160,.9)'; rx.shadowBlur = 12; rx.strokeStyle = 'rgba(255,255,255,' + a + ')'; rx.lineWidth = 2.4;
-  rx.beginPath(); pts.forEach((p, q) => q ? rx.lineTo(p.x, p.y) : rx.moveTo(p.x, p.y)); rx.stroke(); rx.restore();
-}
-function bez(A, C, B, f) { const u = 1 - f; return { x: u * u * A.x + 2 * u * f * C.x + f * f * B.x, y: u * u * A.y + 2 * u * f * C.y + f * f * B.y }; }
-function ray(i, t, e, loc) {
-  rx.setTransform(rdpr, 0, 0, rdpr, 0, 0); rx.clearRect(0, 0, innerWidth, innerHeight); if (RM) return;
-  const now = performance.now() / 1000, A = imgPt(i, ANCHOR[i]);
-  const rest = 1 - clamp(t / .2), pulse = .8 + .2 * Math.sin(now * 3);
-  // Ruhe: Funke sitzt im Schmuckstück (Eingang: zündet beim Hineinfahren im Collier)
-  if (i === 0) star(A.x, A.y, 3 + 5 * clamp((loc - .2) / .5), clamp((loc - .15) / .3) * pulse);
-  else star(A.x, A.y, 4, rest * pulse);
-  // Diamant: Prisma-Fächer nach rechts
-  if (i === 1 && rest > 0) {
-    rx.save();
-    HUES.forEach((h, j) => { rx.strokeStyle = 'hsla(' + h + ',90%,52%,' + (.55 * rest) + ')'; rx.lineWidth = 3; rx.beginPath(); rx.moveTo(A.x, A.y); rx.lineTo(innerWidth * 1.05, A.y - innerHeight * .12 + j * innerHeight * .05); rx.stroke(); });
-    rx.restore();
-  }
-  // Trauringe: Strahl zieht einen Kreis um das Paar
-  if (i === 3 && rest > 0) {
-    const R = Math.min(innerWidth, innerHeight) * .2, end = clamp(loc * 2.2) * Math.PI * 2, pts = [];
-    for (let q = 0; q <= 60; q++) { const ang = -Math.PI / 2 + end * q / 60; pts.push({ x: A.x + Math.cos(ang) * R, y: A.y + Math.sin(ang) * R * .55, nx: Math.cos(ang), ny: Math.sin(ang) }); }
-    if (end > .05) spectral(pts, .85 * rest, 1.4);
-  }
-  if (t <= .001 || !shots[i + 1]) return;
-  // Übergang: Strahl wandert vom Stück in Fach i zum Stück in Fach i+1
-  const B = imgPt(i + 1, ANCHOR[i + 1]), C = { x: (A.x + B.x) / 2, y: Math.min(A.y, B.y) - innerHeight * .25 };
-  const head = e, tail = Math.max(0, e - .5), pts = [];
-  for (let q = 0; q <= 40; q++) {
-    const f = tail + (head - tail) * q / 40, p = bez(A, C, B, f), p2 = bez(A, C, B, Math.min(1, f + .01));
-    const dx = p2.x - p.x, dy = p2.y - p.y, l = Math.hypot(dx, dy) || 1; pts.push({ x: p.x, y: p.y, nx: -dy / l, ny: dx / l });
-  }
-  const fade = 1 - clamp((t - .92) / .08);
-  spectral(pts, fade, 2.2); const Hd = bez(A, C, B, head); star(Hd.x, Hd.y, 4 + 3 * Math.sin(Math.PI * t), fade);
-  if (t > .85) star(B.x, B.y, 4 + 10 * (1 - t), clamp((t - .85) / .1));
-}
 
 /* Bühne: Fachwechsel per Scroll */
 const scenes = $$('.scene');
@@ -151,18 +92,16 @@ function frame() {
       const z = k === 0 ? 1 + ease(loc) * (HZ - 1) : 1 + loc * .07;
       if (k === 0 && near) near.style.opacity = clamp((z - 1.15) / .45).toFixed(3);
       if (FLOW === 'fahrt' && nx) {           // Kamera fährt auf die Glastür im Bild zu
-        const P = portalPt(i), Z = 1 + (1 / PW - 1) * e * e;
+        // Foto nur leicht vergrößern (max. 1,25×), sonst wird es auf Retina unscharf; die Tür wächst scharf darüber
+        const P = portalPt(i), Z = 1 + .25 * e;
         sh.style.transformOrigin = P.x + 'px ' + P.y + 'px';
-        sc = z * Z; op = 1 - clamp((e - .93) / .07); bl = e * 3;
-        F.P = P; F.Z = Z;
-      } else {                                  // Lichtstrahl: sanfter Zoom, der Strahl trägt den Übergang
-        if (k !== 0) sh.style.transformOrigin = '50% 50%';
-        op = 1 - clamp((e - .45) / .5); sc = z * (1 + e * .22); bl = e * 3;
+        sc = z * Z; op = 1 - clamp((e - .9) / .1); bl = 0;
+        F.P = P;
       }
     } else if (k === i + 1) {
       if (FLOW === 'fahrt') {                   // nächster Raum steckt in der Tür und wächst mit der Fahrt
-        const P = F.P || { x: W / 2, y: Hh / 2 }, Z = F.Z || 1;
-        const w = Math.min(W, PW * W * Z), s2 = clamp((w - PW * W) / (W - PW * W));
+        const P = F.P || { x: W / 2, y: Hh / 2 };
+        const s2 = ease(clamp(e / .95)), w = PW * W + (W - PW * W) * s2; // nächster Raum: immer ≤ 1:1, also scharf
         const cx = P.x + (W / 2 - P.x) * s2, cy = P.y + (Hh / 2 - P.y) * s2;
         op = t > .001 ? 1 : 0; sc = w / W;
         tf = 'translate(' + (cx - W / 2).toFixed(1) + 'px,' + (cy - Hh / 2).toFixed(1) + 'px) scale(' + sc.toFixed(4) + ')';
@@ -176,7 +115,6 @@ function frame() {
     if (op > .001) { sh.style.transform = tf || 'scale(' + sc.toFixed(4) + ')'; sh.style.filter = bl > .05 ? 'blur(' + bl.toFixed(2) + 'px)' : 'none'; }
   });
   if (FLOW === 'fahrt' && !(nx && t > .001)) door.style.opacity = 0;
-  if (FLOW === 'licht') ray(i, t, e, loc);
   // Eingang: Titel weg, Fahrt-Text kurz zeigen, dann in die Vitrine
   if (i === 0) { const hc = $('.hero-copy'), ft = $('#flightTxt'), hi = $('#hint'); const l = loc; if (l > .005) { hc.style.animation = 'none'; hc.style.transform = 'none'; }
     hc.style.opacity = (1 - clamp(l / .22)).toFixed(3); hi.style.opacity = (1 - clamp(l / .12)).toFixed(3);
