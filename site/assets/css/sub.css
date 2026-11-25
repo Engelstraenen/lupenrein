@@ -118,7 +118,6 @@ body.leave main{opacity:0;transition:opacity .45s}
   .lp-photo::after{background:linear-gradient(0deg,rgba(5,6,12,.92) 0%,rgba(5,6,12,.7) 55%,rgba(5,6,12,.2) 100%)}
   .lp-in{padding-top:96px;padding-bottom:80px}
   .dia-row{gap:10px;justify-content:flex-start}
-  .rs-ring{top:32%}
   .rs-big{bottom:auto;top:calc(32% + 34vw);font-size:40px}
   #ringgroesse{align-items:flex-end}
   .cmp-a,.cmp-c{bottom:40px}
@@ -129,3 +128,17 @@ body.leave main{opacity:0;transition:opacity .45s}
 .rs-real{display:flex;align-items:center;gap:16px;margin-top:22px}
 .rs-real svg{flex:none;fill:none;stroke:#8fa6ff;stroke-width:1.4}
 .rs-real p{font-size:14px;line-height:1.5;opacity:.8;margin:0}
+
+.dia-tg{display:inline-flex;margin-top:26px;border:1px solid rgba(17,22,42,.18);border-radius:999px;padding:3px}
+.dia-tg button{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:none;color:#11162a;font:500 14px I,sans-serif;cursor:pointer}
+.dia-tg button[aria-pressed=true]{background:#1b3fa0;color:#fff}
+.dia{transition:width .5s cubic-bezier(.2,.8,.2,1),height .5s cubic-bezier(.2,.8,.2,1)}
+
+@media (max-width:899px){
+  .lp-l,.lp-lens img{--fx:66%}
+  #ringgroesse{flex-direction:column;align-items:stretch}
+  #ringgroesse .lp-bg{position:relative;inset:auto;height:46svh;--fx:65%;transform:none!important}
+  #ringgroesse::after{background:linear-gradient(0deg,rgba(5,6,12,1) 0%,rgba(5,6,12,.0) 60%)}
+  #ringgroesse .lp-in{padding-top:8px}
+  .rs-big{display:none}
+}

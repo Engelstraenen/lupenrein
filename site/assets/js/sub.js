@@ -32,7 +32,7 @@ burger.addEventListener('click', () => { const o = menu.classList.toggle('open')
 $$('#menu a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); burger.setAttribute('aria-expanded', false); }));
 
 /* 1→2 · Lupe: Glas-Mitte und -Radius im Foto LRL1 (Bild-Anteile), das Glas wächst zum Vollbild */
-const LENS = { x: .64, y: .45, r: .2 }; // wird nach Bildprüfung angepasst
+const LENS = { x: .666, y: .444, r: .365 }; // Glas der Lupe im Foto LRL1 (gemessen)
 const intro = $('#lupe'), lens = $('#lpLens'), rim = $('#lpRim'), p1 = $('#lp1'), p2 = $('#lp2'), t1 = $('#lpT1'), t2 = $('#lpT2');
 function cover(im) { const W = innerWidth, H = innerHeight, iw = im.naturalWidth || 16, ih = im.naturalHeight || 9, s = Math.max(W / iw, H / ih), dw = iw * s, dh = ih * s;
   const fx = parseFloat(getComputedStyle(im).objectPosition) / 100; return { x: (W - dw) * (isNaN(fx) ? .5 : fx), y: (H - dh) / 2, w: dw, h: dh }; }
@@ -56,9 +56,10 @@ function introFrame() {
 /* 3 · Originalgröße: Pixel je Millimeter aus dem Karten-Abgleich (Standard: CSS-Millimeter) */
 const DIA = [[.25, 4.1], [.5, 5.1], [.75, 5.8], [1, 6.5], [1.5, 7.4], [2, 8.2], [3, 9.3]];
 let pxmm = parseFloat(store.get('lr_pxmm')) || 96 / 25.4, calibrated = !!store.get('lr_pxmm');
-const row = $('#diaRow');
+const row = $('#diaRow'); let ZM = 1;
+$$('.dia-tg button').forEach(b => b.addEventListener('click', () => { ZM = +b.dataset.z; $$('.dia-tg button').forEach(o => o.setAttribute('aria-pressed', o === b)); sizeDia(); }));
 row.innerHTML = DIA.map(([ct, mm], i) => '<figure style="--i:' + i + '"><b>' + String(ct).replace('.', ',') + ' ct</b><div class="dia" data-mm="' + mm + '">' + (IMG.LRL3 ? '<img src="' + src('LRL3') + '" alt="">' : '<i></i>') + '</div><figcaption>' + String(mm).replace('.', ',') + ' mm</figcaption></figure>').join('');
-function sizeDia() { $$('.dia', row).forEach(d => { const s = parseFloat(d.dataset.mm) * pxmm * (IMG.LRL3 ? 2 : 1); d.style.width = d.style.height = s.toFixed(2) + 'px'; });
+function sizeDia() { $$('.dia', row).forEach(d => { const s = parseFloat(d.dataset.mm) * pxmm * (IMG.LRL3 ? 1.75 : 1) * ZM; d.style.width = d.style.height = s.toFixed(2) + 'px'; });
   $('#calState').innerHTML = calibrated ? 'Abgeglichen mit Ihrer Karte: jeder Millimeter stimmt.' : 'Noch nicht abgeglichen: <a href="#messen">kurz mit einer Karte einstellen</a>, dann stimmt jeder Millimeter.'; }
 sizeDia();
 new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('on')), { threshold: .35 }).observe($('#groesse'));
@@ -118,7 +119,12 @@ const rm = $('#resModal');
 document.addEventListener('click', e => { const b = e.target.closest('[data-reserve]'); if (!b) return; $('#resTitle').textContent = b.dataset.reserve; rm.showModal(); });
 
 /* Szenen, die sich beim Scrollen bewegen */
-function frame() { introFrame();
+const RS = { x: .652, y: .476, w: .32 }; // Ring im Foto LRL5 (gemessen), Kreis wie im Storyboard
+function placeRing() { const im = $('#ringgroesse .lp-bg'); if (!im || !im.naturalWidth) return; const sec = im.parentElement.getBoundingClientRect(), r = im.getBoundingClientRect();
+  const iw = im.naturalWidth, ih = im.naturalHeight, bw = im.offsetWidth, bh = im.offsetHeight, s = Math.max(bw / iw, bh / ih), dw = iw * s, dh = ih * s;
+  const fx = parseFloat(getComputedStyle(im).objectPosition) / 100; const ox = im.offsetLeft + (bw - dw) * (isNaN(fx) ? .5 : fx), oy = im.offsetTop + (bh - dh) / 2;
+  rsRing.style.setProperty('--rx', (ox + RS.x * dw).toFixed(1) + 'px'); rsRing.style.setProperty('--ry', (oy + RS.y * dh).toFixed(1) + 'px'); rsRing.style.setProperty('--rw', (RS.w * dw).toFixed(1) + 'px'); }
+function frame() { introFrame(); placeRing();
   $$('.lp-photo .lp-bg').forEach(im => { const r = im.parentElement.getBoundingClientRect(), k = clamp(1 - (r.top + r.height) / (innerHeight + r.height)); im.style.transform = RM ? 'none' : 'scale(' + (1.06 - .06 * k).toFixed(4) + ')'; });
   requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
