@@ -24,7 +24,7 @@ os.makedirs(OUT, exist_ok=True)
 VPS = [(390, 844), (360, 740), (430, 932), (844, 390)]
 if nur:
     VPS = [tuple(int(x) for x in v.split("x")) for v in nur]
-CH = ["eingang", "diamanten", "verlobung", "trauringe", "schmuck", "uhren", "ankauf", "beratung", "karriere"]
+CH = ["nacht", "eingang", "diamanten", "verlobung", "trauringe", "schmuck", "uhren", "ankauf", "beratung", "karriere"]
 STEPS = [0, .2, .4, .6, .8]
 
 PROBE = r"""
@@ -72,7 +72,7 @@ for (w, h) in VPS:
     issues = {}
     shots = []
     with sync_playwright() as p:
-        b = p.chromium.launch()
+        b = p.chromium.launch(channel="chrome")
         pg = b.new_page(viewport={"width": w, "height": h}, device_scale_factor=2, is_mobile=True, has_touch=True)
         errs = []
         pg.on("console", lambda m: errs.append(m.text) if m.type == "error" else None)
@@ -94,9 +94,9 @@ for (w, h) in VPS:
 
         for ch in CH:
             hh = pg.evaluate("(id)=>{const s=document.getElementById(id);return s.offsetHeight}", ch)
-            steps = STEPS if hh > h * 1.3 else [0, .5, 1]
+            steps = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9] if ch == "nacht" else (STEPS if hh > h * 1.3 else [0, .5, 1])
             for f in steps:
-                pg.evaluate("([id,f])=>{const s=document.getElementById(id);window.scrollTo(0,s.offsetTop+Math.max(0,s.offsetHeight-innerHeight)*f)}", [ch, f])
+                pg.evaluate("([id,f])=>{const s=document.getElementById(id);window.scrollTo({top:s.offsetTop+Math.max(0,s.offsetHeight-innerHeight)*f,behavior:'instant'})}", [ch, f])
                 snap("%s-%03d" % (ch, int(f * 100)))
         pg.evaluate("window.scrollTo(0,document.documentElement.scrollHeight)")
         snap("footer")

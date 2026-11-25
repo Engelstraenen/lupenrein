@@ -28,8 +28,9 @@ V.forEach(v => { v.muted = true; v.playsInline = true; v.preload = 'auto'; const
 const PT = {
   LRD4ring: [.708, .436],                       // Ring am Finger
   LRD5: { solitaer: [.238, .505], halo: [.515, .505], klassisch: [.78, .52] },
-  claw: { LRD6: [.408, .252], LRD6A: [.397, .54], LRD6B: [.4, .3] }, // obere Krappe je Detailbild
-  LRD8vit: [.62, .30],                        // beleuchtete Vitrine hinten in der Lounge
+  claw: { LRD6: [.408, .252], LRD6A: [.397, .54], LRD6B: [.40, .33] }, // obere Krappe je Detailbild
+  streak: [[0, .86], [.45, .37]],             // Lichtstreifen in LRD7
+  LRD8vit: [.595, .16],                        // beleuchtete Vitrine hinten in der Lounge
 };
 // Bild-Anteil → Bildschirm (object-fit cover/contain + object-position), ohne laufende Transformation
 function pt(im, uv) {
@@ -151,42 +152,63 @@ function frame(now) {
     show(L.d5, d > .22 ? 1 : 0, 'scale(' + (1.04 - .04 * ease(clamp((d - .22) / .7))).toFixed(4) + ')');
     L.d5.style.transformOrigin = '50% 50%';
   } else if (!(p >= SEG.det[0] && p < SEG.claw[0])) show(L.d5, 0);
-  if (p >= SEG.det[0]) L.d5.style.webkitMaskImage = L.d5.style.maskImage = 'none';
+  if (p >= SEG.claw[0]) L.d5.style.webkitMaskImage = L.d5.style.maskImage = 'none';
 
-  // 5 · Fahrt an den gewählten Ring, Detail mit Daten
+  // 5 · Fahrt an den gewählten Ring: die anderen Lichtsäulen gehen aus, die Kamera fährt an den Ring,
+  //     das Bild versinkt kurz im Schwarz, der Ring taucht groß im Detail auf (Schnitt durchs Dunkel)
   const e = seg(p, 'det');
+  const dim = (el, v) => { el.style.filter = v < .999 ? 'brightness(' + v.toFixed(3) + ')' : 'none'; };
   if (p >= SEG.det[0] && p < SEG.claw[0] + .02) {
-    const eIn = smooth(clamp(e / .35));
+    const k1 = clamp(e / .4), first = k1 < 1;
     const P5 = pt(L.d5, PT.LRD5[pick]);
-    show(L.d5, 1 - smooth(clamp((e - .12) / .23)), zoomAt(L.d5, P5, 1 + eIn * .25));
-    show(det, smooth(clamp((e - .1) / .25)), zoomAt(det, P5, .82 + .18 * eIn));
-  } else if (!(p >= SEG.claw[0] && p < SEG.lounge[0] + .02)) show(det, 0);
+    show(L.d5, first ? 1 : 0, zoomAt(L.d5, P5, 1 + ease(k1) * .25));
+    dim(L.d5, 1 - smooth(clamp((k1 - .55) / .45)));
+    // nur die Säule des gewählten Rings bleibt an
+    const offO = smooth(clamp(k1 / .5)), g = 'linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent)';
+    if (first) { const x = P5.x / innerWidth, W = 34 + (1 - offO) * 66, pos = (W >= 100 ? 0 : (x * 100 - W / 2) / (100 - W) * 100).toFixed(2) + '% 0%';
+      Object.assign(L.d5.style, { webkitMaskImage: offO > .001 ? g : 'none', maskImage: offO > .001 ? g : 'none', webkitMaskSize: W + '% 100%', maskSize: W + '% 100%', webkitMaskPosition: pos, maskPosition: pos, webkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat' }); }
+    const k2 = clamp((e - .4) / .3);
+    show(det, first ? 0 : 1, 'scale(' + (1.08 - .08 * ease(k2)).toFixed(4) + ')'); det.style.transformOrigin = '40% 45%';
+    dim(det, smooth(k2));
+  } else { if (!(p >= SEG.claw[0] && p < SEG.lounge[0] + .02)) show(det, 0); dim(L.d5, 1); }
 
-  // 6 · in die Krappe
+  // 6 · in die Krappe: Kamera fährt auf die obere Krappe, Schnitt durchs Dunkel, Makro mit Lichtstreifen
   const f = seg(p, 'claw');
   if (p >= SEG.claw[0] && p < SEG.lounge[0] + .02) {
-    const fIn = smooth(clamp(f / .4));
+    const k1 = clamp(f / .4), first = k1 < 1;
     const Pc = pt(detImg, PT.claw[RINGS[pick].id]);
-    show(det, 1 - fIn, zoomAt(det, Pc, 1 + fIn * .25));
-    show(L.d7, fIn, 'scale(' + (1.14 - .14 * ease(clamp(f / .6))).toFixed(4) + ')');
-  } else if (!(p >= SEG.lounge[0] && p < SEG.out[0])) show(L.d7, 0);
+    show(det, first ? 1 : 0, zoomAt(det, Pc, 1 + ease(k1) * .25));
+    dim(det, 1 - smooth(clamp((k1 - .5) / .5)));
+    const k2 = clamp((f - .4) / .4);
+    show(L.d7, first ? 0 : 1, 'scale(' + (1.1 - .1 * ease(k2)).toFixed(4) + ')');
+    dim(L.d7, smooth(k2));
+  } else { if (!(p >= SEG.lounge[0] && p < SEG.out[0])) show(L.d7, 0); if (p >= SEG.lounge[0]) dim(L.d7, 1); if (p < SEG.claw[0]) {} }
 
   // 7 · der Lichtstreifen der Krappe öffnet sich zur Lounge (Maske aus dem Streifen)
   const g = seg(p, 'lounge');
   if (p >= SEG.lounge[0] && p <= 1) {
     const w = ease(clamp(g / .45));
     show(L.d7, 1 - clamp((w - .85) / .15), 'scale(' + (1 + w * .06).toFixed(4) + ')');
-    const half = 2 + w * 98; // halbe Höhe des Streifens in % (diagonal)
-    L.d8w.style.clipPath = w >= .999 ? 'none' : 'polygon(0% ' + (62 - half) + '%,100% ' + (30 - half) + '%,100% ' + (30 + half) + '%,0% ' + (62 + half) + '%)';
+    // Lichtstreifen in LRD7: von (0, .86) nach (.45, .37) im Bild → auf den Bildschirm umgerechnet und verlängert
+    const A = pt(L.d7, PT.streak[0]), Bq = pt(L.d7, PT.streak[1]), Wd = innerWidth, m = (Bq.y - A.y) / (Bq.x - A.x || 1);
+    const y0 = (A.y - m * A.x) / H * 100, y1 = (A.y + m * (Wd - A.x)) / H * 100, half = .6 + w * w * 160;
+    L.d8w.style.clipPath = w >= .999 ? 'none' : 'polygon(0% ' + (y0 - half).toFixed(2) + '%,100% ' + (y1 - half).toFixed(2) + '%,100% ' + (y1 + half).toFixed(2) + '%,0% ' + (y0 + half).toFixed(2) + '%)';
     show(L.d8w, w > .001 ? 1 : 0);
-    // 8 · hinaus: Fahrt durch die beleuchtete Vitrine, die helle Galerie übernimmt
+    // 8 · hinaus: Kamera fährt in die beleuchtete Vitrine hinten, ihr Licht wird hell (Lichtschnitt in Galerie-Weiß),
+    //     dann ist man in der hellen Galerie („Treten Sie ein.“)
     const o = seg(p, 'out');
     const Pv = pt(L.d8, PT.LRD8vit);
     L.d8w.style.transformOrigin = Pv.x + 'px ' + Pv.y + 'px';
-    L.d8w.style.transform = 'scale(' + (1 + .04 * clamp(g) + ease(o) * .25).toFixed(4) + ')';
-    L.d8w.style.opacity = (1 - smooth(clamp((o - .35) / .65))).toFixed(3);
-  } else show(L.d8w, 0);
-  L.stage.style.background = p > SEG.out[0] ? 'rgba(5,6,12,' + (1 - smooth(clamp((seg(p, 'out') - .35) / .65))).toFixed(3) + ')' : '#05060c';
+    L.d8w.style.transform = 'scale(' + (1 + .04 * clamp(g) + ease(clamp(o / .6)) * .25).toFixed(4) + ')';
+    L.d8w.style.filter = o > 0 ? 'brightness(' + (1 + Math.pow(clamp(o / .6), 2) * 2.5).toFixed(2) + ')' : 'none';
+    if (p > SEG.out[0]) L.d8w.style.opacity = o < .6 ? 1 : 0;
+  } else { show(L.d8w, 0); L.d8w.style.filter = 'none'; }
+  const oo = seg(p, 'out');
+  if (p > SEG.out[0]) {
+    L.flash.style.background = '#f6f3ee';
+    L.flash.style.opacity = (smooth(clamp((oo - .2) / .4)) * (1 - smooth(clamp((oo - .65) / .35)))).toFixed(3);
+    L.stage.style.background = oo < .6 ? '#05060c' : 'transparent';
+  } else { L.flash.style.background = ''; L.stage.style.background = '#05060c'; }
 
   // Wahl-Knöpfe genau unter den drei Ringen
   if (p > .45 && p < .6) PB.forEach(b => { const q = pt(L.d5, PT.LRD5[b.dataset.r]); b.style.left = q.x.toFixed(1) + 'px'; b.style.opacity = p < SEG.det[0] ? LW[b.dataset.r].toFixed(3) : 1; });
