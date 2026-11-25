@@ -221,3 +221,19 @@ function frame(now) {
 requestAnimationFrame(frame);
 $$('[data-njump]', sec).forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const k = +a.dataset.njump; scrollTo({ top: sec.offsetTop + (sec.offsetHeight - innerHeight) * k, behavior: RM ? 'auto' : 'smooth' }); }));
 })();
+
+/* Unterseiten: Die Lupe öffnet die Seite (Kreis wächst vom Klickpunkt), Rückweg an dieselbe Stelle */
+(() => {
+  const RMm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const q = location.search;
+  document.querySelectorAll('[data-sub]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); try { sessionStorage.setItem('lr_y', String(scrollY)); } catch (er) {}
+    const href = a.getAttribute('href') + q, r = a.getBoundingClientRect(), x = e.clientX || r.left + r.width / 2, y = e.clientY || r.top + r.height / 2;
+    if (RMm) { location.href = href; return; }
+    const o = document.createElement('div'); o.className = 'lupe-go'; o.style.setProperty('--x', x + 'px'); o.style.setProperty('--y', y + 'px'); document.body.appendChild(o);
+    requestAnimationFrame(() => o.classList.add('on')); setTimeout(() => location.href = href, 650);
+  }));
+  if (location.hash === '#zurueck') { let y = null; try { y = sessionStorage.getItem('lr_y'); } catch (er) {}
+    history.replaceState(null, '', location.pathname + location.search);
+    if (y) { document.documentElement.style.scrollBehavior = 'auto'; const go = () => scrollTo(0, +y); go(); addEventListener('load', go); setTimeout(() => { go(); document.documentElement.style.scrollBehavior = ''; }, 300); } }
+})();
