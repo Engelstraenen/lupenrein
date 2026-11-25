@@ -1,0 +1,110 @@
+<title>LUPENREIN Unterseite Abnahme</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: eine Spalte, je Storyboard-Panel ein Band: Storyboard | Seite Laptop | Seite Handy. Bewusst nur dunkel (wie die Seite). */
+:root{
+  --bg:#07080d; --panel:#11131b; --line:#262a38; --fg:#f2f1ec; --mut:#a3a6b4; --acc:#a9bcff; --on-acc:#07080d;
+  --f-d:"Cormorant Garamond",Georgia,serif; --f-b:Inter,system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-b);margin:0}
+.wrap{max-width:1500px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+h1,h2{font-family:var(--f-d);font-weight:500;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(38px,5vw,68px);line-height:1}
+h2{font-size:clamp(24px,2.4vw,34px);line-height:1.1}
+.top{display:grid;gap:18px}
+.status{display:flex;flex-wrap:wrap;gap:10px}
+.pill{border:1px solid var(--line);background:var(--panel);padding:8px 12px;font-size:14px;font-weight:500;border-radius:999px}
+.pill b{color:var(--acc);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;background:var(--acc);color:var(--on-acc);font-weight:600;text-decoration:none;letter-spacing:.04em;font-size:15px;border:0;border-radius:999px;cursor:pointer;font-family:var(--f-b)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+code.url{font-size:14px;color:var(--mut);word-break:break-all}
+.ch{display:grid;gap:14px;padding-top:28px;border-top:1px solid var(--line)}
+.ch-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.ch-h .n{font-family:var(--f-d);font-size:clamp(30px,3vw,44px);color:var(--acc);line-height:1}
+.grid{display:grid;grid-template-columns:1fr 1fr .3fr;gap:14px;align-items:start}
+figure{margin:0;display:grid;gap:6px;min-width:0}
+figure img{width:100%;height:auto;display:block;border:1px solid var(--line);cursor:zoom-in;background:#000}
+figcaption{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+.note{font-size:15px;color:var(--fg);background:var(--panel);border-left:3px solid var(--acc);padding:10px 14px;max-width:80ch;margin:0}
+.note.ok{border-left-color:var(--line);color:var(--mut)}
+pre{background:var(--panel);border:1px solid var(--line);padding:14px;overflow-x:auto;font-size:13.5px;margin:0;white-space:pre-wrap;word-break:break-all}
+.box{display:grid;gap:12px}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:20;cursor:zoom-out}
+.lb img{max-width:100%;max-height:100%;object-fit:contain}
+@media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.grid figure:nth-child(3){grid-column:span 2;max-width:260px}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}.grid figure:nth-child(3){grid-column:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>LUPENREIN · Unterseite Verlobungsringe</h1>
+    <div class="status">
+      <span class="pill"><b>Online</b> · Zwischenstand</span>
+      <span class="pill">Storyboard „Die Lupe öffnet die Seite“</span>
+      <span class="pill">Handy 4 Größen · 0 Befunde</span>
+      <span class="pill">Offen: Konfigurator-Varianten, Licht-Vergleich</span>
+    </div>
+    <div class="actions">
+      <a class="btn" href="https://engelstraenen.github.io/lupenrein/verlobungsringe.html" target="_blank" rel="noopener">Unterseite öffnen</a>
+      <code class="url">https://engelstraenen.github.io/lupenrein/verlobungsringe.html</code>
+    </div>
+    <p class="note ok">Je Panel: links das Storyboard, Mitte die Seite am Laptop, rechts am Handy. Bild antippen = groß. Auf der Hauptseite öffnet „Mehr über Verlobungsringe“ (Galerie) bzw. „Mehr erfahren“ (Ring-Detail) diese Seite.</p>
+  </header>
+
+  <section class="ch"><div class="ch-h"><span class="n">1</span><h2>Main page: Lupe über dem Ring</h2></div>
+    <div class="grid"><figure><img src="1-storyboard.jpg" alt="Storyboard Panel 1"><figcaption>Storyboard</figcaption></figure><figure><img src="1-desktop.jpg" alt="Seite Panel 1 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="1-handy.jpg" alt="Seite Panel 1 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note ok">Wie im Storyboard: Ring unter der Lupe, „Lupenrein.“ und Knopf. Im Glas der Lupe liegt schon das Makrofoto.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">2</span><h2>Das Glas wächst: Verlobungsringe</h2></div>
+    <div class="grid"><figure><img src="2-storyboard.jpg" alt="Storyboard Panel 2"><figcaption>Storyboard</figcaption></figure><figure><img src="2-desktop.jpg" alt="Seite Panel 2 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="2-handy.jpg" alt="Seite Panel 2 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note ok">Wie im Storyboard. Beim Scrollen wächst das Glas der Lupe, bis der Diamant das ganze Bild füllt.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">3</span><h2>Die perfekte Größe finden</h2></div>
+    <div class="grid"><figure><img src="3-storyboard.jpg" alt="Storyboard Panel 3"><figcaption>Storyboard</figcaption></figure><figure><img src="3-desktop.jpg" alt="Seite Panel 3 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="3-handy.jpg" alt="Seite Panel 3 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note">Abweichung: Die Diamanten sind wirklich in Originalgröße (nach Karten-Abgleich millimetergenau) und wirken am Laptop kleiner als im Storyboard. Der Knopf „3× durch die Lupe“ zeigt sie groß.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">4</span><h2>Ringgröße am Bildschirm messen</h2></div>
+    <div class="grid"><figure><img src="4-storyboard.jpg" alt="Storyboard Panel 4"><figcaption>Storyboard</figcaption></figure><figure><img src="4-desktop.jpg" alt="Seite Panel 4 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="4-handy.jpg" alt="Seite Panel 4 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note ok">Wie im Storyboard: Hand mit Karte am Laptop. Daneben der echte Abgleich mit Regler und Lineal (85,60 mm).</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">5</span><h2>Ihre Ringgröße ist 54</h2></div>
+    <div class="grid"><figure><img src="5-storyboard.jpg" alt="Storyboard Panel 5"><figcaption>Storyboard</figcaption></figure><figure><img src="5-desktop.jpg" alt="Seite Panel 5 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="5-handy.jpg" alt="Seite Panel 5 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note ok">Wie im Storyboard: blauer Kreis um den Ring, große Zahl. Dazu ein kleiner Kreis in echter Größe zum Auflegen des eigenen Rings.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">6</span><h2>Gestalten Sie Ihren Ring</h2></div>
+    <div class="grid"><figure><img src="6-storyboard.jpg" alt="Storyboard Panel 6"><figcaption>Storyboard</figcaption></figure><figure><img src="6-desktop.jpg" alt="Seite Panel 6 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="6-handy.jpg" alt="Seite Panel 6 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note">Offen: Die Varianten (Gelbgold, Roségold, Platin, Rund, Oval, Kissen) rendern noch auf Dreamina. Bis dahin sind nur fertige Kombinationen wählbar.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">7</span><h2>Jeder Moment. Ein neues Licht.</h2></div>
+    <div class="grid"><figure><img src="7-storyboard.jpg" alt="Storyboard Panel 7"><figcaption>Storyboard</figcaption></figure><figure><img src="7-desktop.jpg" alt="Seite Panel 7 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="7-handy.jpg" alt="Seite Panel 7 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note">Offen: Tageslicht- und Kerzenfoto rendern noch auf sjinn. Bis dahin ist dieser Abschnitt ausgeblendet.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">8</span><h2>Fragen, die wichtig sind</h2></div>
+    <div class="grid"><figure><img src="8-storyboard.jpg" alt="Storyboard Panel 8"><figcaption>Storyboard</figcaption></figure><figure><img src="8-desktop.jpg" alt="Seite Panel 8 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="8-handy.jpg" alt="Seite Panel 8 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note ok">Wie im Storyboard: Fragen links, Beraterin mit Tablett rechts, „Persönlich beraten lassen“ führt zum Termin auf der Hauptseite.</p></section>
+
+  <section class="ch"><div class="ch-h"><span class="n">9</span><h2>Überall. In Originalgröße.</h2></div>
+    <div class="grid"><figure><img src="9-storyboard.jpg" alt="Storyboard Panel 9"><figcaption>Storyboard</figcaption></figure><figure><img src="9-desktop.jpg" alt="Seite Panel 9 Laptop"><figcaption>Seite · Laptop</figcaption></figure><figure><img src="9-handy.jpg" alt="Seite Panel 9 Handy"><figcaption>Handy</figcaption></figure></div>
+    <p class="note ok">Handy zeigt die Diamanten in Originalgröße. „Zurück zur Galerie“ führt an genau die Stelle, von der man kam.</p></section>
+
+  <section class="ch box"><h2>Zum Einbetten</h2>
+    <pre id="emb">&lt;iframe src="https://engelstraenen.github.io/lupenrein/" width="100%" height="800" style="border:0" loading="lazy" title="LUPENREIN Demo"&gt;&lt;/iframe&gt;</pre>
+    <div class="actions"><button class="btn ghost" id="copy" type="button">Code kopieren</button><span id="copied" class="url" hidden>Kopiert</span></div>
+  </section>
+</div>
+<div class="lb" id="lb" hidden><img id="lbImg" alt=""></div>
+<script>
+const lb=document.getElementById('lb'),li=document.getElementById('lbImg');
+document.querySelectorAll('figure img').forEach(i=>i.addEventListener('click',()=>{li.src=i.src;li.alt=i.alt;lb.hidden=false;}));
+lb.addEventListener('click',()=>{lb.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true;});
+document.getElementById('copy').addEventListener('click',()=>{const t=document.getElementById('emb').textContent;const ok=()=>{const c=document.getElementById('copied');c.hidden=false;setTimeout(()=>c.hidden=true,2000);};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('emb'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(ok,sel);}else sel();});
+</script>

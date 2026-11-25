@@ -150,3 +150,4 @@ body.leave main{opacity:0;transition:opacity .45s}
   .dia-row figure{flex:0 0 calc(25% - 8px);min-width:0}
 }
 .faq details:not([open]) p{display:none}
+#licht[hidden]{display:none}
