@@ -38,6 +38,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - (erledigt) Wahl: Mix.
 
 ## 9. Entschieden
+- 25.11.2026 Eugen: „UNTERSEITE CONFIRMED“ (Verlobungsringe: Lupe in Glasform, Facetten-Hintergrund mit Bewegung, Karten-Abgleich, Ringgröße mit mitwachsendem Ring, Konfigurator 4×4, Licht-Vergleich, Fragen). Vorlage für weitere Unterseiten.
 - 25.11.2026 Eugen (mehrfach, verärgert): JEDER Abschnitt hat ein echtes Foto im Hintergrund, nie nur Schwarz/Farbe, keine schwarzen Scrollstrecken. Fehlt ein neues Foto, sofort ein vorhandenes passendes Foto einsetzen statt auf eine Bild-Schlange zu warten. „Originalgröße“ = Facetten-Foto LRD3 (Blick in den Diamanten) als Anschluss an den Lupen-Zoom.
 - 25.11.2026 Eugen: Unterseite Verlobungsringe = Storyboard „Lupe“ (U1). KEIN Weiß: die Lupen-Geschichte bleibt durchgehend dunkel, kein weißer Lichtschnitt, keine langen Scrollstrecken ohne Handlung („weißer Hintergrund komplett scheiße“). Konfigurator: jede angebotene Steinform muss in jedem Metall ein Foto haben.
 - 25.11.2026 Eugen: Einstieg = Storyboard 2 „Schwarz mit Lichtschlitzen“ (vor der weißen Galerie, Abschnitt `#nacht`). Ring Weißgold Smaragdschliff dreht sich im Film, Auswahl Solitär/Halo/Klassisch. Drehbuch `docs/einstieg_s2.md`.
