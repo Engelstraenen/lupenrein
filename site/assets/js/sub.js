@@ -125,6 +125,7 @@ cfImg.src = src('LRD6'); conf();
 
 /* 7 · Vergleich Tageslicht / Kerzenschein */
 const cmp = $('#cmp'), cmpR = $('#cmpR');
+if (!mob()) { cmpR.value = 27; cmp.style.setProperty('--p', '27%'); } // Trennlinie auf dem Ring (Ring steht im Foto links)
 cmpR.addEventListener('input', () => cmp.style.setProperty('--p', cmpR.value + '%'));
 
 /* Reservieren */
