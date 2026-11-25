@@ -149,7 +149,7 @@ function placeRing() { const im = $('#ringgroesse .lp-bg'); if (!im || !im.natur
   im.style.transformOrigin = (RS.x * 100).toFixed(2) + '% ' + (RS.y * 100).toFixed(2) + '%'; im.style.transform = 'scale(' + k.toFixed(4) + ')';
   rsRing.style.setProperty('--rx', rx.toFixed(1) + 'px'); rsRing.style.setProperty('--ry', ry.toFixed(1) + 'px'); rsRing.style.setProperty('--rw', (RS.w * dw * k).toFixed(1) + 'px'); }
 function frame() { introFrame(); placeRing();
-  $$('.lp-photo .lp-bg').filter(im => !im.closest('#ringgroesse')).forEach(im => { const r = im.parentElement.getBoundingClientRect(), k = clamp(1 - (r.top + r.height) / (innerHeight + r.height)); im.style.transform = RM ? 'none' : 'scale(' + (1.06 - .06 * k).toFixed(4) + ')'; });
+  $$('.lp-photo .lp-bg').filter(im => !im.closest('#ringgroesse') && !im.classList.contains('lp-facets')).forEach(im => { const r = im.parentElement.getBoundingClientRect(), k = clamp(1 - (r.top + r.height) / (innerHeight + r.height)); im.style.transform = RM ? 'none' : 'scale(' + (1.06 - .06 * k).toFixed(4) + ')'; });
   requestAnimationFrame(frame); }
 requestAnimationFrame(frame);
 addEventListener('resize', () => { sizeDia(); ringFrame(); });

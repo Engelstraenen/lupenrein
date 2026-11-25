@@ -187,3 +187,9 @@ body.leave main{opacity:0;transition:opacity .45s}
 #groesse.lp-photo::after{background:linear-gradient(90deg,rgba(5,6,12,.8) 0%,rgba(5,6,12,.45) 50%,rgba(5,6,12,.25) 100%)}
 #groesse .dia img{filter:drop-shadow(0 0 10px rgba(255,255,255,.18))}
 .lp-intro{overflow:clip}
+
+/* Eugen 25.11.: Hintergrund muss sichtbar sein und leben → Facetten hell genug + langsame Kamerabewegung */
+#groesse .lp-facets{filter:brightness(.85) saturate(.9) contrast(1.05);animation:facetDrift 26s ease-in-out infinite alternate;transform-origin:60% 45%}
+@keyframes facetDrift{0%{transform:scale(1.04) rotate(0deg) translate(0,0)}50%{transform:scale(1.12) rotate(1.2deg) translate(-1.5%,1%)}100%{transform:scale(1.07) rotate(-.8deg) translate(1.5%,-1%)}}
+#groesse.lp-photo::after{background:linear-gradient(90deg,rgba(5,6,12,.72) 0%,rgba(5,6,12,.38) 42%,rgba(5,6,12,.05) 75%,rgba(5,6,12,0) 100%),linear-gradient(0deg,rgba(5,6,12,.55) 0%,rgba(5,6,12,0) 40%)}
+@media (prefers-reduced-motion:reduce){#groesse .lp-facets{animation:none}}
