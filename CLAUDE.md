@@ -38,6 +38,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - (erledigt) Wahl: Mix.
 
 ## 9. Entschieden
+- 25.11.2026 Eugen (mehrfach, verärgert): JEDER Abschnitt hat ein echtes Foto im Hintergrund, nie nur Schwarz/Farbe, keine schwarzen Scrollstrecken. Fehlt ein neues Foto, sofort ein vorhandenes passendes Foto einsetzen statt auf eine Bild-Schlange zu warten. „Originalgröße“ = Facetten-Foto LRD3 (Blick in den Diamanten) als Anschluss an den Lupen-Zoom.
 - 25.11.2026 Eugen: Unterseite Verlobungsringe = Storyboard „Lupe“ (U1). KEIN Weiß: die Lupen-Geschichte bleibt durchgehend dunkel, kein weißer Lichtschnitt, keine langen Scrollstrecken ohne Handlung („weißer Hintergrund komplett scheiße“). Konfigurator: jede angebotene Steinform muss in jedem Metall ein Foto haben.
 - 25.11.2026 Eugen: Einstieg = Storyboard 2 „Schwarz mit Lichtschlitzen“ (vor der weißen Galerie, Abschnitt `#nacht`). Ring Weißgold Smaragdschliff dreht sich im Film, Auswahl Solitär/Halo/Klassisch. Drehbuch `docs/einstieg_s2.md`.
 - 25.11.2026 Eugen: Übergänge = Kamerafahrt (Storyboard U3, `?uebergang=fahrt` jetzt Standard). Lichtstrahl „sieht billig aus“ → raus (nur noch per `?uebergang=licht`). Neuer Wunsch: Einstieg wie Hollywood/High-End-Werbung (Ring schwebt und dreht sich im dunklen Raum, harter Lichtstrahl, Makro-Nahaufnahmen, Diamant funkelt) → 3 Storyboards LRH1–3 (`tools/prompts_hollywood.json`). Keine „random“ Code-Effekte mehr statt echter Filmbilder.
