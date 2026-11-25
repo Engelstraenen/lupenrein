@@ -38,6 +38,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - (erledigt) Wahl: Mix.
 
 ## 9. Entschieden
+- 25.11.2026 Eugen: Einstieg = Storyboard 2 „Schwarz mit Lichtschlitzen“ (vor der weißen Galerie, Abschnitt `#nacht`). Ring Weißgold Smaragdschliff dreht sich im Film, Auswahl Solitär/Halo/Klassisch. Drehbuch `docs/einstieg_s2.md`.
 - 25.11.2026 Eugen: Übergänge = Kamerafahrt (Storyboard U3, `?uebergang=fahrt` jetzt Standard). Lichtstrahl „sieht billig aus“ → raus (nur noch per `?uebergang=licht`). Neuer Wunsch: Einstieg wie Hollywood/High-End-Werbung (Ring schwebt und dreht sich im dunklen Raum, harter Lichtstrahl, Makro-Nahaufnahmen, Diamant funkelt) → 3 Storyboards LRH1–3 (`tools/prompts_hollywood.json`). Keine „random“ Code-Effekte mehr statt echter Filmbilder.
 - 24.11.2026 Regel V2.66: eine durchgehende Geschichte, Übergangs-Drehbuch `docs/uebergaenge.md`.
 - 24.11.2026 Eugen: NEUAUFBAU „Weiße Galerie“ (Storyboard `konzepte/5-weisse-galerie.png`, LRT2) bestätigt. Leitidee Vitrinenflug: Scrollen zoomt durch die Glasvitrinen von Fach zu Fach (Fotos, keine WebGL-Kacheln – Screenshot-Entwurf war „richtig scheiße“). Farbwelt Kreideweiß + Kobalt (FARBWELTEN.md). Bilder LRB01–24 auf sjinn GPT Image 2 Unlimited (4K = 3584×2016). Alte Schwarz-Gold-Bilder in `assets-roh/alt-schwarzgold/`. Immer 2–3 Storyboards zur Wahl.
