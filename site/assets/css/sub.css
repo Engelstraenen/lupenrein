@@ -163,7 +163,7 @@ body.leave main{opacity:0;transition:opacity .45s}
 #groesse .dia-tg button{color:#f3f1ec}
 #groesse .dia-tg button[aria-pressed=true]{background:#f3f1ec;color:#05060c}
 #groesse{background:radial-gradient(70% 60% at 50% 60%,#0d1122,#05060c 70%)}
-.lp-intro{background:#05060c}.lp-stage{transform-origin:50% 55%;will-change:transform,opacity}
+.lp-intro{background:#05060c}.lp-stage{transform-origin:62% 45%;will-change:transform}
 .cf-met button[hidden],.cf-shp button[hidden],#licht[hidden],[hidden]{display:none!important}
 #licht .lp-tl{left:auto;right:clamp(16px,4.2vw,72px);text-align:right;max-width:min(460px,86vw)} #licht .lp-tl .lp-lead{margin-left:auto} @media (max-width:899px){#licht .lp-tl{right:16px;left:16px;text-align:left} #licht .lp-tl .lp-lead{margin-left:0} .cmp>img,.cmp-b img{object-position:22% 50%}}
 @media (max-width:899px){#licht .lp-tl{top:auto;bottom:86px} #licht .lp-tl .lp-lead{display:none}}
@@ -181,3 +181,9 @@ body.leave main{opacity:0;transition:opacity .45s}
 .cmp-h{width:56px;height:56px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
 /* Originalgröße auf dem Samt-Tablett */
 #groesse.lp-photo::after{background:linear-gradient(90deg,rgba(5,6,12,.78) 0%,rgba(5,6,12,.35) 45%,rgba(5,6,12,.1) 100%)}
+
+/* Originalgröße: im Inneren des Diamanten (Facetten-Foto), abgedunkelt damit die Steine und Texte lesbar sind */
+#groesse .lp-facets{filter:brightness(.42) saturate(.85)}
+#groesse.lp-photo::after{background:linear-gradient(90deg,rgba(5,6,12,.8) 0%,rgba(5,6,12,.45) 50%,rgba(5,6,12,.25) 100%)}
+#groesse .dia img{filter:drop-shadow(0 0 10px rgba(255,255,255,.18))}
+.lp-intro{overflow:clip}

@@ -52,11 +52,10 @@ function introFrame() {
   // im Glas: anfangs vergrößerter Ausschnitt um die Glasmitte, am Ende das volle Makrobild
   const z = 1.35 - .35 * g; p2.style.transformOrigin = cx + 'px ' + cy + 'px'; p2.style.transform = 'scale(' + z.toFixed(4) + ')';
   p1.style.transform = 'none';
-  // Ende: Kamera zieht vom Diamanten zurück, er schrumpft zur Größe der Steine darunter
-  const out = ease(clamp((p - .82) / .18));
-  $('.lp-stage').style.transform = out > 0 ? 'scale(' + (1 - out * .62).toFixed(4) + ')' : 'none';
-  $('.lp-stage').style.opacity = (1 - smooth(clamp((p - .9) / .1))).toFixed(3);
-  $('.lp-stage').style.borderRadius = (out * 50).toFixed(1) + '%';
+  // Ende: die Kamera fährt weiter in den Diamanten (kein Schwarz), darunter beginnt der Abschnitt mit dem Facetten-Foto
+  const inn = ease(clamp((p - .8) / .2));
+  $('.lp-stage').style.transform = inn > 0 ? 'scale(' + (1 + inn * .35).toFixed(4) + ')' : 'none';
+  $('.lp-stage').style.opacity = 1; $('.lp-stage').style.borderRadius = '0';
   const a = 1 - smooth(clamp((p - .03) / .1)), b = smooth(clamp((p - .58) / .1)) * (1 - smooth(clamp((p - .95) / .05)));
   t1.style.opacity = a.toFixed(3); t1.style.visibility = a > .01 ? 'visible' : 'hidden'; t1.style.display = a > .01 ? '' : 'none';
   t2.style.opacity = b.toFixed(3); t2.style.visibility = b > .01 ? 'visible' : 'hidden'; t2.style.display = b > .01 ? '' : 'none';
