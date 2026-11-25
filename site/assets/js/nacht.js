@@ -104,7 +104,8 @@ function frame(now) {
   //     wird hell (Lichtschnitt) und aus dem Licht kommt das Facettenbild. Nie zwei Bilder übereinander.
   const b = seg(p, 'f2'), inB = p >= SEG.f2[0] && p < SEG.hand[0] + .08;
   const has2 = scrub(v2, b);
-  show(L.v2, has2 && inB ? 1 : 0);
+  show(L.v2, has2 && inB ? 1 : 0, mob() ? 'none' : 'translateX(' + (12 * (1 - ease(clamp(b / .5)))).toFixed(2) + '%)');
+  if (has2 && p >= SEG.f2[0]) show(L.v1, 0);
   if (!has2 && inB) {
     const kb = clamp(b / .55), first = kb < 1;
     const src1 = has1 ? L.v1 : L.d2;
