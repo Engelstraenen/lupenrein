@@ -42,13 +42,15 @@ heroLayout(); addEventListener('resize', heroLayout);
    ?uebergang=licht  → Lichtstrahl aus dem Diamanten führt von Stück zu Stück (Standard, Storyboard U2)
    ?uebergang=fahrt  → Kamerafahrt: Kamera fliegt durch eine Glastür im Bild in den nächsten Raum (Storyboard U3) */
 const shots = $$('.shot');
-const FLOW = new URLSearchParams(location.search).get('uebergang') === 'fahrt' ? 'fahrt' : 'licht';
+// Eugen 25.11.2026: Kamerafahrt fest (Lichtstrahl „sieht billig aus“, nur noch per ?uebergang=licht erreichbar)
+const FLOW = new URLSearchParams(location.search).get('uebergang') === 'licht' ? 'licht' : 'fahrt';
 document.documentElement.dataset.flow = FLOW;
 const PW = .16;            // Breite der Glastür beim Start der Fahrt (Anteil der Bildschirmbreite)
 const F = {};
 // Punkte in Bild-Anteilen (u, v) je Fach: Schmuckstück (Strahl) und Tür im Hintergrund (Fahrt)
 const ANCHOR = [[.493, .445], [.29, .48], [.405, .51], [.5, .5], 'vit', [.852, .47], [.311, .56], [.368, .78], [.486, .87]];
-const PORTAL = [[.493, .47], [.80, .33], [.35, .18], [.12, .30], [.5, .42], [.15, .45], [.80, .22], [.88, .25], [.5, .4]];
+// Türen auf echte Vitrinen/Durchgänge im Hintergrund der Fotos (Kalibrier-Screens 1440×900, 25.11.)
+const PORTAL = [[.493, .47], [.15, .33], [.495, .22], [.12, .28], [.5, .42], [.168, .46], [.76, .2], [.69, .35], [.5, .4]];
 // Bild-Anteil → Bildschirm-Punkt (berücksichtigt object-fit:cover, object-position und aktuelle Transformation)
 function imgPt(k, uv) {
   const sh = shots[k]; if (!sh) return { x: innerWidth / 2, y: innerHeight / 2 };
@@ -126,10 +128,6 @@ function ray(i, t, e, loc) {
   spectral(pts, fade, 2.2); const Hd = bez(A, C, B, head); star(Hd.x, Hd.y, 4 + 3 * Math.sin(Math.PI * t), fade);
   if (t > .85) star(B.x, B.y, 4 + 10 * (1 - t), clamp((t - .85) / .1));
 }
-// Umschalter zum Vergleichen der beiden Varianten
-const swEl = document.createElement('div'); swEl.className = 'flow-sw';
-swEl.innerHTML = '<span>Übergang</span><a href="?uebergang=licht"' + (FLOW === 'licht' ? ' class="on"' : '') + '>Lichtstrahl</a><a href="?uebergang=fahrt"' + (FLOW === 'fahrt' ? ' class="on"' : '') + '>Kamerafahrt</a>';
-document.body.appendChild(swEl);
 
 /* Bühne: Fachwechsel per Scroll */
 const scenes = $$('.scene');
