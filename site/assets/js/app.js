@@ -209,7 +209,7 @@ const ring = b => { $('#pvCap').textContent = b.dataset.c; $('#pvTxt').textConte
 pick(ringart, '.chip', ring); ring($('.chip.on', ringart));
 
 /* Trauringe */
-let gold = 'gelb'; const GI = IMG.LRB19M && IMG.LRB21M ? { gelb: 'LRB05M', weiss: 'LRB19M', rose: 'LRB21M' } : { gelb: 'LRB05', weiss: 'LRB19', rose: 'LRB21' }; // dunkle Nahaufnahmen (Eugen 26.11.)
+let gold = 'gelb'; const GI = { gelb: 'LRB05M', weiss: 'LRB19M', rose: 'LRB21M' }; // dunkle Nahaufnahmen (Eugen 26.11.), fehlt ein Metall, wird es ausgeblendet
 const tW = $('#tWidth'), eng = $('#tEngr');
 function trau() { const w = +tW.value; $('#wOut').textContent = w.toFixed(1).replace('.', ',') + ' mm'; fillR(tW); $('#engrOut').textContent = eng.value.trim() || ' '; }
 $$('.sw').forEach(b => { if (!IMG[GI[b.dataset.gold]]) b.hidden = true; });
