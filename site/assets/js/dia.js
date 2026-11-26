@@ -17,7 +17,7 @@ const de = (n, d = 2) => n.toLocaleString('de-DE', { minimumFractionDigits: d, m
 const P = {
   LRT1: { x: .719, y: .56 },           // Stein im Briefchen (gemessen)
   LRT2: { x: .63, y: .467 },           // Stein in der Pinzette (gemessen)
-  LRT3: { x: .66, y: .5, d: .62 },     // Stein unter der Lupe, d = Durchmesser in Bildhöhe
+  LRT3: { x: .725, y: .507, d: .64 },  // Stein unter der Lupe (gemessen), d = Durchmesser in Bildhöhe
   LRT4: { y: .594, xs: [.385, .455, .526, .595, .665, .734, .803, .873, .941] }, // 9 Vergleichssteine D–L (gemessen)
   LRT6: { x: .691, y: .483, d: .535 },  // Stein von oben (gemessen), d = Durchmesser in Bildhöhe
   LRT5: { x: .702, y: .497, d: .051 }, // Stein auf dem Finger (gemessen), d = Durchmesser in Bildbreite (= 1 ct, 6,5 mm)
