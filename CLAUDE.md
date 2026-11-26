@@ -31,7 +31,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - Vorschau: `python3 tools/serve.py 4436` → http://localhost:4436 (Port 4436, vorher `<title>` prüfen)
 - Bilder: `python3 tools/assets.py` (assets-roh/4k → site/assets/img)
 - Handy-Prüfung: `python3 tools/mobil_check.py http://localhost:4436/`
-- Veröffentlichen: `git push -f origin $(git subtree split --prefix site main):refs/heads/gh-pages` → https://engelstraenen.github.io/lupenrein/
+- Veröffentlichen: `tools/publish.sh` (gh-pages = ein Commit aus main:site) → https://engelstraenen.github.io/lupenrein/. NIE `push $(git subtree split …)`: leerer Split löscht gh-pages und schaltet Pages ab (26.11.2026).
 - Neue sjinn-Bilder holen: `python3 tools/holen.py '{"LRA16":"<url>"}'` dann `python3 tools/assets.py`
 
 ## 8. Offene Fragen
