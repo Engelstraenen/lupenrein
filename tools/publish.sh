@@ -8,5 +8,5 @@ T=$(git rev-parse main:site)
 [[ ${#T} -eq 40 ]] || { echo "Baum site/ nicht gefunden – Abbruch"; exit 1; }
 C=$(git commit-tree "$T" -m "gh-pages: site/ aus main $(git rev-parse --short main)")
 [[ ${#C} -eq 40 ]] || { echo "Commit fehlgeschlagen – Abbruch"; exit 1; }
-git -c http.postBuffer=524288000 push -f origin "$C:refs/heads/gh-pages"
+git -c http.postBuffer=524288000 push -f origin "${C}:refs/heads/gh-pages"
 git ls-remote origin gh-pages
