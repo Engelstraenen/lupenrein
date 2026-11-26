@@ -35,6 +35,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - Neue sjinn-Bilder holen: `python3 tools/holen.py '{"LRA16":"<url>"}'` dann `python3 tools/assets.py`
 
 ## 8. Offene Fragen
+- Offene Fotos (nach und nach, ca. 1 pro Tag, Eugen 26.11.2026): Liste + Einbau-Hinweise in `docs/offene_fotos.md` (LRG Hand mit Ring 7 Größen, LRC Lupenblick je Reinheit, LRK Stein je Reinheit, LRSV1 Service-Foto, LRB23N). Seite ist live in der Akquise → nur komplette, geprüfte Serien veröffentlichen.
 - (erledigt) Wahl: Mix.
 
 ## 9. Entschieden
