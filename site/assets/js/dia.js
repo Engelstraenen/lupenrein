@@ -17,11 +17,11 @@ const de = (n, d = 2) => n.toLocaleString('de-DE', { minimumFractionDigits: d, m
 const P = {
   LRT1: { x: .719, y: .56 },           // Stein im Briefchen (gemessen)
   LRT2: { x: .63, y: .467 },           // Stein in der Pinzette (gemessen)
-  LRT3: { x: .725, y: .507, d: .64 },  // Stein unter der Lupe (gemessen), d = Durchmesser in Bildhöhe
-  LRT4: { y: .594, xs: [.385, .455, .526, .595, .665, .734, .803, .873, .941] }, // 9 Vergleichssteine D–L (gemessen)
+  LRT3: { x: .722, y: .50, d: .617 },  // Stein unter der Lupe (gemessen, sjinn 4K), d = Durchmesser in Bildhöhe
+  LRT4: { y: .536, xs: [.391, .461, .536, .606, .678, .747, .819, .891] }, // 8 Vergleichssteine D–K (gemessen, sjinn 4K)
   LRT6: { x: .691, y: .483, d: .535 },  // Stein von oben (gemessen), d = Durchmesser in Bildhöhe
-  LRT5: { x: .702, y: .497, d: .051 }, // Stein auf dem Finger (gemessen), d = Durchmesser in Bildbreite (= 1 ct, 6,5 mm)
-  LRT7: { x: .685, y: .507 }           // Stein im Solitär (gemessen)
+  LRT5: { x: .702, y: .497, fw: .07 },  // Ringposition auf dem Ringfinger (unteres Glied), fw = Fingerbreite in Bildbreite (≈ 17 mm)
+  LRT7: { x: .6875, y: .522 }          // Stein im Solitär (gemessen, sjinn 4K)
 };
 
 /* Firmenname per ?firma= */
@@ -134,13 +134,13 @@ function placeInc() { const p = pt(rhBg, 'LRT3'), q = at(rhBg, p); rh.style.setP
 
 /* Farbe */
 const fa = $('#farbe'), faBg = $('#faBg'), faRow = $('#faRow'), faSlit = $('#faSlit');
-faRow.innerHTML = COL.slice(0, 9).map((c, i) => `<button type="button" role="radio" aria-checked="false" data-i="${i}" aria-label="Farbe ${c}, ${COLTXT(i)}">${c}</button>`).join('');
-function setCol(i, from) { if (i > 8 && from !== 'w') i = 8; S.col = i; $$('button', faRow).forEach(b => b.setAttribute('aria-checked', +b.dataset.i === i));
+const NF = P.LRT4.xs.length; faRow.innerHTML = COL.slice(0, NF).map((c, i) => `<button type="button" role="radio" aria-checked="false" data-i="${i}" aria-label="Farbe ${c}, ${COLTXT(i)}">${c}</button>`).join('');
+function setCol(i, from) { if (i > NF - 1 && from !== 'w') i = NF - 1; S.col = i; $$('button', faRow).forEach(b => b.setAttribute('aria-checked', +b.dataset.i === i));
   $('#faOut').innerHTML = '<b>' + COL[i] + '</b>' + (COLTXT(i)[0].toUpperCase() + COLTXT(i).slice(1)) + '. ' + (i <= 2 ? 'Kein Farbton, auch nicht im Vergleich. Die Skala beginnt bei D.' : i <= 6 ? 'Nur im direkten Vergleich ein Hauch von Wärme, gefasst kaum zu sehen.' : 'Ein zarter warmer Ton. In Gelb- oder Roségold fällt er kaum auf.');
   placeFa(); if (from !== 'w') { $('#wCol').value = i; wUpd(); } }
 faRow.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setCol(+b.dataset.i); });
-faRow.addEventListener('keydown', e => { if (!/Arrow(Left|Right)/.test(e.key)) return; e.preventDefault(); setCol(clamp(Math.min(S.col, 8) + (e.key === 'ArrowRight' ? 1 : -1), 0, 8)); $$('button', faRow)[Math.min(S.col, 8)].focus(); });
-function placeFa() { const p = faBg.dataset.fb ? { y: .7, xs: [.2, .29, .385, .48, .575, .67, .765, .86, .93] } : P.LRT4, sel = Math.min(S.col, 8);
+faRow.addEventListener('keydown', e => { if (!/Arrow(Left|Right)/.test(e.key)) return; e.preventDefault(); setCol(clamp(Math.min(S.col, NF - 1) + (e.key === 'ArrowRight' ? 1 : -1), 0, NF - 1)); $$('button', faRow)[Math.min(S.col, NF - 1)].focus(); });
+function placeFa() { const p = faBg.dataset.fb ? { y: .7, xs: [.2, .29, .385, .48, .575, .67, .765, .86, .93] } : P.LRT4, sel = Math.min(S.col, NF - 1);
   // Handy: die Kamera fährt am Tablett entlang zum gewählten Stein
   if (mob()) { const vis = innerWidth / (faBg.offsetHeight * 16 / 9); faBg.style.objectPosition = (clamp((p.xs[sel] - vis / 2) / Math.max(.01, 1 - vis)) * 100).toFixed(2) + '% 50%'; } else { const vis = Math.min(1, (innerWidth / fa.offsetHeight) / (16 / 9)), mid = (p.xs[0] + p.xs[p.xs.length - 1]) / 2; faBg.style.objectPosition = (vis >= 1 ? 50 : clamp((mid - vis / 2) / (1 - vis)) * 100).toFixed(2) + '% 50%'; }
   const c = cov(faBg);
@@ -153,14 +153,14 @@ function placeFa() { const p = faBg.dataset.fb ? { y: .7, xs: [.2, .29, .385, .4
 /* Größe am Finger */
 const gr = $('#groesse'), grBg = $('#grBg'), grR = $('#grR'), grRing = $('#grRing'), grBars = $('#grBars'), grRuler = $('#grRuler');
 focus(grBg, 'LRT5');
-grRing.setAttribute('viewBox', '0 0 100 100'); grRing.innerHTML = '<circle cx="50" cy="50" r="50"/><line x1="0" y1="50" x2="-30" y2="50"/><line x1="100" y1="50" x2="130" y2="50"/>';
+// Der Diamant selbst (freigestellt aus LRT6) liegt an der Ringposition und wächst mit dem Karat, maßstäblich zur Fingerbreite
 grBars.innerHTML = CT.map((c, i) => `<div data-i="${i}" role="button" tabindex="0" aria-label="${de(c[0])} Karat, ${de(c[1], 1)} Millimeter"><b>${de(c[1], 1)}</b><i></i><em>${de(c[0])}</em></div>`).join('');
 function setCt(i, from) { S.ct = i; grR.value = i; const [ct, mm] = CT[i]; $('#grOut').textContent = de(ct) + ' ct · Ø ' + de(mm, 1) + ' mm';
   $$('div', grBars).forEach(d => d.classList.toggle('on', +d.dataset.i === i)); placeGr(); if (from !== 'w') { $('#wCt').value = i; wUpd(); } }
 grR.addEventListener('input', () => setCt(+grR.value));
 grBars.addEventListener('click', e => { const d = e.target.closest('[data-i]'); if (d) setCt(+d.dataset.i); });
 grBars.addEventListener('keydown', e => { const d = e.target.closest('[data-i]'); if (d && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setCt(+d.dataset.i); } });
-function placeGr() { const p = pt(grBg, 'LRT5'), q = at(grBg, p), base = (grBg.dataset.fb ? .05 : p.d) * q.c.dw, pxmm = base / 6.5;
+function placeGr() { const p = grBg.dataset.fb ? { x: .55, y: .5, fw: .07 } : P.LRT5, q = at(grBg, p), pxmm = p.fw * q.c.dw / 17;
   gr.style.setProperty('--gx', q.x.toFixed(1) + 'px'); gr.style.setProperty('--gy', q.y.toFixed(1) + 'px'); gr.style.setProperty('--gd', (pxmm * CT[S.ct][1]).toFixed(1) + 'px');
   const w = pxmm * 10; gr.style.setProperty('--rx0', clamp(q.x - w / 2, 16, innerWidth - w - 16).toFixed(1) + 'px'); gr.style.setProperty('--rw0', w.toFixed(1) + 'px'); gr.style.setProperty('--mm', pxmm.toFixed(2) + 'px');
   grRuler.innerHTML = [0, 5, 10].map(m => `<span style="left:${m * 10}%">${m}${m === 10 ? ' mm' : ''}</span>`).join(''); }
@@ -211,7 +211,7 @@ const t0 = performance.now(); function drift(now) { if (!touched && !RM) { const
 
 /* Kamerafahrten beim Hereinscrollen: Farbe und Fassung kommen aus dem Stein (Zoom heraus) */
 function pull() { $$('.dt-pull').forEach(sec => { const im = $('.dt-fix', sec), r = sec.getBoundingClientRect(), k = RM ? 1 : smooth(clamp(1 - r.top / innerHeight));
-  const key = sec.dataset.pull, p = im.dataset.fb ? { x: .5, y: .5 } : (key === 'LRT4' ? { x: P.LRT4.xs[Math.min(S.col, 8)], y: P.LRT4.y } : P[key]), q = at(im, p);
+  const key = sec.dataset.pull, p = im.dataset.fb ? { x: .5, y: .5 } : (key === 'LRT4' ? { x: P.LRT4.xs[Math.min(S.col, NF - 1)], y: P.LRT4.y } : P[key]), q = at(im, p);
   im.style.setProperty('--ox', q.x.toFixed(1) + 'px'); im.style.setProperty('--oy', q.y.toFixed(1) + 'px'); im.style.setProperty('--z', (1 + (1 - k) * 1.4).toFixed(4));
   const ui = sec === fa ? [faRow, faSlit, $('#faOut')] : []; ui.forEach(u => u.style.opacity = clamp((k - .75) / .2).toFixed(3)); }); }
 

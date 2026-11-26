@@ -11,12 +11,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css?v=4">
+<link rel="stylesheet" href="assets/css/dunkel.css?v=1">
 </head>
 <body>
 <!-- Bühne: alle Fächer als Fotos übereinander, Scrollen fliegt durch die Vitrinen -->
 <div class="stage" id="stage" aria-hidden="true">
   <div class="shot" data-s="0"><div class="hbox" id="hbox"><img data-src="LRB01" alt=""><img data-src="LRB25" alt="" id="heroNear" class="near"></div></div>
-  <div class="shot" data-s="2"><img data-src="LRB03" alt="" style="--fx:28%"></div>
+  <div class="shot" data-s="2"><img data-src="LRB03" alt="" style="--fx:28%" id="dPhoto"><div class="dstone" id="dStone" hidden><img src="assets/img/stein_cut.webp" alt="" draggable="false"><svg viewBox="0 0 100 100" aria-hidden="true"></svg></div></div>
   <div class="shot" data-s="3"><img data-src="LRB04" alt="" id="ringShot" style="--fx:72%"></div>
   <div class="shot" data-s="4"><img data-src="LRB05" alt="" id="trauShot"></div>
   <div class="shot case" data-s="5"><img data-src="LRB02" alt="" class="bgblur"><div class="vit"><img data-src="LRB11" alt="" id="dShot"></div></div>
@@ -106,7 +107,7 @@
       <h2>Unter der Lupe <em>entschieden.</em></h2>
       <div class="c4">
         <div class="c4-stage" id="c4stage">
-          <div class="gem" id="gem"><div class="gem-img" data-img="LRB22"></div><div class="gem-tint" id="gemTint"></div><svg class="gem-inc" id="gemInc" viewBox="0 0 100 100" aria-hidden="true"></svg><div class="gem-spark" id="gemSpark"></div></div>
+          <div class="gem" id="gem"><img class="gem-img" src="assets/img/stein_cut.webp" alt="" draggable="false"><div class="gem-tint" id="gemTint"></div><svg class="gem-inc" id="gemInc" viewBox="0 0 100 100" aria-hidden="true"></svg><div class="gem-spark" id="gemSpark"></div></div>
           <div class="loupe" id="loupe" aria-hidden="true"></div>
           <p class="c4-mm" id="c4mm">Ø 6,5 mm</p>
         </div>

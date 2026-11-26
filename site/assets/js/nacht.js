@@ -201,12 +201,12 @@ function frame(now) {
     const Pv = pt(L.d8, PT.LRD8vit);
     L.d8w.style.transformOrigin = Pv.x + 'px ' + Pv.y + 'px';
     L.d8w.style.transform = 'scale(' + (1 + .04 * clamp(g) + ease(clamp(o / .6)) * .25).toFixed(4) + ')';
-    L.d8w.style.filter = o > 0 ? 'brightness(' + (1 + Math.pow(clamp(o / .6), 2) * 2.5).toFixed(2) + ')' : 'none';
+    L.d8w.style.filter = o > 0 ? 'brightness(' + (1 + Math.pow(clamp(o / .6), 2) * .6).toFixed(2) + ')' : 'none';
     if (p > SEG.out[0]) L.d8w.style.opacity = o < .6 ? 1 : 0;
   } else { show(L.d8w, 0); L.d8w.style.filter = 'none'; }
   const oo = seg(p, 'out');
   if (p > SEG.out[0]) {
-    L.flash.style.background = '#f6f3ee';
+    L.flash.style.background = '#05060c'; // Eugen 26.11.: kein Weiß mehr, Abblende ins Dunkel der Galerie
     L.flash.style.opacity = (smooth(clamp((oo - .2) / .4)) * (1 - smooth(clamp((oo - .65) / .35)))).toFixed(3);
     L.stage.style.background = oo < .6 ? '#05060c' : 'transparent';
   } else { L.flash.style.background = ''; L.stage.style.background = '#05060c'; }

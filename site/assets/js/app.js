@@ -8,7 +8,9 @@ const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const IMG = window.IMG || {};
 const mobile = () => innerWidth < 900;
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const src = (id, m) => { const x = IMG[id]; return x ? 'assets/img/' + id + (m && x.m ? '-m' : '') + '.webp?v=' + (x.v || 1) : ''; };
+// Eugen 26.11.2026: dunkle Galerie. Gibt es eine dunkle Fassung (…N), wird sie automatisch statt der hellen benutzt.
+const dk = id => IMG[id + 'N'] ? id + 'N' : id;
+const src = (id, m) => { id = dk(id); const x = IMG[id]; return x ? 'assets/img/' + id + (m && x.m ? '-m' : '') + '.webp?v=' + (x.v || 1) : ''; };
 
 /* Firmenname per ?firma= */
 const firma = new URLSearchParams(location.search).get('firma');
@@ -150,6 +152,20 @@ const fillR = r => r.style.setProperty('--v', (r.value - r.min) / (r.max - r.min
 function days(box, n = 6) { const W = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'], out = []; const d = new Date(); for (let i = 1; out.length < n; i++) { const x = new Date(d.getTime() + i * 864e5); if (x.getDay() === 0) continue; out.push('<button type="button"' + (out.length === 0 ? ' class="on"' : '') + '><small>' + W[x.getDay()] + '</small>' + x.getDate() + '.' + (x.getMonth() + 1) + '.</button>'); } box.innerHTML = out.join(''); pick(box, 'button'); }
 
 /* Diamanten: 4C + Lupe */
+// Schliff = Helligkeit/Kontrast/Schärfe, Farbe = sichtbarer warmer Ton (D farblos … M deutlich gelblich)
+function stoneFilter(cu, co) { const k = 3 - cu, y = Math.max(0, co - 1);
+  return 'brightness(' + (1 - k * .11).toFixed(2) + ') contrast(' + (1 - k * .1).toFixed(2) + ') blur(' + (k * .18).toFixed(2) + 'px) sepia(' + (y * .05).toFixed(3) + ') saturate(' + (1 + y * .1).toFixed(2) + ') hue-rotate(' + (y * 1.2).toFixed(1) + 'deg)'; }
+// Großer Stein auf dem leeren Stift im Vitrinenfoto (dunkle Fassung LRB03N): Messpunkt Steinmitte + Durchmesser bei 1 ct in Bildhöhe
+const PIN = { x: .5, y: .45, d: .17 };
+const dStone = $('#dStone'), dPhoto = $('#dPhoto');
+function bigStone(FL, svg, mm) { if (!dStone) return; if (!IMG.LRB03N) { dStone.hidden = true; return; } dStone.hidden = false;
+  $('img', dStone).style.filter = FL; $('svg', dStone).innerHTML = svg; dStone.style.setProperty('--k', (mm / 6.5).toFixed(3)); placeStone(); }
+function placeStone() { if (!dStone || dStone.hidden || !dPhoto.naturalWidth) return; const r = dPhoto.getBoundingClientRect(), sh = dPhoto.parentElement.getBoundingClientRect();
+  const bw = dPhoto.offsetWidth, bh = dPhoto.offsetHeight, iw = dPhoto.naturalWidth, ih = dPhoto.naturalHeight, sc = Math.max(bw / iw, bh / ih), dw = iw * sc, dh = ih * sc;
+  const cs = getComputedStyle(dPhoto).objectPosition.split(' '), fx = parseFloat(cs[0]) / 100, fy = parseFloat(cs[1]) / 100;
+  dStone.style.left = ((bw - dw) * (isNaN(fx) ? .5 : fx) + PIN.x * dw).toFixed(1) + 'px'; dStone.style.top = ((bh - dh) * (isNaN(fy) ? .5 : fy) + PIN.y * dh).toFixed(1) + 'px';
+  dStone.style.width = dStone.style.height = (PIN.d * dh).toFixed(1) + 'px'; }
+addEventListener('resize', placeStone); if (dPhoto) dPhoto.addEventListener('load', placeStone);
 const CUT = [['Gut', 'Gibt Licht zurück, aber nicht alles.'], ['Sehr gut', 'Viel Brillanz, kleine Verluste an den Rändern.'], ['Ausgezeichnet', 'Fast alles Licht kommt zurück.'], ['Exzellent', 'Perfekte Proportionen: maximales Feuer.']];
 const COL = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
 const CLA = ['IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'P1', 'P2'];
@@ -163,14 +179,14 @@ let lastCtl = 'clarity';
 function c4() {
   const cu = +sCut.value, co = +sCol.value, cl = +sCla.value, ca = +sCar.value;
   $('#oCut').textContent = CUT[cu][0]; $('#oColor').textContent = COL[co]; $('#oClar').textContent = CLA[cl]; $('#oCarat').textContent = CT[ca][0].toFixed(2).replace('.', ',') + ' ct';
-  gImg.style.filter = 'brightness(' + (.85 + cu * .06) + ') contrast(' + (.9 + cu * .06) + ')'; spark.style.setProperty('--sp', .25 + cu * .25);
-  tint.style.opacity = co < 3 ? 0 : (co - 2) * .065;
+  const FL = stoneFilter(cu, co); gImg.style.filter = FL; spark.style.setProperty('--sp', .25 + cu * .25);
+  tint.style.opacity = 0;
   const n = [0, 1, 2, 3, 5, 7, 10, 14, 20][cl], sz = [0, .5, .7, .9, 1.1, 1.4, 1.8, 2.5, 3.2][cl], op = [0, .3, .4, .55, .65, .8, .9, 1, 1][cl];
   let svg = INC.slice(0, n).map(([x, y, s]) => '<circle cx="' + x + '" cy="' + y + '" r="' + (s * sz).toFixed(2) + '" opacity="' + op + '"/>').join('');
   if (cl >= 5) svg += '<path d="M38 48 q6 -5 12 1 q5 4 10 -2" fill="none" stroke-width="' + (cl - 4) * .5 + '" opacity="' + op + '"/>';
-  inc.innerHTML = svg;
+  inc.innerHTML = svg; bigStone(FL, svg, CT[ca][1]);
   $('#c4mm').textContent = 'Ø ' + CT[ca][1].toFixed(1).replace('.', ',') + ' mm';
-  gem.style.transform = 'scale(' + (.55 + .45 * CT[ca][1] / 9.3) + ')';
+  gem.style.transform = 'scale(' + (.42 + .4 * CT[ca][1] / 9.3).toFixed(3) + ') translateY(-6%)';
   $('#c4info').textContent = { cut: CUT[cu][1], color: 'Farbe ' + COL[co] + ': ' + colInfo(co), clarity: 'Reinheit ' + CLA[cl] + ': ' + claInfo(cl), carat: CT[ca][0].toFixed(2).replace('.', ',') + ' ct, Ø ' + CT[ca][1].toFixed(1).replace('.', ',') + ' mm.' }[lastCtl];
   [sCut, sCol, sCla, sCar].forEach(fillR); syncLoupe();
 }

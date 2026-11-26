@@ -45,7 +45,7 @@
 
 /* Größe am Finger */
 .gr-ring{position:absolute;z-index:2;left:var(--gx,60%);top:var(--gy,50%);width:var(--gd,60px);height:var(--gd,60px);transform:translate(-50%,-50%);pointer-events:none;overflow:visible;transition:width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1)}
-.gr-ring circle{fill:none;stroke:var(--pl);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.gr-ring{filter:drop-shadow(0 2px 3px rgba(0,0,0,.55)) drop-shadow(0 0 1px rgba(0,0,0,.4))}
 .gr-ring line{stroke:var(--pl);stroke-width:1;vector-effect:non-scaling-stroke}
 .gr-ring text{fill:#fff;font:500 13px I}
 .gr-chart{margin:26px 0 0;width:min(440px,100%);padding:20px 22px;border-radius:14px;background:rgba(5,6,12,.62);backdrop-filter:blur(8px);border:1px solid rgba(var(--pl-rgb),.14)}
