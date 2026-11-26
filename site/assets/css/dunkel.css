@@ -85,3 +85,8 @@ footer,.foot{background:#05060c;color:var(--mut)}
 .gold-calc{margin-top:14px}
 .gold-out{margin-top:8px;font-size:15px;color:var(--mut)}
 .gold-out b{font:500 26px var(--serif);color:var(--ink);font-variant-numeric:tabular-nums;margin-left:6px}
+
+/* Unterseiten deutlich verlinkt (Eugen 26.11.: „wo ist die Unterseite?“) */
+.sub-btn{display:flex;width:100%;min-height:56px;margin:16px 0 10px;gap:10px;background:var(--or);color:var(--on-or);border-color:var(--or);font-size:16px;letter-spacing:.02em;box-shadow:0 0 0 1px rgba(228,231,238,.35),0 10px 30px rgba(143,166,255,.18)}
+.sub-btn:hover{background:#fff}
+.sub-btn span{transition:transform .3s}.sub-btn:hover span{transform:translateX(4px)}
