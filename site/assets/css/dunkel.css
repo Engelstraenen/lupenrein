@@ -76,3 +76,12 @@ footer,.foot{background:#05060c;color:var(--mut)}
 .dstone img{position:absolute;inset:0;width:100%;height:100%;transition:filter .5s}
 .dstone svg{position:absolute;inset:22%;width:56%;height:56%}
 .dstone svg circle,.dstone svg path{fill:rgba(10,10,14,.85);stroke:rgba(255,255,255,.25)}
+
+/* Schmuck & Uhren: Bilder groß (Eugen 26.11.: keine kleinen Bilder), Vitrine füllt die Bühne rechts der Karte */
+.shot.case .vit{left:auto;right:0;top:0;width:min(72vw,calc(100vw - 440px));height:100%;aspect-ratio:auto;transform:none;border-radius:0;box-shadow:none}
+.shot.case .vit img{object-fit:cover;object-position:50% 50%}
+.shot.case .vit::after{background:linear-gradient(90deg,rgba(5,6,12,.9) 0%,rgba(5,6,12,0) 22%)}
+@media (max-width:899px){.shot.case .vit{width:100%;height:62%}.shot.case .vit::after{background:linear-gradient(0deg,rgba(5,6,12,.95) 0%,rgba(5,6,12,0) 40%)}}
+.gold-calc{margin-top:14px}
+.gold-out{margin-top:8px;font-size:15px;color:var(--mut)}
+.gold-out b{font:500 26px var(--serif);color:var(--ink);font-variant-numeric:tabular-nums;margin-left:6px}

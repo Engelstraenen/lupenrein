@@ -20,7 +20,7 @@ const P = {
   LRT3: { x: .722, y: .50, d: .617 },  // Stein unter der Lupe (gemessen, sjinn 4K), d = Durchmesser in Bildhöhe
   LRT4: { y: .536, xs: [.391, .461, .536, .606, .678, .747, .819, .891] }, // 8 Vergleichssteine D–K (gemessen, sjinn 4K)
   LRT6: { x: .691, y: .483, d: .535 },  // Stein von oben (gemessen), d = Durchmesser in Bildhöhe
-  LRT5: { x: .702, y: .497, fw: .07 },  // Ringposition auf dem Ringfinger (unteres Glied), fw = Fingerbreite in Bildbreite (≈ 17 mm)
+  LRT5: { x: .823, y: .56, fw: .039 },  // LRT5H: Ringposition auf dem Ringfinger (unteres Glied vor dem Knöchel), fw = Fingerbreite in Bildbreite (≈ 17 mm)
   LRT7: { x: .6875, y: .522 }          // Stein im Solitär (gemessen, sjinn 4K)
 };
 
@@ -183,7 +183,7 @@ function wUpd() { S.cut = +wCut.value; S.col = +wCol.value; S.cla = +wCla.value;
 [wCut, wCol, wCla, wCt].forEach(r => r.addEventListener('input', () => { wUpd(); setCla(S.cla, 'w'); setCol(S.col, 'w'); setCt(S.ct, 'w'); }));
 
 // Stein in „Ihr Diamant“: Foto so legen, dass der Stein 90 % des Kreises füllt
-function placeWa() { const p = waImg.dataset.fb ? { x: .5, y: .5, d: .6 } : P.LRT6, k = .9 / p.d, hh = k * 100, ww = hh * 16 / 9;
+function placeWa() { if (waImg.dataset.cut) { Object.assign(waImg.style, { width: '92%', height: '92%', left: '4%', top: '4%' }); return; } const p = waImg.dataset.fb ? { x: .5, y: .5, d: .6 } : P.LRT6, k = .9 / p.d, hh = k * 100, ww = hh * 16 / 9;
   Object.assign(waImg.style, { width: ww.toFixed(2) + '%', height: hh.toFixed(2) + '%', left: (50 - p.x * ww).toFixed(2) + '%', top: (50 - p.y * hh).toFixed(2) + '%' }); }
 
 /* Termin am Tresen */

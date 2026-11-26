@@ -234,7 +234,13 @@ $('#tGo').addEventListener('click', () => {
 /* Ankauf */
 const FT = { 333: '333 = 33,3 % Feingold, häufig bei älterem Schmuck.', 585: '585 = 58,5 % Feingold, der Klassiker bei Ringen und Ketten.', 750: '750 = 75 % Feingold, satte Farbe, hochwertiger Schmuck.', 999: '999 = 99,9 % Feingold, meist Barren und Münzen.' };
 const setF = f => { $('#feinFill').style.width = f / 10 + '%'; $('#feinTxt').textContent = FT[f]; $$('.stamp').forEach(s => s.classList.toggle('on', s.dataset.f == f)); };
-$$('.stamp').forEach(s => s.addEventListener('click', () => setF(s.dataset.f))); setF(585);
+// Gold-Rechner (Eugen 26.11.): Gewicht + Stempel → Feingoldanteil in Gramm (keine Preise auf der Demo)
+let goldF = 585; const goldG = $('#goldG');
+const calcGold = () => { if (!goldG) return; const g = +goldG.value, f = g * goldF / 1000; $('#goldGo').textContent = g + ' g'; fillR(goldG);
+  const el = $('#goldF'), from = parseFloat((el.dataset.v || '0')), t0 = performance.now(); el.dataset.v = f;
+  const run = t => { const k = Math.min(1, (t - t0) / 450), v = from + (f - from) * (1 - Math.pow(1 - k, 3)); el.textContent = v.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' g'; if (k < 1) requestAnimationFrame(run); }; requestAnimationFrame(run); };
+if (goldG) goldG.addEventListener('input', calcGold);
+$$('.stamp').forEach(s => s.addEventListener('click', () => { setF(s.dataset.f); goldF = +s.dataset.f; calcGold(); })); setF(585); calcGold();
 
 /* Termin: Monatskalender wie im Storyboard */
 (function cal() {
