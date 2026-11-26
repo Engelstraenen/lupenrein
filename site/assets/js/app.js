@@ -157,7 +157,7 @@ function days(box, n = 6) { const W = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
 function stoneFilter(cu, co) { const k = 3 - cu, y = Math.max(0, co - 1);
   return 'brightness(' + (1 - k * .11).toFixed(2) + ') contrast(' + (1 - k * .1).toFixed(2) + ') blur(' + (k * .18).toFixed(2) + 'px) sepia(' + (y * .05).toFixed(3) + ') saturate(' + (1 + y * .1).toFixed(2) + ') hue-rotate(' + (y * 1.2).toFixed(1) + 'deg)'; }
 // Großer Stein auf dem leeren Stift im Vitrinenfoto (dunkle Fassung LRB03N): Messpunkt Steinmitte + Durchmesser bei 1 ct in Bildhöhe
-const PIN = { x: .5, y: .45, d: .17 };
+const PIN = { x: .317, y: .4625, d: .13 }; // LRB03N: Stiftspitze (gemessen), d = Steindurchmesser bei 1 ct in Bildhöhe
 const dStone = $('#dStone'), dPhoto = $('#dPhoto');
 function bigStone(FL, svg, mm) { if (!dStone) return; if (!IMG.LRB03N) { dStone.hidden = true; return; } dStone.hidden = false;
   $('img', dStone).style.filter = FL; $('svg', dStone).innerHTML = svg; dStone.style.setProperty('--k', (mm / 6.5).toFixed(3)); placeStone(); }
@@ -209,7 +209,7 @@ const ring = b => { $('#pvCap').textContent = b.dataset.c; $('#pvTxt').textConte
 pick(ringart, '.chip', ring); ring($('.chip.on', ringart));
 
 /* Trauringe */
-let gold = 'gelb'; const GI = { gelb: 'LRB05', weiss: 'LRB19', rose: 'LRB21' };
+let gold = 'gelb'; const GI = IMG.LRB19M && IMG.LRB21M ? { gelb: 'LRB05M', weiss: 'LRB19M', rose: 'LRB21M' } : { gelb: 'LRB05', weiss: 'LRB19', rose: 'LRB21' }; // dunkle Nahaufnahmen (Eugen 26.11.)
 const tW = $('#tWidth'), eng = $('#tEngr');
 function trau() { const w = +tW.value; $('#wOut').textContent = w.toFixed(1).replace('.', ',') + ' mm'; fillR(tW); $('#engrOut').textContent = eng.value.trim() || ' '; }
 $$('.sw').forEach(b => { if (!IMG[GI[b.dataset.gold]]) b.hidden = true; });
