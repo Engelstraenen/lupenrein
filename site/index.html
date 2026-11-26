@@ -35,8 +35,8 @@
     <a href="#diamanten" data-s="2">Diamanten</a>
     <a href="#verlobung" data-s="3">Verlobungsringe</a>
     <a href="#trauringe" data-s="4">Trauringe</a>
-    <a href="#schmuck" data-s="5">Schmuck</a>
-    <a href="#uhren" data-s="6">Uhren</a>
+    <a href="#schmuck" data-s="5">Schmuck &amp; Uhren</a>
+    <a href="#uhren" data-s="6">Service</a>
     <a href="#ankauf" data-s="7">Ankauf</a>
     <a href="#beratung" data-s="8">Beratung</a>
     <a href="#karriere" data-s="9">Karriere</a>
@@ -167,7 +167,7 @@
 </section>
 
 <!-- SCHMUCK -->
-<section class="scene" id="schmuck" data-s="5" data-n="V" data-t="Schmuck">
+<section class="scene" id="schmuck" data-s="5" data-n="V" data-t="Schmuck &amp; Uhren">
   <div class="hold pos-left">
     <div class="card">
       <p class="kicker">Schmuck &amp; Uhren</p>
@@ -187,19 +187,25 @@
 </section>
 
 <!-- UHREN -->
-<section class="scene" id="uhren" data-s="6" data-n="VI" data-t="Uhren">
+<section class="scene" id="uhren" data-s="6" data-n="VI" data-t="Service">
   <div class="hold pos-left">
     <div class="card">
-      <p class="kicker">Uhren &amp; Service</p>
-      <h2>Ihre Uhr. <em>Ihr Stand.</em></h2>
-      <p class="info">Batteriewechsel, Revision, Armband: Den Stand Ihres Auftrags sehen Sie hier.</p>
+      <p class="kicker">Service &amp; Wartung</p>
+      <h2>Bei uns in <em>besten Händen.</em></h2>
+      <div class="chips svc-tabs" id="svcTabs" role="radiogroup" aria-label="Was bringen Sie?">
+        <button class="chip on" role="radio" aria-checked="true" data-svc="uhr">Uhren</button>
+        <button class="chip" role="radio" aria-checked="false" data-svc="schmuck">Schmuck</button>
+      </div>
+      <ul class="svc-list" data-svc="uhr"><li>Batteriewechsel mit Dichtigkeitsprüfung</li><li>Revision mechanischer Uhren beim Uhrmacher</li><li>Armband kürzen, tauschen, Glas ersetzen</li></ul>
+      <ul class="svc-list" data-svc="schmuck" hidden><li>Reinigung und Politur, auch Ultraschall</li><li>Ringgröße ändern, Krappen prüfen und nachziehen</li><li>Ketten und Verschlüsse reparieren, Gravur</li></ul>
+      <p class="info">Bringen Sie Uhr oder Schmuck an den Tresen. Den Stand Ihres Auftrags sehen Sie hier.</p>
       <form class="track" id="track" onsubmit="return false">
         <label for="tNr">Auftragsnummer</label>
         <div class="row nw"><input id="tNr" autocomplete="off" placeholder="z. B. LR-2411"><button class="btn btn-or" id="tGo">Zeigen</button></div>
       </form>
       <ol class="timeline" id="timeline">
-        <li><span></span><div><b>Annahme</b><p>Ihre Uhr ist bei uns und dokumentiert.</p></div></li>
-        <li><span></span><div><b>Prüfung</b><p>Beim Uhrmacher, wir melden uns bei Rückfragen.</p></div></li>
+        <li><span></span><div><b>Annahme</b><p>Ihr Stück ist bei uns und dokumentiert.</p></div></li>
+        <li><span></span><div><b>In Arbeit</b><p>Beim Uhrmacher oder unserem Fachpartner, wir melden uns bei Rückfragen.</p></div></li>
         <li><span></span><div><b>Übergabe</b><p>Abholbereit am Tresen.</p></div></li>
       </ol>
       <p class="small" id="tMsg">Demo: beliebige Nummer eingeben.</p>

@@ -302,3 +302,9 @@ let lastT = -1;
 function loop() { raf = requestAnimationFrame(loop); if (!lm || vid.readyState < 2) return; if (cv.width !== vid.videoWidth) { cv.width = vid.videoWidth; cv.height = vid.videoHeight; } const t = performance.now(); if (t === lastT) return; lastT = t; const r = lm.detectForVideo(vid, t), c = cv.getContext('2d'); c.clearRect(0, 0, cv.width, cv.height); const h = r.landmarks && r.landmarks[0]; if (!h) return; const P = i => ({ x: h[i].x * cv.width, y: h[i].y * cv.height }); const a = P(13), b = P(14), k9 = P(9), k17 = P(17); drawRing(c, a.x + (b.x - a.x) * .38, a.y + (b.y - a.y) * .38, Math.hypot(k9.x - k17.x, k9.y - k17.y) * .72, Math.atan2(b.y - a.y, b.x - a.x) + Math.PI / 2); }
 arS.addEventListener('click', arStart); arX.addEventListener('click', arStop);
 })();
+
+/* Service: Uhren / Schmuck umschalten (Eugen 26.11.: Verkauf und Service getrennt) */
+(() => { const box = document.getElementById('svcTabs'); if (!box) return;
+  box.addEventListener('click', e => { const b = e.target.closest('[data-svc]'); if (!b) return;
+    box.querySelectorAll('[data-svc]').forEach(x => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on); });
+    document.querySelectorAll('.svc-list').forEach(l => l.hidden = l.dataset.svc !== b.dataset.svc); }); })();
