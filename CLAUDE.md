@@ -7,7 +7,7 @@ Probleme, die die Seite löst: Online-Konkurrenz (online sehen, reservieren, im 
 
 ## 2. Qualitätsanspruch & Referenzen
 - Aufbau wie FLUTLICHT27/FARBKANTE: Film-Kapitel (Scrollen spult das Video) im Wechsel mit Motion-Design-Kapiteln, Übergänge Film ↔ Grafik.
-- Fotolook 4K, hell: Kreideweiß/Travertin + Kobalt-Samt, Platin (seit 24.11.2026; vorher dunkel + Gold).
+- Fotolook: DUNKEL wie der Einstieg (seit 26.11.2026): Schwarz, schmale Lichtschlitze, Kobalt-Samt, Platin, kleine Messing-Lichter. (24.–25.11. hell/weiß – von Eugen verworfen.)
 - Leitmotiv eindeutig zum Juwelier: Beratung am Tresen, Juwelierlupe in der Hand der Beraterin (Diamant zeigen), Vitrine/Schaufenster, Samttablett, Anprobe am Finger, Uhrenwand. Nie Werkbank, Flamme, Amboss, Goldschmied.
 
 ## 3. Regeln für dieses Projekt
@@ -38,6 +38,7 @@ gh (Engelstraenen), sjinn in Chrome eingeloggt.
 - (erledigt) Wahl: Mix.
 
 ## 9. Entschieden
+- 26.11.2026 Eugen: Die GANZE Seite bleibt dunkel wie der Einstieg („weiß passt gar nicht“, „CI komplett scheiße“ sonst). Weiße Galerie ist abgelöst (`site/assets/css/dunkel.css`, dunkle Fotos `LRBxxN`, Eingang „Treten Sie ein“ entfällt). Keine Doppelungen: Einstiegs-Inhalte gehören unter Verlobungsringe/Trauringe; „Privater Termin“ als Reiter oben. Schmuck & Uhren mit großen Bildern, Uhren im Sortiment. Ankauf mit Gold-Rechner (Feingold in Gramm, keine Preise). Regler müssen den Diamanten sichtbar verändern, Steine hochauflösend. Neuer Aufbau: Storyboards LRS1–3, Wahl offen.
 - 25.11.2026 Eugen: Unterseite Diamanten = Storyboard 3 „Am Tresen, Schritt für Schritt“ (LRQ3): Briefchen → Pinzette → Lupe → Farbe D–K → Größe am Finger → 4 Regler → Fassung → Termin am Tresen. Seite `site/diamanten.html`, Fotos LRT1–8.
 - 25.11.2026 Eugen: „UNTERSEITE CONFIRMED“ (Verlobungsringe: Lupe in Glasform, Facetten-Hintergrund mit Bewegung, Karten-Abgleich, Ringgröße mit mitwachsendem Ring, Konfigurator 4×4, Licht-Vergleich, Fragen). Vorlage für weitere Unterseiten.
 - 25.11.2026 Eugen (mehrfach, verärgert): JEDER Abschnitt hat ein echtes Foto im Hintergrund, nie nur Schwarz/Farbe, keine schwarzen Scrollstrecken. Fehlt ein neues Foto, sofort ein vorhandenes passendes Foto einsetzen statt auf eine Bild-Schlange zu warten. „Originalgröße“ = Facetten-Foto LRD3 (Blick in den Diamanten) als Anschluss an den Lupen-Zoom.
