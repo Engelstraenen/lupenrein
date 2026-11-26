@@ -93,6 +93,7 @@ function frame() {
     if (k === i) {
       const z = k === 0 ? 1 + ease(loc) * (HZ - 1) : 1 + loc * .07;
       if (k === 0 && near) near.style.opacity = clamp((z - 1.15) / .45).toFixed(3);
+      op = 1; sc = z; // letzte Szene (ohne nächste) bleibt sichtbar
       if (FLOW === 'fahrt' && nx) {           // Kamera fährt auf die Glastür im Bild zu
         // Foto nur leicht vergrößern (max. 1,25×), sonst wird es auf Retina unscharf; die Tür wächst scharf darüber
         const P = portalPt(i), Z = 1 + .25 * e;

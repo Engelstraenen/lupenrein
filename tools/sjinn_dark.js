@@ -10,7 +10,8 @@ LB.opt = async (re, txt) => { const b = bt(re); if (!b) return false; if ((b.inn
 LB.ok = () => { const u = bt(/^Unlimited/); const c = bt(/credits$/); return !!(u && /On/.test(u.innerText) && c && /^0 credits/.test(c.innerText.trim())); };
 LB.setP = p => { const e = document.querySelector('[aria-label="Prompt input"]'); const s = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set; s.call(e,''); e.dispatchEvent(new Event('input',{bubbles:true})); s.call(e,p); e.dispatchEvent(new Event('input',{bubbles:true})); };
 LB.tick = async () => {
-  if (RID !== LB.run) return;
+  if (RID !== LB.run || LB._t) return; LB._t = 1; try { await LB.tick0(); } finally { LB._t = 0; } };
+LB.tick0 = async () => {
   const d = LB.done(); const running = Object.keys(LB.sent).filter(id => !d.has(id) && Date.now() - LB.sent[id] < 240*60000).length;
   const next = LB.jobs.find(j => !LB.sent[j.id] && !d.has(j.id));
   if (!next) { LB.log.push('alle gesendet'); if (running) setTimeout(LB.tick, 60000); return; }
